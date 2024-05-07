@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { Grid, GridItem } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Stack } from "@chakra-ui/react";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,15 +20,45 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en"> 
-      <body className={inter.className}>
-        <header>
-          <p>Header</p>
-        </header>
-        {children}
-        <footer>
-          <p>footer</p>
-        </footer>
+    <html lang="en">
+      <body>
+      <Providers>
+      <Grid
+        templateAreas={`"header header"
+                        "nav main"
+                        "footer footer"`}
+        gridTemplateRows={'80px 1fr 50px'}
+        gridTemplateColumns={'120px 1fr'}
+        h='1000px'
+        gap='1'
+        color='blackAlpha.700'
+        fontWeight='bold'
+      >
+        <GridItem pl='2' bg='orange.300' area={'header'}>
+          Header
+        </GridItem>
+        <GridItem pl='2' bg='pink.300' area={'nav'}>
+          <Stack direction='column' spacing={4} align='center'>
+            <Link href='/hello'>
+            <Button colorScheme='teal' variant='solid'>
+             Hello
+            </Button>
+            </Link>
+            <Link href='/goodbye'>
+            <Button colorScheme='teal' variant='solid'>
+              Goodbye
+            </Button>
+            </Link>
+          </Stack>
+        </GridItem>
+        <GridItem pl='2' bg='green.300' area={'main'}>
+          {children}
+        </GridItem>
+        <GridItem pl='2' bg='blue.300' area={'footer'}>
+          Footer
+        </GridItem>
+      </Grid>
+      </Providers>
       </body>
     </html>
   );
