@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
-import { Grid, GridItem } from '@chakra-ui/react';
-import { Button, ButtonGroup } from '@chakra-ui/react';
-import { Stack } from "@chakra-ui/react";
-import { Providers } from './providers';
-import NextLink from 'next/link'
-import { LinkButton } from "../../components/link-button";
+import { Providers } from './components/Providers';
 import Navbar from "./components/Navbar";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Children } from "react";
-
 
 const inter = Inter({ subsets: ["latin"] });
 
