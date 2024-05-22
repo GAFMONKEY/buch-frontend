@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import { Stack } from "@chakra-ui/react";
-import { Providers } from "./providers";
+import { Providers } from './providers';
 import NextLink from 'next/link'
 import { LinkButton } from "../../components/link-button";
+import Navbar from "./components/Navbar";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Children } from "react";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,35 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${inter.className} antialiased`}>
       <Providers>
-      <Grid
-        templateAreas={`"header header"
-                        "nav main"
-                        "footer footer"`}
-        gridTemplateRows={'80px 1fr 50px'}
-        gridTemplateColumns={'120px 1fr'}
-        h='1000px'
-        gap='1'
-        color='blackAlpha.700'
-        fontWeight='bold'
-      >
-        <GridItem pl='2' bg='orange.300' area={'header'}>
-        <Stack direction='row' spacing={4} align='center'>
-            <LinkButton link='/suchen' text='Suchen' />
-            <LinkButton link='/erstellen' text='Erstellen' />
-            <LinkButton link='/login' text='Login' />
-          </Stack>
-        </GridItem>
-        <GridItem pl='2' bg='pink.300' area={'nav'}> 
-        </GridItem>
-        <GridItem pl='2' bg='green.300' area={'main'}>
-          {children}
-        </GridItem>
-        <GridItem pl='2' bg='blue.300' area={'footer'}>
-          Footer
-        </GridItem>
-      </Grid>
+        <Navbar />
+        {children}
       </Providers>
       </body>
     </html>
