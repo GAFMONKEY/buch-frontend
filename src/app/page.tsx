@@ -1,7 +1,6 @@
 import Image from "next/image";
-import styles from "./page.module.css";
 import { Box, Container, Heading, Spacer, Text } from "@chakra-ui/react";
-import { Providers } from './providers';
+import { Providers } from './components/Providers';
 
 export default function Home() {
   return (
