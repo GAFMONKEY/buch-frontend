@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, FormControl, FormLabel, Input, Text, Spinner } from "@chakra-ui/react";
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { setIsAuthenticated } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,10 +28,10 @@ const LoginPage = () => {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem('access_token', data.access_token);
-      //router.push('/');
-      setError('Holy shit ich bin eingeloggt!');
+      setIsAuthenticated(true);
+      router.push('/');
     } else {
-      setError('Invalid credentials');
+      setError('Falsche Einloggdaten');
     }
   };
 

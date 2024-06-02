@@ -1,8 +1,11 @@
+'use client';
 import { Button, ButtonGroup, Flex, Heading, HStack, Spacer } from '@chakra-ui/react';
+import { useAuth } from '../context/AuthContext';
 import Login from '../login/page';
-import { MdLogin } from "react-icons/md"
+import { MdLogin, MdLogout } from "react-icons/md"
 import Link from 'next/link';
 import Searchbar from './Searchbar';
+import { useEffect, useState } from 'react';
 
 export default function Navbar() {
   const loginButtonStyles = {
@@ -11,6 +14,8 @@ export default function Navbar() {
         bg: 'teal.200',
       }
   }
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <Flex as='nav' padding='10px' alignItems='center' gap='10px' bg='teal.700' wrap='wrap'>
@@ -31,19 +36,19 @@ export default function Navbar() {
                 <Link href='suchen'>
                     <Button color='white'>Erweiterte Suche</Button>
                 </Link>
-                <Link href='erstellen'>
-                    <Button color='white'>Neuanlegen</Button>
+                <Link href={isAuthenticated ? 'erstellen' : 'login'}>
+                    <Button color={isAuthenticated ? 'white' : 'grey'}>Neuanlegen</Button>
                 </Link>
             </ButtonGroup>
-            <Link href='login' >
+            <Link href={isAuthenticated ? 'logout' : 'login'} >
                 <Button
                     variant='outline'
                     color='white'
                     colorScheme='teal.500'
-                    rightIcon={<MdLogin />}
+                    rightIcon={isAuthenticated ? <MdLogout /> : <MdLogin />}
                     sx={loginButtonStyles}
                 >
-                    Login
+                    {isAuthenticated ? 'Logout' : 'Login'}
                 </Button>
             </Link>
         </HStack>

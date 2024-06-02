@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import NewBook from '../components/NewBook';
+import withAuth from '../hoc/withAuth';
 
-export default function Create() {
+const Create = ()=> {
   const [inputValue, setInputValue] = useState('');
 
   const handleCreate = () => {
@@ -46,3 +47,5 @@ export default function Create() {
     </div>
   );
 }
+
+export default withAuth(Create);
