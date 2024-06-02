@@ -2,17 +2,18 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Text, Spinner } from "@chakra-ui/react";
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -20,6 +21,7 @@ const LoginPage = () => {
       },
       body: JSON.stringify({ username, password }),
     });
+    setLoading(false);
 
     if (response.ok) {
       const data = await response.json();
@@ -46,6 +48,7 @@ const LoginPage = () => {
         <Button colorScheme="blue" type="submit" mb={4}>Login</Button>
     </form>
     {error && <Text color="red.500">{error}</Text>}
+    {loading && <Spinner />}
     </Box>
   );
 };
