@@ -12,5 +12,9 @@ type Buch = {
       titel: string;
       untertitel: string;
     };
-    _links: string;
-}
+    _links: {
+      self: {
+          href: string;      
+      };
+    };
+};

@@ -5,6 +5,8 @@ import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Fl
 import AdvancedSearch from "../components/AdvancedSearch";
 import getBuecher from "../lib/getBuecher";
 import { FaEye, FaStar } from "react-icons/fa6";
+import { useRouter } from 'next/navigation';
+import extractId from '../lib/extractId';
 
 export default function Suchen({
   searchParams
@@ -14,6 +16,7 @@ export default function Suchen({
   }
 }) {
   const [buecher, setBuecher] = useState<Buch[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBuecher = async () => {
@@ -85,7 +88,7 @@ export default function Suchen({
                       letterSpacing={1.1}>
                       {buch.art}
                     </Text>
-                    <Button variant='ghost' colorScheme='teal' leftIcon={<FaEye />}>Details</Button>
+                    <Button variant='ghost' colorScheme='teal' leftIcon={<FaEye />} onClick={() => router.push(`/suchen/${extractId(buch._links.self.href)}`)}>Details</Button>
                   </Flex>
                   <Heading size='md'>{buch.titel.titel}</Heading>
                   <StarRating rating={buch.rating} />
