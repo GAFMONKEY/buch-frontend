@@ -36,7 +36,7 @@ export default function Suchen({
     fetchBuecher();
   }, [searchParams]);
 
-  const StarRating = ({ rating }) => {
+  const StarRating = ({ rating }: { rating: number }) => {
     const stars = Array(5).fill(0);
 
     return (
@@ -54,7 +54,7 @@ export default function Suchen({
     );
   };
 
-  const Lieferbar = ({ lieferbar }) => {
+  const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
     return (
       <Badge
         colorScheme={lieferbar ? 'green' : 'red'}
