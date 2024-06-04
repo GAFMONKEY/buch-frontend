@@ -16,7 +16,7 @@ export default function AdvancedSearch() {
             titel,
             art,
             rating,
-            lieferbar: lieferbar ? 'true' : 'false',
+            lieferbar: lieferbar ? 'true' : undefined,
           };
         
           const filteredParams = Object.entries(params)
