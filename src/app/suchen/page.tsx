@@ -5,7 +5,7 @@ import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Fl
 import AdvancedSearch from "../components/AdvancedSearch";
 import getBuecher from "../lib/getBuecher";
 import { FaEye, FaStar } from "react-icons/fa6";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import extractId from '../lib/extractId';
 
 export default function Suchen({
@@ -16,27 +16,26 @@ export default function Suchen({
   }
 }) {
   const [buecher, setBuecher] = useState<Buch[]>([]);
+  const suchkriterien = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
     const fetchBuecher = async () => {
-      let query = '';
-      if (searchParams.titel) {
-        query = `titel=${searchParams.titel}`;
-      }
+      const query = new URLSearchParams(searchParams as any).toString();
       try {
         const buecherData: Buch[] = await getBuecher(query);
-        console.log('Empfangene Bücher:', buecherData); // Loggen Sie die empfangenen Daten
+        console.log('Empfangene Bücher: ', buecherData);
         setBuecher(buecherData);
       } catch (error) {
-        console.error('Fehler beim Abrufen der Bücher:', error);
+        console.error('Fehler beim Abrufen der Bücher: ', error);
         setBuecher([]);
       }
-    }
+    };
+
     fetchBuecher();
   }, [searchParams]);
 
-  const StarRating = ({ rating }) => {
+  const StarRating = ({ rating }: { rating: number }) => {
     const stars = Array(5).fill(0);
 
     return (
@@ -54,7 +53,7 @@ export default function Suchen({
     );
   };
 
-  const Lieferbar = ({ lieferbar }) => {
+  const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
     return (
       <Badge
         colorScheme={lieferbar ? 'green' : 'red'}
