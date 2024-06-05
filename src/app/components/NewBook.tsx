@@ -19,11 +19,19 @@ export default function NewBook() {
   const [homepage, changeHomepage] = useState('');
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
   const [lieferbar, changeLieferbar] = useState(true);
+  const [content_type, changeContentType] = useState("");
+  const [beschriftung, changeBeschriftung] = useState("");
 
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Hier können Sie den Code zum Speichern des neuen Buches in Ihrer Datenbank hinzufügen
+
+    const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
+    if (!isbn || !isbnPattern.test(isbn)) {
+      alert('Bitte geben Sie eine gültige ISBN ein');
+      return;
+    }
+    
   };
 
   const displayStars = () => {
@@ -145,7 +153,26 @@ export default function NewBook() {
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Checkbox mt={2}
+      <Box>
+        <label htmlFor="content_type">Content_Type:</label>
+        <Input
+          id="content_type"
+          placeholder="z.B. img/png"
+          value={content_type}
+          onChange={(e) => changeContentType(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="beschriftung">Beschriftung:</label>
+        <Input
+          id="beschriftung"
+          placeholder="z.B. Abb. 1"
+          value={beschriftung}
+          onChange={(e) => changeBeschriftung(e.target.value)}
+        />
+      </Box>
+      <Checkbox
+        mt={2}
         isChecked={lieferbar}
         onChange={(e) => changeLieferbar(e.target.checked)}
       >
