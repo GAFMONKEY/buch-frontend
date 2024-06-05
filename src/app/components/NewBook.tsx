@@ -19,11 +19,19 @@ export default function NewBook() {
   const [homepage, changeHomepage] = useState('');
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
   const [lieferbar, changeLieferbar] = useState(true);
+  const [content_type, changeContentType] = useState("");
+  const [beschriftung, changeBeschriftung] = useState("");
 
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // Hier können Sie den Code zum Speichern des neuen Buches in Ihrer Datenbank hinzufügen
+
+    const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
+    if (!isbn || !isbnPattern.test(isbn)) {
+      alert('Bitte geben Sie eine gültige ISBN ein');
+      return;
+    }
+    
   };
 
   const displayStars = () => {
@@ -51,27 +59,39 @@ export default function NewBook() {
 
   return (
     <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
-      <Input
-        placeholder="ISBN"
-        value={isbn}
-        onChange={(e) => changeIsbn(e.target.value)}
-      />
-      <Input
-        placeholder="Titel"
-        value={titel}
-        onChange={(e) => changeTitel(e.target.value)}
-      />
-      <Input
-        placeholder="Untertitel"
-        value={untertitel}
-        onChange={(e) => changeUntertitel(e.target.value)}
-      />
+      <Box>
+        <label htmlFor="isbn">ISBN:</label>
+        <Input
+          id="isbn"
+          placeholder="z.B. 978-3-897-22583-1"
+          value={isbn}
+          onChange={(e) => changeIsbn(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="titel">Titel:</label>
+        <Input
+          id="titel"
+          placeholder="z.B. Alpha"
+          value={titel}
+          onChange={(e) => changeTitel(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="untertitel">Untertitel:</label>
+        <Input
+          id="untertitel"
+          placeholder="z.B. alpha"
+          value={untertitel}
+          onChange={(e) => changeUntertitel(e.target.value)}
+        />
+      </Box>
       <Box>
         <label htmlFor="buchArt">Buchart:</label>
         <Select
           id="buchArt"
           name="buchArt"
-          placeholder="Art des Buches"
+          placeholder="Wählen Sie die Buchart aus"
           value={buchArt}
           onChange={handleBuchArtChange}
           required
@@ -80,16 +100,24 @@ export default function NewBook() {
           <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
         </Select>
       </Box>
-      <Input
-        placeholder="Preis"
-        value={preis}
-        onChange={(e) => changePreis(e.target.value)}
-      />
-      <Input
-        placeholder="Rabatt"
-        value={rabatt}
-        onChange={(e) => changeRabatt(e.target.value)}
-      />
+      <Box>
+        <label htmlFor="preis">Preis:</label>
+        <Input
+          id="preis"
+          placeholder="z.B. 11.1"
+          value={preis}
+          onChange={(e) => changePreis(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="rabatt">Rabatt:</label>
+        <Input
+          id="rabatt"
+          placeholder="z.B. 0.011"
+          value={rabatt}
+          onChange={(e) => changeRabatt(e.target.value)}
+        />
+      </Box>
       <Box mt={4} mb={4}>
         <Text mb={2}>Datum:</Text>
         <DatePicker
@@ -107,17 +135,44 @@ export default function NewBook() {
           </Stack>
         </Flex>
       </Box>
-      <Input
-        placeholder="Homepage"
-        value={homepage}
-        onChange={(e) => changeHomepage(e.target.value)}
-      />
-      <Input
-        placeholder="Schlagwörter"
-        value={schlagwoerter.join(', ')}
-        onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
-      />
-      <Checkbox mt={2}
+      <Box>
+        <label htmlFor="homepage">Homepage:</label>
+        <Input
+          id="homepage"
+          placeholder="z.B. https://acme.at"
+          value={homepage}
+          onChange={(e) => changeHomepage(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="schlagwoerter">Schlagwörter:</label>
+        <Input
+          id="schlagwoerter"
+          placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
+          value={schlagwoerter.join(', ')}
+          onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="content_type">Content_Type:</label>
+        <Input
+          id="content_type"
+          placeholder="z.B. img/png"
+          value={content_type}
+          onChange={(e) => changeContentType(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="beschriftung">Beschriftung:</label>
+        <Input
+          id="beschriftung"
+          placeholder="z.B. Abb. 1"
+          value={beschriftung}
+          onChange={(e) => changeBeschriftung(e.target.value)}
+        />
+      </Box>
+      <Checkbox
+        mt={2}
         isChecked={lieferbar}
         onChange={(e) => changeLieferbar(e.target.checked)}
       >
