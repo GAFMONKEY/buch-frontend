@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
 import './NewBook.css';
@@ -7,20 +8,20 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 
-export default function NewBook() {
-  const [isbn, changeIsbn] = useState('');
-  const [titel, changeTitel] = useState('');
-  const [untertitel, changeUntertitel] = useState('');
-  const [buchArt, changeBuchArt] = useState('');
-  const [preis, changePreis] = useState('');
-  const [rabatt, changeRabatt] = useState('');
-  const [datum, changeDatum] = useState(new Date());
-  const [selectedRating, setSelectedRating] = useState('');
-  const [homepage, changeHomepage] = useState('');
-  const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
-  const [lieferbar, changeLieferbar] = useState(true);
-  const [content_type, changeContentType] = useState("");
-  const [beschriftung, changeBeschriftung] = useState("");
+export default function NewBook({ book } : { book: Buch }) {
+  const [isbn, changeIsbn] = useState(book.isbn);
+  const [titel, changeTitel] = useState(book.titel);
+  const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
+  const [buchArt, changeBuchArt] = useState(book.art);
+  const [preis, changePreis] = useState(book.preis);
+  const [rabatt, changeRabatt] = useState(book.rabatt);
+  const [datum, changeDatum] = useState(book.datum);
+  const [selectedRating, setSelectedRating] = useState(book.rating);
+  const [homepage, changeHomepage] = useState(book.homepage);
+  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
+  const [lieferbar, changeLieferbar] = useState(book.lieferbar);
+  const [content_type, changeContentType] = useState('');
+  const [beschriftung, changeBeschriftung] = useState('');
 
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -92,7 +93,7 @@ export default function NewBook() {
         <Input
           id="titel"
           placeholder="z.B. Alpha"
-          value={titel}
+          value={titel.titel}
           onChange={(e) => changeTitel(e.target.value)}
         />
       </Box>
@@ -198,7 +199,7 @@ export default function NewBook() {
         Lieferbar
       </Checkbox>
       <Button type="submit" className="submit-button">
-        Neues Buch erstellen
+        Buch ändern
       </Button>
     </Box>
   );
