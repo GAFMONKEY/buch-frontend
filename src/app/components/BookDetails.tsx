@@ -14,17 +14,21 @@ import {
   Button,
   VStack,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
+import extractId from '../lib/extractId';
 
 const BookDetails = ({ book } : { book: Buch}) => {
+  const router = useRouter();
+
   return (
-    <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" bg="white" maxW="3xl" mx="auto">
+    <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" bg="white" maxW="4xl" mx="auto">
       <Flex direction={{ base: 'column', md: 'row' }} align="center">
-        <Box flex="1" mb={{ base: 4, md: 0 }}>
+        <Box flex="1" mb={{ base: 4, md: 0 }} maxW={{ base: '100%', md: '300px' }}>
           <Image
-            src={}
+            src={'https://www.macworld.com/wp-content/uploads/2023/01/learn_javascript_on_mac.jpg?quality=50&strip=all'}
             alt={book.titel.titel}
-            boxSize="200px"
-            objectFit="cover"
+            boxSize={{ base: '100%', md: '300px' }}
+            objectFit="contain"
             borderRadius="md"
             mx="auto"
           />
@@ -55,6 +59,9 @@ const BookDetails = ({ book } : { book: Buch}) => {
               </Tag>
             ))}
           </Stack>
+          <Button colorScheme="teal" onClick={() => (router.push(`/suchen/${extractId(book._links.self.href)}/aendern`))}>
+            Edit Book
+          </Button>
         </Box>
       </Flex>
     </Box>
