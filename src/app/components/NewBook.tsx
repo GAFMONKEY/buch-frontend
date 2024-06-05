@@ -31,7 +31,26 @@ export default function NewBook() {
       alert('Bitte geben Sie eine gültige ISBN ein');
       return;
     }
-    
+    if (!titel) {
+      alert('Bitte geben Sie einen Titel ein');
+      return;
+    }
+    if (!untertitel) {
+      alert('Bitte geben Sie einen Untertitel ein');
+      return;
+    }
+    const preisPattern = /^\d+\.\d{2}$/;
+    if (!preis) {
+      alert('Preis ist erforderlich!');
+      return;
+    } else if (parseFloat(preis) <= 0) {
+      alert('Preis muss größer als 0 sein!');
+      return;
+    } else if (!preisPattern.test(preis)) {
+      alert('Preis bitte mit 2 Nachkommastellen angeben!');
+      return;
+    }
+
   };
 
   const displayStars = () => {
@@ -104,7 +123,7 @@ export default function NewBook() {
         <label htmlFor="preis">Preis:</label>
         <Input
           id="preis"
-          placeholder="z.B. 11.1"
+          placeholder="z.B. 11.11"
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
