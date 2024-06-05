@@ -51,27 +51,39 @@ export default function NewBook() {
 
   return (
     <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
-      <Input
-        placeholder="ISBN"
-        value={isbn}
-        onChange={(e) => changeIsbn(e.target.value)}
-      />
-      <Input
-        placeholder="Titel"
-        value={titel}
-        onChange={(e) => changeTitel(e.target.value)}
-      />
-      <Input
-        placeholder="Untertitel"
-        value={untertitel}
-        onChange={(e) => changeUntertitel(e.target.value)}
-      />
+      <Box>
+        <label htmlFor="isbn">ISBN:</label>
+        <Input
+          id="isbn"
+          placeholder="z.B. 978-3-897-22583-1"
+          value={isbn}
+          onChange={(e) => changeIsbn(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="titel">Titel:</label>
+        <Input
+          id="titel"
+          placeholder="z.B. Alpha"
+          value={titel}
+          onChange={(e) => changeTitel(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="untertitel">Untertitel:</label>
+        <Input
+          id="untertitel"
+          placeholder="z.B. alpha"
+          value={untertitel}
+          onChange={(e) => changeUntertitel(e.target.value)}
+        />
+      </Box>
       <Box>
         <label htmlFor="buchArt">Buchart:</label>
         <Select
           id="buchArt"
           name="buchArt"
-          placeholder="Art des Buches"
+          placeholder="Wählen Sie die Buchart aus"
           value={buchArt}
           onChange={handleBuchArtChange}
           required
@@ -80,16 +92,24 @@ export default function NewBook() {
           <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
         </Select>
       </Box>
-      <Input
-        placeholder="Preis"
-        value={preis}
-        onChange={(e) => changePreis(e.target.value)}
-      />
-      <Input
-        placeholder="Rabatt"
-        value={rabatt}
-        onChange={(e) => changeRabatt(e.target.value)}
-      />
+      <Box>
+        <label htmlFor="preis">Preis:</label>
+        <Input
+          id="preis"
+          placeholder="z.B. 11.1"
+          value={preis}
+          onChange={(e) => changePreis(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="rabatt">Rabatt:</label>
+        <Input
+          id="rabatt"
+          placeholder="z.B. 0.011"
+          value={rabatt}
+          onChange={(e) => changeRabatt(e.target.value)}
+        />
+      </Box>
       <Box mt={4} mb={4}>
         <Text mb={2}>Datum:</Text>
         <DatePicker
@@ -107,16 +127,24 @@ export default function NewBook() {
           </Stack>
         </Flex>
       </Box>
-      <Input
-        placeholder="Homepage"
-        value={homepage}
-        onChange={(e) => changeHomepage(e.target.value)}
-      />
-      <Input
-        placeholder="Schlagwörter"
-        value={schlagwoerter.join(', ')}
-        onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
-      />
+      <Box>
+        <label htmlFor="homepage">Homepage:</label>
+        <Input
+          id="homepage"
+          placeholder="z.B. https://acme.at"
+          value={homepage}
+          onChange={(e) => changeHomepage(e.target.value)}
+        />
+      </Box>
+      <Box>
+        <label htmlFor="schlagwoerter">Schlagwörter:</label>
+        <Input
+          id="schlagwoerter"
+          placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
+          value={schlagwoerter.join(', ')}
+          onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
+        />
+      </Box>
       <Checkbox mt={2}
         isChecked={lieferbar}
         onChange={(e) => changeLieferbar(e.target.checked)}
