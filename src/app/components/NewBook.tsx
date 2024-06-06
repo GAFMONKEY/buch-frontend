@@ -105,8 +105,8 @@ export default function NewBook() {
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'} >
-      <Box > 
+    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+      <Box>
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
@@ -186,7 +186,9 @@ export default function NewBook() {
             {displayStars()}
           </Stack>
         </Flex>
-        {errors.selectedRating && <Text color="red.500">{errors.selectedRating}</Text>}
+        {errors.selectedRating && (
+          <Text color="red.500">{errors.selectedRating}</Text>
+        )}
       </Box>
       <Box>
         <label htmlFor="homepage">Homepage:</label>
@@ -196,7 +198,7 @@ export default function NewBook() {
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
-         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
+        {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
@@ -207,16 +209,17 @@ export default function NewBook() {
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Checkbox
-        mt={2}
-        isChecked={lieferbar}
-        onChange={(e) => changeLieferbar(e.target.checked)}
-      >
-        Lieferbar
-      </Checkbox>
-      <Button type="submit" className="submit-button">
-        Neues Buch erstellen
-      </Button>
+      <Box display="flex" alignItems="center" mt={2}>
+        <Checkbox
+          isChecked={lieferbar}
+          onChange={(e) => changeLieferbar(e.target.checked)}
+        >
+          Lieferbar
+        </Checkbox>
+        <Button type="submit" ml={705} minWidth="auto">
+          Neues Buch erstellen
+        </Button>
+      </Box>
     </Box>
   );
 }
