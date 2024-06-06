@@ -5,10 +5,14 @@ import './NewBook.css';
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
+import router from 'next/router';
+import extractId from '../lib/extractId';
+import withAuth from '../hoc/withAuth';
 
 
 
-export default function NewBook({ book } : { book: Buch }) {
+const ChangeBook = ({ book } : { book: Buch }) => {
   const [isbn, changeIsbn] = useState(book.isbn);
   const [titel, changeTitel] = useState(book.titel);
   const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
@@ -22,7 +26,6 @@ export default function NewBook({ book } : { book: Buch }) {
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
   const [content_type, changeContentType] = useState('');
   const [beschriftung, changeBeschriftung] = useState('');
-
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -198,9 +201,37 @@ export default function NewBook({ book } : { book: Buch }) {
       >
         Lieferbar
       </Checkbox>
-      <Button type="submit" className="submit-button">
+      <Button type="submit" className="submit-button" onClick={async () => {
+        const buch = {
+          isbn,
+          titel: {
+            titel,
+            untertitel
+          },
+          art: buchArt,
+          preis,
+          rabatt,
+          datum,
+          rating: selectedRating,
+          homepage,
+          schlagwoerter,
+          lieferbar,
+          content_type,
+          beschriftung
+        };
+        await axios.put(`${book._links.self.href}`, buch,
+          {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        router.push(`/suchen/${extractId(book._links.self.href)}`);
+      }}>
         Buch ändern
       </Button>
     </Box>
   );
 }
+
+export default ChangeBook;
