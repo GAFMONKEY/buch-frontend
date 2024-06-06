@@ -38,17 +38,33 @@ const LoginPage = () => {
   return (
     <Box maxW="500px" p={5}>
     <Text fontSize="2xl" mb={5}>Login</Text>
-    <form onSubmit={handleLogin}>
+    <Box as='form' onSubmit={handleLogin}>
         <FormControl id="username" mb={4}>
-        <FormLabel>Username:</FormLabel>
-        <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <FormLabel>Username:</FormLabel>
+          <Input 
+            variant='filled'
+            backgroundColor={'white'}
+            border="1px solid"
+            borderColor="black"
+            _focus={{ borderColor: 'teal.500', borderWidth: '2px' }}
+            type="text" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} />
         </FormControl>
         <FormControl id="password" mb={4}>
-        <FormLabel>Password:</FormLabel>
-        <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <FormLabel>Password:</FormLabel>
+          <Input
+            variant='filled'
+            backgroundColor={'white'}
+            border="1px solid"
+            borderColor="black"
+            _focus={{ borderColor: 'teal.500', borderWidth: '2px' }}
+            type="text" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} />
         </FormControl>
-        <Button colorScheme="blue" type="submit" mb={4}>Login</Button>
-    </form>
+        <Button colorScheme="teal" type="submit" mb={4}>Login</Button>
+    </Box>
     {error && <Text color="red.500">{error}</Text>}
     {loading && <Spinner />}
     </Box>

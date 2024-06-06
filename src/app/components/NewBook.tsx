@@ -18,56 +18,56 @@ export default function NewBook() {
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>(['Fiktion', 'Abenteuer']);
   const [lieferbar, changeLieferbar] = useState(true);
 
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
+    let errors = {
+      isbn: '',
+      titel: '',
+      untertitel: '',
+      preis: '',
+      rabatt: '',
+      homepage: '',
+      selectedRating: '',
+    };
+
+  const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      alert('Bitte geben Sie eine gültige ISBN ein');
-      return;
+      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
     }
     if (!titel) {
-      alert('Bitte geben Sie einen Titel ein');
-      return;
+      errors.titel = 'Bitte geben Sie einen Titel ein';
     }
     if (!untertitel) {
-      alert('Bitte geben Sie einen Untertitel ein');
-      return;
+      errors.untertitel = 'Bitte geben Sie einen Untertitel ein';
     }
     const preisPattern = /^\d+\.\d{2}$/;
     if (!preis) {
-      alert('Preis ist erforderlich!');
-      return;
+      errors.preis = 'Preis ist erforderlich!';
     } else if (parseFloat(preis) <= 0) {
-      alert('Preis muss größer als 0 sein!');
-      return;
+      errors.preis = 'Preis muss größer als 0 sein!';
     } else if (!preisPattern.test(preis)) {
-      alert('Preis bitte mit 2 Nachkommastellen angeben!');
-      return;
+      errors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
     }
     const rabattPattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
     if (!rabatt) {
-      alert('Rabatt ist erforderlich!');
-      return;
+      errors.rabatt = 'Rabatt ist erforderlich!';
     } else if (!rabattPattern.test(rabatt)) {
-      alert('Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!');
-      return;
+      errors.rabatt = 'Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!';
     }
     if (!selectedRating) {
-      alert('Bitte geben Sie eine Bewertung ein');
-      return;
+      errors.selectedRating = 'Bitte geben Sie eine Bewertung ein';
     }
     const homepagePattern = /^(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage) {
-      alert('Homepage ist erforderlich!');
-      return;
+      errors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
-      alert('Bitte geben Sie eine gültige Homepage-URL ein!');
-      return;
+      errors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
     }
 
-    // Form submission logic here
   };
+
 
   const displayStars = () => {
     let stars = [];
@@ -103,6 +103,7 @@ export default function NewBook() {
           value={isbn}
           onChange={(e) => changeIsbn(e.target.value)}
         />
+        {errors.isbn && <Text color="red.500">{errors.isbn}</Text>}
       </Box>
       <Box>
         <label htmlFor="titel">Titel:</label>
@@ -112,6 +113,7 @@ export default function NewBook() {
           value={titel}
           onChange={(e) => changeTitel(e.target.value)}
         />
+        {errors.titel && <Text color="red.500">{errors.titel}</Text>}
       </Box>
       <Box>
         <label htmlFor="untertitel">Untertitel:</label>
@@ -121,6 +123,7 @@ export default function NewBook() {
           value={untertitel}
           onChange={(e) => changeUntertitel(e.target.value)}
         />
+        {errors.untertitel && <Text color="red.500">{errors.untertitel}</Text>}
       </Box>
       <Box>
         <label htmlFor="buchArt">Buchart:</label>
@@ -144,6 +147,7 @@ export default function NewBook() {
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
+        {errors.preis && <Text color="red.500">{errors.preis}</Text>}
       </Box>
       <Box>
         <label htmlFor="rabatt">Rabatt(%):</label>
@@ -153,6 +157,7 @@ export default function NewBook() {
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
+        {errors.rabatt && <Text color="red.500">{errors.rabatt}</Text>}
       </Box>
       <Box mt={4} mb={4}>
         <Text mb={2}>Datum:</Text>
@@ -170,6 +175,9 @@ export default function NewBook() {
             {displayStars()}
           </Stack>
         </Flex>
+        {errors.selectedRating && (
+          <Text color="red.500">{errors.selectedRating}</Text>
+        )}
       </Box>
       <Box>
         <label htmlFor="homepage">Homepage:</label>
@@ -179,6 +187,7 @@ export default function NewBook() {
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
+        {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
@@ -189,16 +198,17 @@ export default function NewBook() {
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Checkbox
-        mt={2}
-        isChecked={lieferbar}
-        onChange={(e) => changeLieferbar(e.target.checked)}
-      >
-        Lieferbar
-      </Checkbox>
-      <Button type="submit" className="submit-button">
-        Neues Buch erstellen
-      </Button>
+      <Box display="flex" alignItems="center" mt={2}>
+        <Checkbox
+          isChecked={lieferbar}
+          onChange={(e) => changeLieferbar(e.target.checked)}
+        >
+          Lieferbar
+        </Checkbox>
+        <Button type="submit" ml={705} minWidth="auto">
+          Neues Buch erstellen
+        </Button>
+      </Box>
     </Box>
   );
 }

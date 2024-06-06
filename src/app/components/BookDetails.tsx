@@ -59,7 +59,8 @@ const BookDetails = ({ book } : { book: Buch}) => {
               </Tag>
             ))}
           </Stack>
-          <Button colorScheme="teal" onClick={() => (router.push(`/suchen/${extractId(book._links.self.href)}/aendern`))}>
+          <Button colorScheme="teal" marginTop={2}
+            onClick={() => (router.push(`/suchen/${extractId(book._links.self.href)}/aendern`))}>
             Edit Book
           </Button>
         </Box>
