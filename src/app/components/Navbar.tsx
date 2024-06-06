@@ -48,11 +48,11 @@ export default function Navbar() {
             <Link href='/suchen'>
               <Button color='white' _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Erweiterte Suche</Button>
             </Link>
-            <Link href={isAuthenticated ? 'erstellen' : 'login'}>
+            <Link href={isAuthenticated ? '/erstellen' : '/login'}>
               <Button color={isAuthenticated ? 'white' : 'gray.400'} _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Neuanlegen</Button>
             </Link>
           </ButtonGroup>
-          <Link href={isAuthenticated ? 'logout' : 'login'}>
+          <Link href={isAuthenticated ? '/logout' : '/login'}>
             <Button
               variant='outline'
               color='white'

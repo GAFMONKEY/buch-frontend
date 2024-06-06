@@ -176,24 +176,6 @@ const ChangeBook = ({ book } : { book: Buch }) => {
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Box>
-        <label htmlFor="content_type">Content_Type:</label>
-        <Input
-          id="content_type"
-          placeholder="z.B. img/png"
-          value={content_type}
-          onChange={(e) => changeContentType(e.target.value)}
-        />
-      </Box>
-      <Box>
-        <label htmlFor="beschriftung">Beschriftung:</label>
-        <Input
-          id="beschriftung"
-          placeholder="z.B. Abb. 1"
-          value={beschriftung}
-          onChange={(e) => changeBeschriftung(e.target.value)}
-        />
-      </Box>
       <Checkbox
         mt={2}
         isChecked={lieferbar}
@@ -216,8 +198,6 @@ const ChangeBook = ({ book } : { book: Buch }) => {
           homepage,
           schlagwoerter,
           lieferbar,
-          content_type,
-          beschriftung
         };
         await axios.put(`${book._links.self.href}`, buch,
           {
@@ -226,7 +206,7 @@ const ChangeBook = ({ book } : { book: Buch }) => {
             'Content-Type': 'application/json',
           },
         });
-        router.push(`/suchen/${extractId(book._links.self.href)}`);
+        router.replace(`/suchen/${extractId(book._links.self.href)}`);
       }}>
         Buch ändern
       </Button>
