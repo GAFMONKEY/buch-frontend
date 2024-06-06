@@ -1,12 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 import AdvancedSearch from "../components/AdvancedSearch";
 import getBuecher from "../lib/getBuecher";
-import { FaEye, FaStar } from "react-icons/fa6";
-import { useRouter, useSearchParams } from 'next/navigation';
-import extractId from '../lib/extractId';
+import { useSearchParams } from 'next/navigation';
 import BookCard from '../components/BookCard';
 
 export default function Suchen() {
