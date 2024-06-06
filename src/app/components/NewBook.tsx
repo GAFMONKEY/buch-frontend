@@ -19,8 +19,6 @@ export default function NewBook() {
   const [homepage, changeHomepage] = useState('');
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
   const [lieferbar, changeLieferbar] = useState(true);
-  const [content_type, changeContentType] = useState("");
-  const [beschriftung, changeBeschriftung] = useState("");
 
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -48,6 +46,26 @@ export default function NewBook() {
       return;
     } else if (!preisPattern.test(preis)) {
       alert('Preis bitte mit 2 Nachkommastellen angeben!');
+      return;
+    }
+    const rabattPattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
+    if (!rabatt) {
+      alert('Rabatt ist erforderlich!');
+      return;
+    } else if (!rabattPattern.test(rabatt)) {
+      alert('Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!');
+      return;
+    }
+    if (!selectedRating) {
+      alert('Bitte geben Sie eine Bewertung ein');
+      return;
+    }
+    const homepagePattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    if (!homepage) {
+      alert('Homepage ist erforderlich!');
+      return;
+    } else if (!homepagePattern.test(homepage)) {
+      alert('Bitte geben Sie eine gültige Homepage-URL ein!');
       return;
     }
 
@@ -132,7 +150,7 @@ export default function NewBook() {
         <label htmlFor="rabatt">Rabatt:</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 0.011"
+          placeholder="z.B. 1.1"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
@@ -170,24 +188,6 @@ export default function NewBook() {
           placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
           value={schlagwoerter.join(', ')}
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
-        />
-      </Box>
-      <Box>
-        <label htmlFor="content_type">Content_Type:</label>
-        <Input
-          id="content_type"
-          placeholder="z.B. img/png"
-          value={content_type}
-          onChange={(e) => changeContentType(e.target.value)}
-        />
-      </Box>
-      <Box>
-        <label htmlFor="beschriftung">Beschriftung:</label>
-        <Input
-          id="beschriftung"
-          placeholder="z.B. Abb. 1"
-          value={beschriftung}
-          onChange={(e) => changeBeschriftung(e.target.value)}
         />
       </Box>
       <Checkbox

@@ -54,6 +54,26 @@ const ChangeBook = ({ book } : { book: Buch }) => {
       alert('Preis bitte mit 2 Nachkommastellen angeben!');
       return;
     }
+    const rabattPattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
+    if (!rabatt) {
+      alert('Rabatt ist erforderlich!');
+      return;
+    } else if (!rabattPattern.test(rabatt.toString())) {
+      alert('Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!');
+      return;
+    }
+    if (!selectedRating) {
+      alert('Bitte geben Sie eine Bewertung ein');
+      return;
+    }
+    const homepagePattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    if (!homepage) {
+      alert('Homepage ist erforderlich!');
+      return;
+    } else if (!homepagePattern.test(homepage)) {
+      alert('Bitte geben Sie eine gültige Homepage-URL ein!');
+      return;
+    }
 
   };
 
