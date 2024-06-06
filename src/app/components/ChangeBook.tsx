@@ -17,8 +17,8 @@ const ChangeBook = ({ book } : { book: Buch }) => {
   const [titel, changeTitel] = useState(book.titel);
   const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
   const [buchArt, changeBuchArt] = useState(book.art);
-  const [preis, changePreis] = useState(book.preis);
-  const [rabatt, changeRabatt] = useState(book.rabatt);
+  const [preis, changePreis] = useState(book.preis.toFixed(2).replace('.', ','));
+  const [rabatt, changeRabatt] = useState((book.rabatt*100).toFixed(2).replace('.', ','));
   const [datum, changeDatum] = useState(book.datum);
   const [selectedRating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);

@@ -42,8 +42,8 @@ const BookDetails = ({ book } : { book: Buch}) => {
             <Text><strong>ISBN:</strong> {book.isbn}</Text>
             <Text><strong>Rating:</strong> {book.rating}</Text>
             <Text><strong>Art:</strong> {book.art}</Text>
-            <Text><strong>Preis:</strong> {book.preis} €</Text>
-            <Text><strong>Rabatt:</strong> {book.rabatt * 100} %</Text>
+            <Text><strong>Preis:</strong> {book.preis.toFixed(2).replace('.', ',')} €</Text>
+            <Text><strong>Rabatt:</strong> {(book.rabatt*100).toFixed(2).replace('.', ',')} %</Text>
             <Text><strong>Lieferbar:</strong> {book.lieferbar ? 'Ja' : 'Nein'}</Text>
             <Text><strong>Datum:</strong> {new Date(book.datum).toLocaleDateString()}</Text>
           </VStack>
