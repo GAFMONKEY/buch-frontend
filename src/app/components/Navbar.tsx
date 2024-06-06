@@ -29,9 +29,11 @@ export default function Navbar() {
       width='100%'
     >
       <Flex alignItems='center' justifyContent='space-between' wrap='wrap'>
-        <Heading as='h1' color='white' fontSize='2xl'>
-          Gruppe 5
-        </Heading>
+        <Link href='/'>
+          <Heading as='h1' color='white' fontSize='2xl' _hover={{ color: 'teal.200' }}>
+            Gruppe 5
+          </Heading>
+        </Link>
 
         <Box display={{ base: 'none', md: 'block' }} flex='1' mx='20px'>
           <Searchbar />
@@ -40,16 +42,15 @@ export default function Navbar() {
         <HStack spacing='24px' wrap='wrap'>
           <ButtonGroup variant='link' spacing='24px'>
             <Link href='/'>
-              <Button color='white' _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Startseite</Button>
+              <Button color='white' _hover={{ color: 'teal.200' }}>Startseite</Button>
             </Link>
             <Link href='/suchen'>
-              <Button color='white' _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Alle Bücher</Button>
-            </Link>
-            <Link href='/suchen'>
-              <Button color='white' _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Erweiterte Suche</Button>
+              <Button color='white' _hover={{ color: 'teal.200' }}>Alle Bücher</Button>
             </Link>
             <Link href={isAuthenticated ? '/erstellen' : '/login'}>
-              <Button color={isAuthenticated ? 'white' : 'gray.400'} _hover={{ textDecoration: 'underline', color: 'teal.200' }}>Neuanlegen</Button>
+              <Button isDisabled={isAuthenticated} _hover={{ color: 'teal.200' }}>
+                Neuanlegen
+              </Button>     
             </Link>
           </ButtonGroup>
           <Link href={isAuthenticated ? '/logout' : '/login'}>
