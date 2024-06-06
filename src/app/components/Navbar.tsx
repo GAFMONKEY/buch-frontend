@@ -48,7 +48,7 @@ export default function Navbar() {
               <Button color='white' _hover={{ color: 'teal.200' }}>Alle Bücher</Button>
             </Link>
             <Link href={isAuthenticated ? '/erstellen' : '/login'}>
-              <Button isDisabled={isAuthenticated} _hover={{ color: 'teal.200' }}>
+              <Button color={isAuthenticated ? 'white' : 'gray.400'} _hover={{ color: 'teal.200' }}>
                 Neuanlegen
               </Button>     
             </Link>
