@@ -27,7 +27,7 @@ export default function AdvancedSearch() {
         
           console.log('Suche mit Query: ', queryString);
         
-          router.push(`/suchen${queryString ? `?${queryString}` : ''}`);
+          router.push(`/suchen${queryString ? `?${queryString}` : '?titel='}`);
     }
 
   return (

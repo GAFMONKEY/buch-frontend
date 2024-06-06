@@ -9,30 +9,27 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import extractId from '../lib/extractId';
 import BookCard from '../components/BookCard';
 
-export default function Suchen({
-  searchParams
-}: {
-  searchParams: {
-    titel: string;
-  }
-}) {
+export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>([]);
-  const suchkriterien = useSearchParams();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const fetchBuecher = async () => {
-      const query = new URLSearchParams(searchParams as any).toString();
-      try {
-        const buecherData: Buch[] = await getBuecher(query);
-        console.log('Empfangene Bücher: ', buecherData);
-        setBuecher(buecherData);
-      } catch (error) {
-        console.error('Fehler beim Abrufen der Bücher: ', error);
-        setBuecher([]);
-      }
-    };
+    console.log('searchParams:', searchParams);
+    if (searchParams.toString().length > 0) {
+      const fetchBuecher = async () => {
+        const query = new URLSearchParams(searchParams as any).toString();
+        try {
+          const buecherData: Buch[] = await getBuecher(query);
+          console.log('Empfangene Bücher: ', buecherData);
+          setBuecher(buecherData);
+        } catch (error) {
+          console.error('Fehler beim Abrufen der Bücher: ', error);
+          setBuecher([]);
+        }
+      };
 
-    fetchBuecher();
+      fetchBuecher();
+    }
   }, [searchParams]);
 
   return (
