@@ -176,7 +176,7 @@ export default function NewBook() {
         <label htmlFor="homepage">Homepage:</label>
         <Input
           id="homepage"
-          placeholder="z.B. https://acme.at"
+          placeholder="z.B. acme.at"
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
