@@ -17,20 +17,18 @@ export default function NewBook() {
   const [homepage, changeHomepage] = useState('www.beispielverlag.de');
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>(['Fiktion', 'Abenteuer']);
   const [lieferbar, changeLieferbar] = useState(true);
-
+  const [errors, setErrors] = useState({
+    isbn: '',
+    titel: '',
+    untertitel: '',
+    preis: '',
+    rabatt: '',
+    homepage: '',
+    selectedRating: '',
+  });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    let errors = {
-      isbn: '',
-      titel: '',
-      untertitel: '',
-      preis: '',
-      rabatt: '',
-      homepage: '',
-      selectedRating: '',
-    };
 
   const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
