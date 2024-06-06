@@ -5,21 +5,18 @@ import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
-
 export default function NewBook() {
-  const [isbn, changeIsbn] = useState('');
-  const [titel, changeTitel] = useState('');
-  const [untertitel, changeUntertitel] = useState('');
-  const [buchArt, changeBuchArt] = useState('');
-  const [preis, changePreis] = useState('');
-  const [rabatt, changeRabatt] = useState('');
+  const [isbn, changeIsbn] = useState('978-3-16-148410-0');
+  const [titel, changeTitel] = useState('Beispielbuch');
+  const [untertitel, changeUntertitel] = useState('Eine Beispielgeschichte');
+  const [buchArt, changeBuchArt] = useState('DRUCKAUSGABE');
+  const [preis, changePreis] = useState('19.99');
+  const [rabatt, changeRabatt] = useState('10');
   const [datum, changeDatum] = useState(new Date());
-  const [selectedRating, setSelectedRating] = useState('');
-  const [homepage, changeHomepage] = useState('');
-  const [schlagwoerter, setSchlagwoerter] = useState<string[]>([]);
+  const [selectedRating, setSelectedRating] = useState('4');
+  const [homepage, changeHomepage] = useState('www.beispielverlag.de');
+  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(['Fiktion', 'Abenteuer']);
   const [lieferbar, changeLieferbar] = useState(true);
-
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -69,6 +66,7 @@ export default function NewBook() {
       return;
     }
 
+    // Form submission logic here
   };
 
   const displayStars = () => {
@@ -78,13 +76,14 @@ export default function NewBook() {
         <StarIcon
           key={i}
           onClick={() => setSelectedRating((i + 1).toString())}
-          color={i < parseInt(selectedRating) ? "teal.500" : "gray.300"} 
+          color={i < parseInt(selectedRating) ? "teal.500" : "gray.300"}
           boxSize={"20px"}
         />
       );
     }
     return stars;
   };
+
   const CustomInput = React.forwardRef(({ value, onClick }: any, ref: any) => (
     <Input onClick={onClick} ref={ref} value={value} />
   ));
@@ -100,7 +99,7 @@ export default function NewBook() {
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
-          placeholder="z.B. 978-3-897-22583-1"
+          placeholder="z.B. 978-3-16-148410-0"
           value={isbn}
           onChange={(e) => changeIsbn(e.target.value)}
         />
@@ -109,7 +108,7 @@ export default function NewBook() {
         <label htmlFor="titel">Titel:</label>
         <Input
           id="titel"
-          placeholder="z.B. Alpha"
+          placeholder="z.B. Beispielbuch"
           value={titel}
           onChange={(e) => changeTitel(e.target.value)}
         />
@@ -118,7 +117,7 @@ export default function NewBook() {
         <label htmlFor="untertitel">Untertitel:</label>
         <Input
           id="untertitel"
-          placeholder="z.B. alpha"
+          placeholder="z.B. Eine Beispielgeschichte"
           value={untertitel}
           onChange={(e) => changeUntertitel(e.target.value)}
         />
@@ -141,7 +140,7 @@ export default function NewBook() {
         <label htmlFor="preis">Preis(€):</label>
         <Input
           id="preis"
-          placeholder="z.B. 11.11"
+          placeholder="z.B. 19.99"
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
@@ -150,7 +149,7 @@ export default function NewBook() {
         <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 1.1"
+          placeholder="z.B. 10"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
@@ -176,7 +175,7 @@ export default function NewBook() {
         <label htmlFor="homepage">Homepage:</label>
         <Input
           id="homepage"
-          placeholder="z.B. acme.at"
+          placeholder="z.B. www.beispielverlag.de"
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
@@ -185,7 +184,7 @@ export default function NewBook() {
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
         <Input
           id="schlagwoerter"
-          placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
+          placeholder="z.B. Fiktion, Abenteuer"
           value={schlagwoerter.join(', ')}
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
