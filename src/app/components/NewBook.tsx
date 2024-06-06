@@ -60,7 +60,7 @@ export default function NewBook() {
       alert('Bitte geben Sie eine Bewertung ein');
       return;
     }
-    const homepagePattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    const homepagePattern = /^(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage) {
       alert('Homepage ist erforderlich!');
       return;
@@ -138,7 +138,7 @@ export default function NewBook() {
         </Select>
       </Box>
       <Box>
-        <label htmlFor="preis">Preis:</label>
+        <label htmlFor="preis">Preis(€):</label>
         <Input
           id="preis"
           placeholder="z.B. 11.11"
@@ -147,7 +147,7 @@ export default function NewBook() {
         />
       </Box>
       <Box>
-        <label htmlFor="rabatt">Rabatt:</label>
+        <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
           placeholder="z.B. 1.1"
