@@ -74,8 +74,7 @@ export default function NewBook() {
       // Nur wenn keine Validierungsfehler vorhanden sind, die Daten senden
       const formData = {
         isbn,
-        titel,
-        untertitel,
+        titel: { titel, untertitel },
         buchArt,
         preis: parseFloat(preis),
         rabatt: parseFloat(rabatt),
@@ -186,10 +185,10 @@ export default function NewBook() {
         {errors.preis && <Text color="red.500">{errors.preis}</Text>}
       </Box>
       <Box>
-        <label htmlFor="rabatt">Rabatt:</label>
+        <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 0.01"
+          placeholder="z.B. 1.1"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
