@@ -1,9 +1,11 @@
+'use client';
 import React, { useState } from 'react';
 import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
 import './NewBook.css';
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { postBuch } from '../service/book.service';
 
 export default function NewBook() {
   const [isbn, changeIsbn] = useState('978-3-16-148410-0');
@@ -11,9 +13,9 @@ export default function NewBook() {
   const [untertitel, changeUntertitel] = useState('Eine Beispielgeschichte');
   const [buchArt, changeBuchArt] = useState('DRUCKAUSGABE');
   const [preis, changePreis] = useState('19.99');
-  const [rabatt, changeRabatt] = useState('10');
+  const [rabatt, changeRabatt] = useState('0.010');
   const [datum, changeDatum] = useState(new Date());
-  const [selectedRating, setSelectedRating] = useState('4');
+  const [rating, setSelectedRating] = useState(4);
   const [homepage, changeHomepage] = useState('www.beispielverlag.de');
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>(['Fiktion', 'Abenteuer']);
   const [lieferbar, changeLieferbar] = useState(true);
@@ -24,21 +26,23 @@ export default function NewBook() {
     preis: '',
     rabatt: '',
     homepage: '',
-    selectedRating: '',
+    rating: '',
   });
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-  const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
+  
+    let errors = {};
+  
+    const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
       errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
     }
-    if (!titel) {
-      errors.titel = 'Bitte geben Sie einen Titel ein';
-    }
-    if (!untertitel) {
-      errors.untertitel = 'Bitte geben Sie einen Untertitel ein';
+    if (!titel || typeof titel !== 'string') {
+      errors.titel = 'Der Titel muss ein String sein';
+    }    
+    if (!untertitel || typeof untertitel !== 'string') {
+      errors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
     const preisPattern = /^\d+\.\d{2}$/;
     if (!preis) {
@@ -48,24 +52,63 @@ export default function NewBook() {
     } else if (!preisPattern.test(preis)) {
       errors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
     }
-    const rabattPattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
+    const rabattPattern = /^(0(\.\d{1,4})?|1(\.0{1,4})?)$/;
     if (!rabatt) {
       errors.rabatt = 'Rabatt ist erforderlich!';
     } else if (!rabattPattern.test(rabatt)) {
-      errors.rabatt = 'Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!';
+      errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
     }
-    if (!selectedRating) {
-      errors.selectedRating = 'Bitte geben Sie eine Bewertung ein';
+    if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
+      errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
     const homepagePattern = /^(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-    if (!homepage) {
+    if (!homepage || typeof homepage !== 'string') {
       errors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
       errors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
     }
-
+    
+    setErrors(errors);
+  
+    if (Object.keys(errors).length === 0) {
+      // Nur wenn keine Validierungsfehler vorhanden sind, die Daten senden
+      const formData = {
+        isbn,
+        titel,
+        untertitel,
+        buchArt,
+        preis: parseFloat(preis),
+        rabatt: parseFloat(rabatt),
+        datum: datum.toISOString(),
+        rating: parseInt(rating),
+        homepage,
+        schlagwoerter,
+        lieferbar,
+      };
+  
+      const getAccessToken = (): string | null => {
+        return localStorage.getItem('access_token');
+      };
+      const token = getAccessToken();
+  
+      try {
+        // Hier wird die postBuch-Funktion aufgerufen
+        const response = await postBuch(formData, token);
+        if (response && response.status === 200) {
+          alert('Buch erfolgreich erstellt!');
+        } else {
+          throw new Error('Fehler beim Erstellen des Buchs');
+        }
+      } catch (error) {
+        console.error('Fehler:', error);
+        alert('Fehler beim Erstellen des Buches');
+      }
+    }
   };
-
+  
+  const handleBuchArtChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    changeBuchArt(event.target.value);
+  };
 
   const displayStars = () => {
     let stars = [];
@@ -74,30 +117,25 @@ export default function NewBook() {
         <StarIcon
           key={i}
           onClick={() => setSelectedRating((i + 1).toString())}
-          color={i < parseInt(selectedRating) ? "teal.500" : "gray.300"}
+          color={i < parseInt(rating) ? "teal.500" : "gray.300"} 
           boxSize={"20px"}
         />
       );
     }
     return stars;
   };
-
   const CustomInput = React.forwardRef(({ value, onClick }: any, ref: any) => (
     <Input onClick={onClick} ref={ref} value={value} />
   ));
   CustomInput.displayName = 'CustomInput';
 
-  const handleBuchArtChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    changeBuchArt(event.target.value);
-  };
-
   return (
-    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
-      <Box>
+    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'} >
+      <Box > 
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
-          placeholder="z.B. 978-3-16-148410-0"
+          placeholder="z.B. 978-3-897-22583-1"
           value={isbn}
           onChange={(e) => changeIsbn(e.target.value)}
         />
@@ -107,7 +145,7 @@ export default function NewBook() {
         <label htmlFor="titel">Titel:</label>
         <Input
           id="titel"
-          placeholder="z.B. Beispielbuch"
+          placeholder="z.B. Alpha"
           value={titel}
           onChange={(e) => changeTitel(e.target.value)}
         />
@@ -117,7 +155,7 @@ export default function NewBook() {
         <label htmlFor="untertitel">Untertitel:</label>
         <Input
           id="untertitel"
-          placeholder="z.B. Eine Beispielgeschichte"
+          placeholder="z.B. alpha"
           value={untertitel}
           onChange={(e) => changeUntertitel(e.target.value)}
         />
@@ -141,7 +179,7 @@ export default function NewBook() {
         <label htmlFor="preis">Preis(€):</label>
         <Input
           id="preis"
-          placeholder="z.B. 19.99"
+          placeholder="z.B. 11.11"
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
@@ -151,7 +189,7 @@ export default function NewBook() {
         <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 10"
+          placeholder="z.B. 1.1"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
@@ -173,40 +211,38 @@ export default function NewBook() {
             {displayStars()}
           </Stack>
         </Flex>
-        {errors.selectedRating && (
-          <Text color="red.500">{errors.selectedRating}</Text>
-        )}
+        {errors.selectedRating && <Text color="red.500">{errors.selectedRating}</Text>}
       </Box>
       <Box>
         <label htmlFor="homepage">Homepage:</label>
         <Input
           id="homepage"
-          placeholder="z.B. www.beispielverlag.de"
+          placeholder="z.B. acme.at"
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
-        {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
+         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
         <Input
           id="schlagwoerter"
-          placeholder="z.B. Fiktion, Abenteuer"
+          placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
           value={schlagwoerter.join(', ')}
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Box display="flex" alignItems="center" mt={2}>
-        <Checkbox
-          isChecked={lieferbar}
-          onChange={(e) => changeLieferbar(e.target.checked)}
-        >
-          Lieferbar
-        </Checkbox>
-        <Button type="submit" ml={705} minWidth="auto">
-          Neues Buch erstellen
-        </Button>
-      </Box>
+      <Checkbox
+        mt={2}
+        isChecked={lieferbar}
+        onChange={(e) => changeLieferbar(e.target.checked)}
+      >
+        Lieferbar
+      </Checkbox>
+      <Button type="submit" className="submit-button">
+        Neues Buch erstellen
+      </Button>
     </Box>
+    
   );
-}
+}; 

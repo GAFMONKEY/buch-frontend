@@ -1,3 +1,4 @@
+'use server';
 import axios from 'axios';
 import https from 'node:https';
 import fs from 'node:fs';
@@ -6,7 +7,7 @@ export async function fetchBuch(suchkriterien: string) {
   return await axios
     .get(`https://localhost:3000/rest/?${suchkriterien}`, {
       httpsAgent: new https.Agent({
-        ca: fs.readFileSync('app/certificate/certificate.crt'),
+        ca: fs.readFileSync('src/app/certificate/certificate.crt'),
       }),
     })
     .then(function (response) {
@@ -44,7 +45,7 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
         Authorization: `Bearer ${tokenDatei}`,
       },
       httpsAgent: new https.Agent({
-        ca: fs.readFileSync('app/certificate/certificate.crt'),
+        ca: fs.readFileSync('src/app/certificate/certificate.crt'),
       }),
     })
     .then(function (response) {

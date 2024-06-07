@@ -1,51 +1,58 @@
 'use client';
-
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
+import HorizontalBar from '../../../components/HorizontalBar';
 import NewBook from '../components/NewBook';
-import withAuth from '../hoc/withAuth';
+import { postBuch } from '../service/book.service';
 
-const Create = ()=> {
-  const [inputValue, setInputValue] = useState('');
+export default function Create() {
+  const [responseStatus, setResponseStatus] = useState<number | null>(null);
+  const toast = useToast();
 
-  const handleCreate = () => {
-    if (inputValue.trim() === '') {
-      alert('Eingabe darf nicht leer sein');
-      return;
+  const handleSubmit = async (bookData, token) => {
+    try {
+      const formData = new FormData();
+      formData.append('token', token);
+      formData.append('isbn', bookData.isbn);
+      formData.append('rating', bookData.rating.toString());
+      formData.append('buchArt', bookData.buchArt);
+      formData.append('preis', bookData.preis.toString());
+      formData.append('rabatt', bookData.rabatt.toString());
+      formData.append('lieferbar', bookData.lieferbar ? 'on' : 'off');
+      formData.append('datum', bookData.datum);
+      formData.append('homepage', bookData.homepage);
+      formData.append('arraySchlagwoerter', bookData.schlagwoerter.join(','));
+
+      console.log('Buchdaten vor dem Absenden:', FormData);
+      
+      const response = await postBuch(formData, token);
+      console.log('Server response:', response);
+      
+      if (response.status === 201) {
+        toast({
+          title: 'Buch erfolgreich angelegt.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      } else {
+        setResponseStatus(response.status);
+      }
+    } catch (error) {
+      console.error('Fehler beim Speichern des Buchs:', error);
+      setResponseStatus(500);
     }
-
-    // Hier können Sie den Code zum Erstellen des Elements hinzufügen
-    const buchDaten = {
-      isbn: formData.get('isbn'),
-      rating: Number.parseInt(formData.get('rating')?.toString() || ''),
-      art: formData.get('buchArt'),
-      preis: Number.parseFloat(formData.get('preis')?.toString() || ''),
-      rabatt: Number.parseFloat(formData.get('rabatt')?.toString() || ''),
-      lieferbar: formData.get('lieferbar') === 'on',
-      datum: formData.get('datum'),
-      homepage: formData.get('homepage'),
-      schlagwoerter: schlagwoerterArray,
-      titel: {
-        titel: formData.get('titel'),
-        untertitel: formData.get('untertitel'),
-      },
-      abbildungen: [
-        {
-          beschriftung: 'Abb. 1',
-          contentType: 'img/png',
-        },
-      ],
-    };
-    alert(`Element "${inputValue}" wurde erstellt`);
-    setInputValue('');
   };
 
   return (
-    <div>
-      <main>
-        <NewBook />
-      </main>
-    </div>
+    <Box>
+      <HorizontalBar
+        title="Anlegen"
+        subtitle="Starte dein neues Kapitel"
+      />
+      <Flex direction="column" align="center" p={4}>
+        <NewBook onSubmit={handleSubmit} responseStatus={responseStatus} />
+      </Flex>
+    </Box>
   );
 }
-
-export default withAuth(Create);
