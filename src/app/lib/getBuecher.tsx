@@ -1,21 +1,33 @@
 'use server'
-// Set the environment variable to ignore self-signed certificates
-// Don't do this in production!
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+import axios from 'axios';
+import { agent } from './httpsAgent';
 
 const restURL = 'https://localhost:3000/rest';
 
 export default async function getBuecher(suchkriterien: string) {
-    const res = await fetch(`${restURL}/?${suchkriterien}`);
-
-    if (!res.ok) throw new Error('Daten konnten nicht geladen werden.');
-
-    const data = await res.json();
-
-    // Ensure the data is in the expected format Buch[]
-    if (data && data._embedded && data._embedded.buecher) {
-        return data._embedded.buecher;
-    } else {
-        throw new Error('Unerwartetes Datenformat.');
-    }
+    return await axios.get(`${restURL}/?${suchkriterien}`, {
+      httpsAgent: agent,
+    })
+    .then(function (response) {
+        return response.data._embedded?.buecher ?? [];
+    })
+    .catch(function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            return error.response.status;
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.log('Server:', error.request);
+            return 500;
+        } else {
+            // The request was not made, something in setting up the request triggered an Error
+            console.log('Error:', error.message);
+            return;
+        }
+    })
 }
