@@ -59,7 +59,7 @@ const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => 
         <Spacer />
         <Box flex="2" pl={{ base: 0, md: 5 }}>
           <Heading fontSize="2xl" mb={2} color="teal.600">
-            {book.titel.titel} - {book.titel.untertitel}
+            {book.titel.titel} {book.titel.untertitel == null || undefined ? `- ${book.titel.untertitel}` : ''}
           </Heading>
           <VStack align="start" spacing={2} mb={4}>
             <Text><strong>ISBN:</strong> {book.isbn}</Text>
