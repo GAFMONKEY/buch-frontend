@@ -93,7 +93,7 @@ export default function NewBook() {
       try {
         // Hier wird die postBuch-Funktion aufgerufen
         const response = await postBuch(formData, token);
-        if (response && response.status === 200) {
+        if (response && response === 201) {
           alert('Buch erfolgreich erstellt!');
         } else {
           throw new Error('Fehler beim Erstellen des Buchs');
