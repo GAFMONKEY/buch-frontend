@@ -9,72 +9,114 @@ import axios from 'axios';
 import router from 'next/router';
 import extractId from '../lib/extractId';
 import withAuth from '../hoc/withAuth';
+import { putBuch } from '../service/book.service';
 
-
-
-const ChangeBook = ({ book } : { book: Buch }) => {
+const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
   const [isbn, changeIsbn] = useState(book.isbn);
-  const [titel, changeTitel] = useState(book.titel);
+  const [titel, changeTitel] = useState(book.titel.titel);
   const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
   const [buchArt, changeBuchArt] = useState(book.art);
   const [preis, changePreis] = useState(book.preis.toFixed(2).replace('.', ','));
-  const [rabatt, changeRabatt] = useState((book.rabatt*100).toFixed(2).replace('.', ','));
-  const [datum, changeDatum] = useState(book.datum);
-  const [selectedRating, setSelectedRating] = useState(book.rating);
+  const [rabatt, changeRabatt] = useState((book.rabatt).toFixed(4).replace('.', ','));
+  const [datum, changeDatum] = useState<Date>(new Date(book.datum));
+  const [rating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
-  const [content_type, changeContentType] = useState('');
-  const [beschriftung, changeBeschriftung] = useState('');
+  const [errors, setErrors] = useState({
+    isbn: '',
+    titel: '',
+    untertitel: '',
+    preis: '',
+    rabatt: '',
+    homepage: '',
+    rating: '',
+  });
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
+    let errors = {};
+  
     const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      alert('Bitte geben Sie eine gültige ISBN ein');
-      return;
+      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
     }
-    if (!titel) {
-      alert('Bitte geben Sie einen Titel ein');
-      return;
+    if (!titel || typeof titel !== 'string') {
+      errors.titel = 'Der Titel muss ein String sein';
+    }    
+    if (!untertitel || typeof untertitel !== 'string') {
+      errors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
-    if (!untertitel) {
-      alert('Bitte geben Sie einen Untertitel ein');
-      return;
-    }
-    const preisPattern = /^\d+\.\d{2}$/;
+    const preisPattern = /^\d+\,\d{2}$/;
     if (!preis) {
-      alert('Preis ist erforderlich!');
-      return;
+      errors.preis = 'Preis ist erforderlich!';
     } else if (parseFloat(preis) <= 0) {
-      alert('Preis muss größer als 0 sein!');
-      return;
+      errors.preis = 'Preis muss größer als 0 sein!';
     } else if (!preisPattern.test(preis)) {
-      alert('Preis bitte mit 2 Nachkommastellen angeben!');
-      return;
+      errors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
     }
-    const rabattPattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
+    const testRabatt = (rabatt: string) => {
+      const rabattFloat = Number.parseFloat(rabatt);  
+      return 0 <= rabattFloat && rabattFloat <= 100;
+    }
     if (!rabatt) {
-      alert('Rabatt ist erforderlich!');
-      return;
-    } else if (!rabattPattern.test(rabatt.toString())) {
-      alert('Rabatt muss zwischen 0 und 100 liegen und darf maximal 2 Nachkommastellen haben!');
-      return;
+      errors.rabatt = 'Rabatt ist erforderlich!'; }
+    // } else if (testRabatt(rabatt)) {  
+    //   errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
+    // }
+    if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
+      errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
-    if (!selectedRating) {
-      alert('Bitte geben Sie eine Bewertung ein');
-      return;
-    }
-    const homepagePattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
-    if (!homepage) {
-      alert('Homepage ist erforderlich!');
-      return;
+    const homepagePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    if (!homepage || typeof homepage !== 'string') {
+      errors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
-      alert('Bitte geben Sie eine gültige Homepage-URL ein!');
-      return;
+      errors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
     }
+    
+    setErrors(errors);
+  
+    if (Object.keys(errors).length === 0) {
+      // Nur wenn keine Validierungsfehler vorhanden sind, die Daten senden
+      const formData = {
+        isbn,
+        titel: { titel, untertitel },
+        buchArt,
+        preis: parseFloat(preis.replace(',','.')),
+        rabatt: parseFloat(rabatt.replace(',','.')),
+        datum: datum.toISOString(),
+        rating,
+        homepage,
+        schlagwoerter,
+        lieferbar,
+      };
+  
+      const getAccessToken = (): string | null => {
+        return localStorage.getItem('access_token');
+      };
+      const token = getAccessToken()??'';
+      if(token == '' || !token) {
+        router.push('/login')
+      }
 
+      try {
+        // Hier wird die putBuch-Funktion aufgerufen
+        const response = await putBuch(formData, token, id, eTag);
+        if (response && response.status === 204) {
+          alert('Buch erfolgreich erstellt!');
+        } else {
+          throw new Error('Fehler beim Ändern des Buchs');
+        }
+      } catch (error) {
+        console.error('Fehler:', error);
+        alert('Fehler beim Ändern des Buches');
+      }
+    }
+  };
+  
+  const handleBuchArtChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    changeBuchArt(event.target.value);
   };
 
   const displayStars = () => {
@@ -84,7 +126,7 @@ const ChangeBook = ({ book } : { book: Buch }) => {
         <StarIcon
           key={i}
           onClick={() => setSelectedRating((i + 1).toString())}
-          color={i < parseInt(selectedRating) ? "teal.500" : "gray.300"} 
+          color={i < parseInt(rating) ? "teal.500" : "gray.300"} 
           boxSize={"20px"}
         />
       );
@@ -96,13 +138,9 @@ const ChangeBook = ({ book } : { book: Buch }) => {
   ));
   CustomInput.displayName = 'CustomInput';
 
-  const handleBuchArtChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    changeBuchArt(event.target.value);
-  };
-
   return (
-    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
-      <Box>
+    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'} >
+      <Box > 
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
@@ -110,15 +148,17 @@ const ChangeBook = ({ book } : { book: Buch }) => {
           value={isbn}
           onChange={(e) => changeIsbn(e.target.value)}
         />
+        {errors.isbn && <Text color="red.500">{errors.isbn}</Text>}
       </Box>
       <Box>
         <label htmlFor="titel">Titel:</label>
         <Input
           id="titel"
           placeholder="z.B. Alpha"
-          value={titel.titel}
+          value={titel}
           onChange={(e) => changeTitel(e.target.value)}
         />
+        {errors.titel && <Text color="red.500">{errors.titel}</Text>}
       </Box>
       <Box>
         <label htmlFor="untertitel">Untertitel:</label>
@@ -128,6 +168,7 @@ const ChangeBook = ({ book } : { book: Buch }) => {
           value={untertitel}
           onChange={(e) => changeUntertitel(e.target.value)}
         />
+        {errors.untertitel && <Text color="red.500">{errors.untertitel}</Text>}
       </Box>
       <Box>
         <label htmlFor="buchArt">Buchart:</label>
@@ -144,22 +185,24 @@ const ChangeBook = ({ book } : { book: Buch }) => {
         </Select>
       </Box>
       <Box>
-        <label htmlFor="preis">Preis:</label>
+        <label htmlFor="preis">Preis(€):</label>
         <Input
           id="preis"
           placeholder="z.B. 11.11"
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
+        {errors.preis && <Text color="red.500">{errors.preis}</Text>}
       </Box>
       <Box>
-        <label htmlFor="rabatt">Rabatt:</label>
+        <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 0.011"
+          placeholder="z.B. 1.1"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
+        {errors.rabatt && <Text color="red.500">{errors.rabatt}</Text>}
       </Box>
       <Box mt={4} mb={4}>
         <Text mb={2}>Datum:</Text>
@@ -177,15 +220,17 @@ const ChangeBook = ({ book } : { book: Buch }) => {
             {displayStars()}
           </Stack>
         </Flex>
+        {errors.rating && <Text color="red.500">{errors.rating}</Text>}
       </Box>
       <Box>
         <label htmlFor="homepage">Homepage:</label>
         <Input
           id="homepage"
-          placeholder="z.B. https://acme.at"
+          placeholder="z.B. acme.at"
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
+         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
@@ -203,32 +248,8 @@ const ChangeBook = ({ book } : { book: Buch }) => {
       >
         Lieferbar
       </Checkbox>
-      <Button type="submit" className="submit-button" onClick={async () => {
-        const buch = {
-          isbn,
-          titel: {
-            titel,
-            untertitel
-          },
-          art: buchArt,
-          preis,
-          rabatt,
-          datum,
-          rating: selectedRating,
-          homepage,
-          schlagwoerter,
-          lieferbar,
-        };
-        await axios.put(`${book._links.self.href}`, buch,
-          {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        router.replace(`/suchen/${extractId(book._links.self.href)}`);
-      }}>
-        Buch ändern
+      <Button type="submit" className="submit-button">
+        Änderungen übernehmen
       </Button>
     </Box>
   );

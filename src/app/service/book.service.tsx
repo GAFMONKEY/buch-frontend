@@ -73,3 +73,42 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
       }
     });
 }
+
+export async function putBuch(objektDaten: object, tokenDatei: string, id: string, eTag: string) {
+  const serverUrl = 'https://localhost:3000';
+  return await axios
+    .put(`${serverUrl}/rest/${id}`, objektDaten, {
+      headers: {
+        ContentType: 'application/json',
+        Authorization: `Bearer ${tokenDatei}`,
+        'If-Match': eTag
+      },
+      httpsAgent: new https.Agent({
+        ca: fs.readFileSync('src/app/certificate/certificate.crt'),
+      }),
+    })
+    .then(function (response) {
+      console.log('Server response:', response.status);
+      return response;
+    })
+    .catch(function (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        // error.request is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+        return 500;
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        return;
+      }
+    });
+}

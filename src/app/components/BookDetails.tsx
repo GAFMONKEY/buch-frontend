@@ -61,7 +61,7 @@ const BookDetails = ({ book } : { book: Buch}) => {
           </Stack>
           <Button colorScheme="teal" marginTop={2}
             onClick={() => (router.push(`/suchen/${extractId(book._links.self.href)}/aendern`))}>
-            Edit Book
+            Buch bearbeiten
           </Button>
         </Box>
       </Flex>
