@@ -16,8 +16,8 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
   const [titel, changeTitel] = useState(book.titel.titel);
   const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
   const [buchArt, changeBuchArt] = useState(book.art);
-  const [preis, changePreis] = useState(book.preis.toFixed(2).replace('.', ','));
-  const [rabatt, changeRabatt] = useState((book.rabatt).toFixed(4).replace('.', ','));
+  const [preis, changePreis] = useState(book.preis.toFixed(2));
+  const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(4));
   const [datum, changeDatum] = useState<Date>(new Date(book.datum));
   const [rating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);
@@ -40,7 +40,7 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
   
     const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
+      errors = { ...errors, isbn: 'Bitte geben Sie eine gültige ISBN ein' };
     }
     if (!titel || typeof titel !== 'string') {
       errors.titel = 'Der Titel muss ein String sein';
@@ -48,7 +48,7 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
     if (!untertitel || typeof untertitel !== 'string') {
       errors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
-    const preisPattern = /^\d+\,\d{2}$/;
+    const preisPattern = /^\d+\.\d{2}$/;
     if (!preis) {
       errors.preis = 'Preis ist erforderlich!';
     } else if (parseFloat(preis) <= 0) {
@@ -56,15 +56,12 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
     } else if (!preisPattern.test(preis)) {
       errors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
     }
-    const testRabatt = (rabatt: string) => {
-      const rabattFloat = Number.parseFloat(rabatt);  
-      return 0 <= rabattFloat && rabattFloat <= 100;
-    }
+    const rabattFloat = parseFloat(rabatt);
     if (!rabatt) {
-      errors.rabatt = 'Rabatt ist erforderlich!'; }
-    // } else if (testRabatt(rabatt)) {  
-    //   errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
-    // }
+      errors.rabatt = 'Rabatt ist erforderlich!';
+    } else if (isNaN(rabattFloat) || rabattFloat < 0 || rabattFloat > 1) { // Adding robust Rabatt validation
+      errors = { ...errors, rabatt: 'Rabatt muss zwischen 0 und 1 liegen!' };
+    }
     if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
       errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
@@ -83,8 +80,8 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
         isbn,
         titel: { titel, untertitel },
         buchArt,
-        preis: parseFloat(preis.replace(',','.')),
-        rabatt: parseFloat(rabatt.replace(',','.')),
+        preis: parseFloat(preis),
+        rabatt: parseFloat(rabatt),
         datum: datum.toISOString(),
         rating,
         homepage,
@@ -103,10 +100,11 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
       try {
         // Hier wird die putBuch-Funktion aufgerufen
         const response = await putBuch(formData, token, id, eTag);
-        if (response && response.status === 204) {
+        if (response.status === 204) {
           alert('Buch erfolgreich erstellt!');
+          router.push(`/suchen/${id}`);
         } else {
-          throw new Error('Fehler beim Ändern des Buchs');
+          alert('Fehler beim Ändern des Buchs11111');
         }
       } catch (error) {
         console.error('Fehler:', error);

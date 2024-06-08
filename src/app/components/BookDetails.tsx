@@ -16,9 +16,32 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import extractId from '../lib/extractId';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const BookDetails = ({ book } : { book: Buch}) => {
+const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => {
+  const [book, setBook] = useState(initialBook);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
+
+  // Example of client-side fetching if needed (e.g., for refreshing data)
+  useEffect(() => {
+    const fetchBookDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`https://localhost:3000/rest/${id}`);          
+        const data = await response.json();
+        setBook(data);
+      } catch (error) {
+        setError('Failed to load book details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+      // Uncomment if you want to refetch on client side for any reason
+      fetchBookDetails();
+  }, [id]);
 
   return (
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg" bg="white" maxW="4xl" mx="auto">

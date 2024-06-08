@@ -1,22 +1,32 @@
 import { Suspense } from 'react';
 import BookDetails from '../../components/BookDetails';
 import { Spinner, Center } from '@chakra-ui/react';
+import axios from 'axios';
+import { agent } from '@/app/lib/httpsAgent';
 
-const fetchBookDetails = async (id) => {
-  const response = await fetch(`https://localhost:3000/rest/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch book details');
+export const fetchBookDetails = async (id: string) => {
+  try {
+    const response = await axios.get(`https://localhost:3000/rest/${id}`, {
+        httpsAgent: agent,
+      });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch book details:', error);
+    return null; // Return null or handle error as needed
   }
-  return response.json();
 };
 
 const BookPage = async ({ params }) => {
   const { id } = params;
   const book = await fetchBookDetails(id);
 
+  if (!book) {
+    return <div>Error loading book details.</div>;
+  }
+
   return (
     <Suspense fallback={<Center><Spinner size="xl" /></Center>}>
-      <BookDetails book={book} />
+      <BookDetails initialBook={book} id={id} />
     </Suspense>
   );
 };
