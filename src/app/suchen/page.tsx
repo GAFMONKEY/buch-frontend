@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, SimpleGrid, Text } from "@chakra-ui/react";
 import AdvancedSearch from "../components/AdvancedSearch";
-import getBuecher from "../lib/getBuecher";
+import { fetchBooks } from '../lib/fetchBooks';
 import { useSearchParams } from 'next/navigation';
 import BookCard from '../components/BookCard';
 
@@ -15,17 +15,17 @@ export default function Suchen() {
   useEffect(() => {
     console.log('searchParams:', searchParams);
     if (searchParams.toString().length > 0) {
-      const fetchBuecher = async () => {
+      const getBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();
-        const response: Buch[] | number = await getBuecher(query);
-        console.log('Empfangene Bücher: ', response);
+        const response: Buch[] | number = await fetchBooks(query);
+        console.log('Received books:', response);
 
         if(typeof response === 'number') {
           if (response === 404) {
             setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
             setBuecher([]);
           } else {
-            setAlertMessage('Buch-API nicht erreichbar.');
+            setAlertMessage('Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.');
             setBuecher([]);
           }
         } else {
@@ -34,7 +34,7 @@ export default function Suchen() {
         }
       };
 
-      fetchBuecher();
+      getBooks();
     }
   }, [searchParams]);
 

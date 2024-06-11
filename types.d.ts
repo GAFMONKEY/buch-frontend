@@ -18,3 +18,9 @@ type Buch = {
       };
     };
 };
+
+type Buecher = {
+  _embedded: {
+    buecher: Buch[];
+  }
+}
