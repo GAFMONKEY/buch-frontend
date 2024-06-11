@@ -44,7 +44,7 @@ export default function Navbar() {
             <Link href='/'>
               <Button color='white' _hover={{ color: 'teal.200' }}>Startseite</Button>
             </Link>
-            <Link href='/suchen'>
+            <Link href='/suchen?titel='>
               <Button color='white' _hover={{ color: 'teal.200' }}>Alle Bücher</Button>
             </Link>
             <Link href='/suchen'>
