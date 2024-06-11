@@ -1,11 +1,11 @@
 'use client'
 
+import { Alert, AlertIcon, Box, SimpleGrid } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, SimpleGrid, Text } from "@chakra-ui/react";
-import AdvancedSearch from "../components/AdvancedSearch";
+import AdvancedSearch from '../components/AdvancedSearch';
+import BookCard from '../components/BookCard';
 import { fetchBooks } from '../lib/fetchBooks';
 import { useSearchParams } from 'next/navigation';
-import BookCard from '../components/BookCard';
 
 export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>();
