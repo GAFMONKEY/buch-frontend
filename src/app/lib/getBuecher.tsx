@@ -1,14 +1,14 @@
 'use server'
 
 import axios from 'axios';
-import { agent } from './httpsAgent';
+import { httpsAgent } from './httpsAgent';
 
 const restURL = 'https://localhost:3000/rest';
 
 export default async function getBuecher(suchkriterien: string) {
     try {
         const response = await axios.get(`${restURL}/?${suchkriterien}`, {
-            httpsAgent: agent,
+            httpsAgent,
         });
         return response.data._embedded?.buecher ?? [];
     } catch (error) {
