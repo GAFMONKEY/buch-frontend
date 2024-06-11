@@ -1,10 +1,10 @@
 import ChangeBook from "@/app/components/ChangeBook";
 import axios from 'axios';
-import { agent } from "@/app/lib/httpsAgent";
+import { httpsAgent } from "@/app/lib/httpsAgent";
 
 const fetchBookDetails = async (id: string) => {
   const response = await axios.get(`https://localhost:3000/rest/${id}`, {
-    httpsAgent: agent,
+    httpsAgent,
   });
   if (response.status != 200) {
     throw new Error('Failed to fetch book details');

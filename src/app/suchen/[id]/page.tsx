@@ -2,12 +2,12 @@ import { Suspense } from 'react';
 import BookDetails from '../../components/BookDetails';
 import { Spinner, Center } from '@chakra-ui/react';
 import axios from 'axios';
-import { agent } from '@/app/lib/httpsAgent';
+import { httpsAgent } from '@/app/lib/httpsAgent';
 
 export const fetchBookDetails = async (id: string) => {
   try {
     const response = await axios.get(`https://localhost:3000/rest/${id}`, {
-        httpsAgent: agent,
+        httpsAgent,
       });
     return response.data;
   } catch (error) {

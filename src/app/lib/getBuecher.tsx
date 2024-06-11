@@ -5,7 +5,7 @@ import { httpsAgent } from './httpsAgent';
 
 const restURL = 'https://localhost:3000/rest';
 
-export default async function getBuecher(suchkriterien: string) {
+export default async function getBuecher(suchkriterien: string): Promise<Buch[] | number> {
     try {
         const response = await axios.get(`${restURL}/?${suchkriterien}`, {
             httpsAgent,
@@ -24,6 +24,6 @@ export default async function getBuecher(suchkriterien: string) {
             }
         }
         console.log('Error:', (error as Error).message);
-        return;
+        return [];
     }
 }
