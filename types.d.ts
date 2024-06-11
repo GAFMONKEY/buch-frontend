@@ -30,3 +30,9 @@ type BookErrors = {
 }
 
 type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
+
+type Buecher = {
+  _embedded: {
+    buecher: Buch[];
+  }
+}

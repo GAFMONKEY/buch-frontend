@@ -50,7 +50,7 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
     })
     .then(function (response) {
       console.log('Server response:', response.status);
-      return response;
+      return response.status;
     })
     .catch(function (error) {
       if (error.response) {

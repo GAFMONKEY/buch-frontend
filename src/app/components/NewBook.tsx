@@ -111,7 +111,7 @@ export default function NewBook() {
       try {
         // Hier wird die postBuch-Funktion aufgerufen
         const response = await postBuch(formData, token);
-        if (response && response.status === 200) {
+        if (response && response === 201) {
           alert('Buch erfolgreich erstellt!');
           const buchId = response.extractId(response.data._links.self.href);
           router.push(`/buch/${buchId}`);
