@@ -5,7 +5,6 @@ import {
   Heading,
   Text,
   Link,
-  Badge,
   Flex,
   Spacer,
   Stack,
@@ -22,7 +21,7 @@ import { useEffect } from 'react';
 const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => {
   const [book, setBook] = useState(initialBook);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   // Example of client-side fetching if needed (e.g., for refreshing data)
@@ -65,8 +64,8 @@ const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => 
             <Text><strong>ISBN:</strong> {book.isbn}</Text>
             <Text><strong>Rating:</strong> {book.rating}</Text>
             <Text><strong>Art:</strong> {book.art}</Text>
-            <Text><strong>Preis:</strong> {book.preis.toFixed(2).replace('.', ',')} €</Text>
-            <Text><strong>Rabatt:</strong> {(book.rabatt*100).toFixed(2).replace('.', ',')} %</Text>
+            <Text><strong>Preis:</strong> {book.preis.toFixed(2)} €</Text>
+            <Text><strong>Rabatt:</strong> {(book.rabatt*100).toFixed(2)} %</Text>
             <Text><strong>Lieferbar:</strong> {book.lieferbar ? 'Ja' : 'Nein'}</Text>
             <Text><strong>Datum:</strong> {new Date(book.datum).toLocaleDateString()}</Text>
           </VStack>

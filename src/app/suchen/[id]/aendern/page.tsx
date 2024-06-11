@@ -15,11 +15,11 @@ const fetchBookDetails = async (id: string) => {
   return { body, eTag };
 };
 
-const Aendern = async ({ params }) => {
+const Aendern = async ({ params }: {params: any}) => {
   const { id } : {id: string } = params;
 
-  const response = await fetchBookDetails(id);
-  const book: Buch = response.body;
+  const response: { body: Buch, eTag: string} = await fetchBookDetails(id);
+  const book = response.body;
   const eTag = response.eTag??'';
     
   return (

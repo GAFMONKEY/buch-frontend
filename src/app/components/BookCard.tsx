@@ -1,6 +1,6 @@
 'use client'
-import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, SimpleGrid, Text } from "@chakra-ui/react";
-import { FaEye, FaStar } from "react-icons/fa6";
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, Text } from '@chakra-ui/react';
+import { FaEye, FaStar } from 'react-icons/fa6';
 import extractId from '../lib/extractId';
 import { useRouter } from 'next/navigation';
 
@@ -78,7 +78,7 @@ const BookCard = ({ buch }: {buch: Buch}) => {
         <Divider borderColor={'gray.200'} />
         <CardFooter>
           <HStack justify='space-between' alignItems='center' w='100%'>
-            <Text color='teal.600' fontSize='xl'>{buch.preis.toFixed(2).replace('.', ',')}€</Text>
+            <Text color='teal.600' fontSize='xl'>{buch.preis.toFixed(2)}€</Text>
             <Lieferbar lieferbar={buch.lieferbar} />
           </HStack>
         </CardFooter>

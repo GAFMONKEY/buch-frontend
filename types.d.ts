@@ -18,3 +18,15 @@ type Buch = {
       };
     };
 };
+
+type BookErrors = {
+  isbn: string;
+  titel: string;
+  untertitel: string;
+  preis: string;
+  rabatt: string;
+  homepage: string;
+  rating: string;
+}
+
+type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';

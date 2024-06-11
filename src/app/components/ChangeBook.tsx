@@ -5,10 +5,7 @@ import './NewBook.css';
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
 import router from 'next/router';
-import extractId from '../lib/extractId';
-import withAuth from '../hoc/withAuth';
 import { putBuch } from '../service/book.service';
 
 const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
@@ -23,7 +20,7 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
   const [homepage, changeHomepage] = useState(book.homepage);
   const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
     titel: '',
     untertitel: '',
@@ -36,11 +33,9 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
   
-    let errors = {};
-  
     const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      errors = { ...errors, isbn: 'Bitte geben Sie eine gültige ISBN ein' };
+      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein' ;
     }
     if (!titel || typeof titel !== 'string') {
       errors.titel = 'Der Titel muss ein String sein';
@@ -60,7 +55,7 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
     if (!rabatt) {
       errors.rabatt = 'Rabatt ist erforderlich!';
     } else if (isNaN(rabattFloat) || rabattFloat < 0 || rabattFloat > 1) { // Adding robust Rabatt validation
-      errors = { ...errors, rabatt: 'Rabatt muss zwischen 0 und 1 liegen!' };
+      errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen!';
     }
     if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
       errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
@@ -123,8 +118,8 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
       stars.push(
         <StarIcon
           key={i}
-          onClick={() => setSelectedRating((i + 1).toString())}
-          color={i < parseInt(rating) ? "teal.500" : "gray.300"} 
+          onClick={() => setSelectedRating((i + 1))}
+          color={i < rating ? "teal.500" : "gray.300"} 
           boxSize={"20px"}
         />
       );
