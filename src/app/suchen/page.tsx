@@ -2,7 +2,7 @@
 
 import { Alert, AlertIcon, Box, SimpleGrid } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import AdvancedSearch from '../components/AdvancedSearch';
+import { AdvancedSearch } from '../components/AdvancedSearch';
 import { BookCard } from '../components/BookCard';
 import { getBooks } from '../lib/getBuecher';
 import { useSearchParams } from 'next/navigation';
@@ -15,7 +15,7 @@ export default function Suchen() {
   useEffect(() => {
     console.log('searchParams:', searchParams);
 
-    // 
+    // Don't call API when navigating to the page
     if (searchParams.toString().length > 0) {
       const searchBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();

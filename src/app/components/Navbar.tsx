@@ -5,7 +5,7 @@ import { MdLogin, MdLogout } from "react-icons/md";
 import Link from 'next/link';
 import Searchbar from './Searchbar';
 
-export default function Navbar() {
+export const Navbar = () => {
   const loginButtonStyles = {
     ':hover': {
       color: 'black',
@@ -75,4 +75,4 @@ export default function Navbar() {
       </Box>
     </Box>
   );
-}
+};

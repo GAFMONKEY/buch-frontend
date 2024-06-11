@@ -1,4 +1,4 @@
-import ChangeBook from "@/app/components/ChangeBook";
+import { ChangeBook } from "@/app/components/ChangeBook";
 import axios from 'axios';
 import { httpsAgent } from "@/app/lib/httpsAgent";
 

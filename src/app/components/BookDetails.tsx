@@ -18,7 +18,7 @@ import extractId from '../lib/extractId';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => {
+export const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => {
   const [book, setBook] = useState(initialBook);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,5 +90,3 @@ const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => 
     </Box>
   );
 };
-
-export default BookDetails;
