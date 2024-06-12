@@ -12,11 +12,11 @@ export const fetchBookDetails = async (id: string) => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch book details:', error);
-    return null; // Return null or handle error as needed
+    return null;
   }
 };
 
-const BookPage = async ({ params }) => {
+const BookPage = async ({ params } : { params: any }) => {
   const { id } = params;
   const book = await fetchBookDetails(id);
 

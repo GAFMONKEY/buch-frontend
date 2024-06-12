@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
-import './NewBook.css';
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,6 +29,7 @@ export default function NewBook() {
     homepage: '',
     rating: '',
   });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const hasErrors = (errors: BookErrors): boolean => {
@@ -85,6 +85,7 @@ export default function NewBook() {
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
+    setLoading(true);
     event.preventDefault();
     const newErrors = validateForm();
     setErrors(newErrors);
@@ -113,6 +114,7 @@ export default function NewBook() {
         const response = await postBuch(formData, token);
         if (response.status === 201) {
           const buchId = extractId(response.selfLink);
+          setLoading(false);
           router.push(`/buch/${buchId}`);
         } else {
           alert('Fehler beim Erstellen des Buchs');
@@ -252,7 +254,7 @@ export default function NewBook() {
       >
         Lieferbar
       </Checkbox>
-      <Button type="submit" className="submit-button">
+      <Button type="submit" className="submit-button" isLoading={loading} >
         Neues Buch erstellen
       </Button>
     </Box> 

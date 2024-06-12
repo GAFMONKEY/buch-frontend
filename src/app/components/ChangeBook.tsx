@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
-import './NewBook.css';
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
