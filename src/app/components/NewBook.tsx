@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import DatePicker from "react-datepicker";
@@ -115,7 +115,7 @@ export default function NewBook() {
         if (response.status === 201) {
           const buchId = extractId(response.selfLink);
           setLoading(false);
-          router.push(`/buch/${buchId}`);
+          router.push(`/suchen/${buchId}`);
         } else {
           alert('Fehler beim Erstellen des Buchs');
         }
@@ -124,6 +124,7 @@ export default function NewBook() {
       }
     }
   };
+
 
   const displayStars = () => {
     let stars = [];
@@ -247,6 +248,7 @@ export default function NewBook() {
           onChange={(e) => setSchlagwoerter(e.target.value)}
         />
       </Box>
+      <Box display="flex" alignItems="center" mt={2}>
       <Checkbox
         mt={2}
         isChecked={lieferbar}
@@ -254,9 +256,10 @@ export default function NewBook() {
       >
         Lieferbar
       </Checkbox>
-      <Button type="submit" className="submit-button" isLoading={loading} >
+      <Button type="submit" ml={600} minWidth="auto" className="submit-button" isLoading={loading} >
         Neues Buch erstellen
       </Button>
+      </Box>
     </Box> 
   );
 };
