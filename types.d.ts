@@ -36,3 +36,7 @@ type Buecher = {
     buecher: Buch[];
   }
 }
+
+type BuchResponse = {
+  body: Buch, eTag: string
+};
