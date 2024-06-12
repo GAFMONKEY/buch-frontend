@@ -8,7 +8,6 @@ const baseURL = 'https://localhost:3000/rest';
 export const getBooks = async (searchParams: string): Promise<Buch[] | number> => {
     try {
         const response: AxiosResponse<Buecher> = await axios.get(`${baseURL}/?${searchParams}`, { httpsAgent });
-        console.log(response);
         return response.data._embedded?.buecher ?? [];
     } catch (error) {
         if (axios.isAxiosError(error)) {

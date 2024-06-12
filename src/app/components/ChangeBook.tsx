@@ -11,7 +11,7 @@ import { putBuch } from '../service/book.service';
 export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
   const [isbn, changeIsbn] = useState(book.isbn);
   const [titel, changeTitel] = useState(book.titel.titel);
-  const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
+  const [untertitel, changeUntertitel] = useState(book.titel.untertitel??'');
   const [buchArt, changeBuchArt] = useState(book.art);
   const [preis, changePreis] = useState(book.preis.toFixed(2));
   const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(4));
@@ -96,15 +96,17 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
         // Hier wird die putBuch-Funktion aufgerufen
         const response = await putBuch(formData, token, id, eTag);
         if (response.status === 204) {
-          alert('Buch erfolgreich erstellt!');
+          alert('Buch erfolgreich geändert!');
           router.push(`/suchen/${id}`);
         } else {
-          alert('Fehler beim Ändern des Buchs11111');
+          alert('Fehler beim Ändern des Buches');
         }
       } catch (error) {
         console.error('Fehler:', error);
         alert('Fehler beim Ändern des Buches');
       }
+    } else {
+      alert('Bitte überprüfen Sie Ihre Eingaben!');
     }
   };
   

@@ -104,16 +104,15 @@ export default function NewBook() {
       };
   
       const token = localStorage.getItem('access_token')??'';
-      if(token == '') {
+      if(token === '' || !token) {
         router.push('/login');
       }
 
       try {
         // Hier wird die postBuch-Funktion aufgerufen
         const response = await postBuch(formData, token);
-        if (response && response === 201) {
-          alert('Buch erfolgreich erstellt!');
-          const buchId = response.extractId(response.data._links.self.href);
+        if (response.status === 201) {
+          const buchId = extractId(response.selfLink);
           router.push(`/buch/${buchId}`);
         } else {
           alert('Fehler beim Erstellen des Buchs');
@@ -258,4 +257,4 @@ export default function NewBook() {
       </Button>
     </Box> 
   );
-}; 
+};

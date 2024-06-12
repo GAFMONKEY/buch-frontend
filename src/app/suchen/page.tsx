@@ -20,7 +20,6 @@ export default function Suchen() {
       const searchBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();
         const response: Buch[] | number = await getBooks(query);
-        console.log('Received books:', response);
 
         if(typeof response === 'number') {
           if (response === 404) {
