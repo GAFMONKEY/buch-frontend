@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import extractId from '../lib/extractId';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { StarRating } from './BookCard';
 
 export const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: string}) => {
   const [book, setBook] = useState(initialBook);
@@ -62,15 +63,15 @@ export const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: strin
           </Heading>
           <Box>
             <Text fontWeight="bold">ISBN:</Text> <Text>{book.isbn}</Text>
-            <Text fontWeight="bold">Rating:</Text> <Text>{book.rating}</Text>
-            <Text fontWeight="bold">Art:</Text> <Text>{book.art}</Text>
+            <Text fontWeight="bold">Rating:</Text> <Text><StarRating rating={book.rating} /></Text>
+            <Text fontWeight="bold" paddingTop={2}>Art:</Text> <Text>{book.art}</Text>
             <Text fontWeight="bold">Preis:</Text>
             <Text>
-            <Text as="s" mr={2} color="grey">{book.preis.toFixed(2)} €</Text>
-            <Text as="span" color="red.500">{(book.preis * (1 - book.rabatt)).toFixed(2)} €</Text>
+              <Text as="s" mr={2} color="grey">{book.preis.toFixed(2)}€</Text>
+              <Text as="span" color="red.500">{(book.preis * (1 - book.rabatt)).toFixed(2)}€</Text>
             </Text>
             <Text fontWeight="bold">Rabatt:</Text>
-            <Text>{(book.rabatt * 100).toFixed(2)} %</Text>
+            <Text>{(book.rabatt * 100).toFixed(2)}%</Text>
             <Text fontWeight="bold">Lieferbar:</Text>
             <Text>{book.lieferbar ? 'Ja' : 'Nein'}</Text>
             <Text fontWeight="bold">Datum:</Text>

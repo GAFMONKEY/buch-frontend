@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, Text } from '@chakra-ui/react';
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { FaEye, FaStar } from 'react-icons/fa6';
 import extractId from '../lib/extractId';
 import { useRouter } from 'next/navigation';
@@ -41,7 +41,7 @@ export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
 export const BookCard = ({ buch }: {buch: Buch}) => {
     const router = useRouter();
     return(
-        <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
+      <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
         <CardHeader>
           <Flex direction='column' w='100%'>
             <Flex justify='space-between' alignItems='center' w='100%'>
@@ -75,9 +75,12 @@ export const BookCard = ({ buch }: {buch: Buch}) => {
           ))}
         </CardBody>
         <Divider borderColor={'gray.200'} />
-        <CardFooter>
+        <CardFooter p={2} >
           <HStack justify='space-between' alignItems='center' w='100%'>
-            <Text color='teal.600' fontSize='xl'>{buch.preis.toFixed(2)}€</Text>
+            <VStack spacing='0px' >
+              <Text color='grey' fontSize='l' as='s' paddingLeft={1}>{buch.preis.toFixed(2)}€</Text>
+              <Text color='red.500' fontSize='xl'>{(buch.preis * (1 - buch.rabatt)).toFixed(2)}€</Text>
+            </VStack>
             <Lieferbar lieferbar={buch.lieferbar} />
           </HStack>
         </CardFooter>
