@@ -60,15 +60,22 @@ export const BookDetails = ({ initialBook, id } : { initialBook: Buch, id: strin
           <Heading fontSize="2xl" mb={2} color="teal.600">
             {book.titel.titel} {book.titel.untertitel == null || undefined ? `- ${book.titel.untertitel}` : ''}
           </Heading>
-          <VStack align="start" spacing={2} mb={4}>
-            <Text><strong>ISBN:</strong> {book.isbn}</Text>
-            <Text><strong>Rating:</strong> {book.rating}</Text>
-            <Text><strong>Art:</strong> {book.art}</Text>
-            <Text><strong>Preis:</strong> {book.preis.toFixed(2)} €</Text>
-            <Text><strong>Rabatt:</strong> {(book.rabatt*100).toFixed(2)} %</Text>
-            <Text><strong>Lieferbar:</strong> {book.lieferbar ? 'Ja' : 'Nein'}</Text>
-            <Text><strong>Datum:</strong> {new Date(book.datum).toLocaleDateString()}</Text>
-          </VStack>
+          <Box>
+            <Text fontWeight="bold">ISBN:</Text> <Text>{book.isbn}</Text>
+            <Text fontWeight="bold">Rating:</Text> <Text>{book.rating}</Text>
+            <Text fontWeight="bold">Art:</Text> <Text>{book.art}</Text>
+            <Text fontWeight="bold">Preis:</Text>
+            <Text>
+            <Text as="s" mr={2} color="grey">{book.preis.toFixed(2)} €</Text>
+            <Text as="span" color="red.500">{(book.preis * (1 - book.rabatt)).toFixed(2)} €</Text>
+            </Text>
+            <Text fontWeight="bold">Rabatt:</Text>
+            <Text>{(book.rabatt * 100).toFixed(2)} %</Text>
+            <Text fontWeight="bold">Lieferbar:</Text>
+            <Text>{book.lieferbar ? 'Ja' : 'Nein'}</Text>
+            <Text fontWeight="bold">Datum:</Text>
+            <Text>{new Date(book.datum).toLocaleDateString()}</Text>
+          </Box>
           <Link href={book.homepage} color="teal.500" isExternal>
             <Button colorScheme="teal" variant="outline" size="sm" mt={2}>
               Homepage

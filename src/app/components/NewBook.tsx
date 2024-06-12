@@ -114,7 +114,6 @@ export default function NewBook() {
         const response = await postBuch(formData, token);
         if (response.status === 201) {
           const buchId = extractId(response.selfLink);
-          setLoading(false);
           router.push(`/suchen/${buchId}`);
         } else {
           alert('Fehler beim Erstellen des Buchs');

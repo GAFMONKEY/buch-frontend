@@ -30,7 +30,7 @@ const LoginPage = () => {
       const data = await response.json();
       localStorage.setItem('access_token', data.access_token);
       setIsAuthenticated(true);
-      router.push('/');
+      router.back();
     } else {
       setError('Falsche Einloggdaten');
     }
