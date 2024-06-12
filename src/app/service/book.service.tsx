@@ -44,7 +44,7 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
     });
     console.log(response.status);
     const status = response.status;
-    const selfLink = response.headers['Location'];
+    const selfLink = response.headers['location'];
     return { status, selfLink };
   } catch (error) {
     const status = handleRequestErrors(error);
