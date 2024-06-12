@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
-import BookDetails from '../../components/BookDetails';
 import { Spinner, Center } from '@chakra-ui/react';
 import axios from 'axios';
+import { BookDetails } from '../../components/BookDetails';
 import { httpsAgent } from '@/app/lib/httpsAgent';
+import { Suspense } from 'react';
 
 export const fetchBookDetails = async (id: string) => {
   try {

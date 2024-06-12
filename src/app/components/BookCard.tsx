@@ -1,45 +1,44 @@
 'use client'
+
 import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, HStack, Icon, Text } from '@chakra-ui/react';
 import { FaEye, FaStar } from 'react-icons/fa6';
 import extractId from '../lib/extractId';
 import { useRouter } from 'next/navigation';
 
+export const StarRating = ({ rating }: { rating: number }) => {
+  const stars = Array(5).fill(0);
+  return (
+    <HStack>
+      {stars.map((_, index) => (
+        <Icon
+          as={FaStar}
+          key={index}
+          color={index < rating ? 'teal.500' : 'gray.300'}
+          boxSize={5}
+          style={{ marginTop: '8px' }}
+        />
+      ))}
+    </HStack>
+  );
+};
 
-const StarRating = ({ rating }: { rating: number }) => {
-    const stars = Array(5).fill(0);
+export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
+  return (
+    <Badge
+      colorScheme={lieferbar ? 'green' : 'red'}
+      variant="subtle"
+      fontSize="sm"
+      fontWeight="500"
+      px={3}
+      rounded="full"
+      m={1}
+    >
+      {lieferbar ? 'LIEFERBAR' : 'NICHT LIEFERBAR'}
+    </Badge>
+  );
+};
 
-    return (
-      <HStack>
-        {stars.map((_, index) => (
-          <Icon
-            as={FaStar}
-            key={index}
-            color={index < rating ? 'teal.500' : 'gray.300'}
-            boxSize={5}
-            style={{ marginTop: '8px' }}
-          />
-        ))}
-      </HStack>
-    );
-  };
-
-  const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
-    return (
-      <Badge
-        colorScheme={lieferbar ? 'green' : 'red'}
-        variant="subtle"
-        fontSize="sm"
-        fontWeight="500"
-        px={3}
-        rounded="full"
-        m={1}
-      >
-        {lieferbar ? 'LIEFERBAR' : 'NICHT LIEFERBAR'}
-      </Badge>
-    );
-  };
-
-const BookCard = ({ buch }: {buch: Buch}) => {
+export const BookCard = ({ buch }: {buch: Buch}) => {
     const router = useRouter();
     return(
         <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
@@ -85,5 +84,3 @@ const BookCard = ({ buch }: {buch: Buch}) => {
       </Card>
     )
 };
-
-export default BookCard;

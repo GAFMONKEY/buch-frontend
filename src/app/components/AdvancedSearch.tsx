@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 
-export default function AdvancedSearch() {
+export const AdvancedSearch = () => {
     const [titel, setTitel] = useState('');
     const [art, setArt] = useState('');
     const [rating, setRating] = useState('');
@@ -89,4 +89,4 @@ export default function AdvancedSearch() {
         </VStack>
     </Box>
   )
-}
+};

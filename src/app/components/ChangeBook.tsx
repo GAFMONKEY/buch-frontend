@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import router from 'next/router';
 import { putBuch } from '../service/book.service';
 
-const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
+export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
   const [isbn, changeIsbn] = useState(book.isbn);
   const [titel, changeTitel] = useState(book.titel.titel);
   const [untertitel, changeUntertitel] = useState(book.titel.untertitel);
@@ -246,6 +246,4 @@ const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string 
       </Button>
     </Box>
   );
-}
-
-export default ChangeBook;
+};
