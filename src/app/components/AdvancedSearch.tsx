@@ -80,7 +80,7 @@ export const AdvancedSearch = () => {
                     onChange={(e) => setLieferbar(e.target.checked)}
                 />
                 <FormLabel mb='0' ml='10px'>
-                    lieferbar?
+                  Nur lieferbare Bücher anzeigen
                 </FormLabel>
             </FormControl>
             <Button colorScheme='teal' leftIcon={<FiSearch />} onClick={handleSearch}>
