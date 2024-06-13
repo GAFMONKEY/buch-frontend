@@ -41,6 +41,11 @@ export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
 
 export const BookCard = ({ buch, schlagwortMap }: {buch: Buch, schlagwortMap: Map<string, string> | undefined}) => {
   const router = useRouter();
+
+  const handleSchlagwortClick = (schlagwort: string) => {
+    router.push(`/suchen?${schlagwort.toLowerCase()}=true`);
+  };
+
   return(
     <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
       <CardHeader>
@@ -70,6 +75,8 @@ export const BookCard = ({ buch, schlagwortMap }: {buch: Buch, schlagwortMap: Ma
             px={3}
             rounded='full'
             m={1}
+            cursor='pointer'
+            onClick={() => handleSchlagwortClick(schlagwort)}
           >
             {schlagwort}
           </Badge>
