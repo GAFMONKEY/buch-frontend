@@ -133,8 +133,8 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
   CustomInput.displayName = 'CustomInput';
 
   return (
-    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'} >
-      <Box > 
+    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+      <Box>
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
@@ -224,7 +224,7 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
-         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
+        {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
@@ -235,16 +235,18 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Checkbox
-        mt={2}
-        isChecked={lieferbar}
-        onChange={(e) => changeLieferbar(e.target.checked)}
-      >
-        Lieferbar
-      </Checkbox>
-      <Button type="submit" className="submit-button">
-        Änderungen übernehmen
-      </Button>
+      <Box      display="flex" alignItems="center" mt={2}>
+        <Checkbox
+          mt={2}
+          isChecked={lieferbar}
+          onChange={(e) => changeLieferbar(e.target.checked)}
+        >
+          Lieferbar
+        </Checkbox>
+        <Button type="submit" className="submit-button" ml={670} minWidth="auto"> 
+          Änderungen übernehmen
+        </Button>
+      </Box>
     </Box>
   );
 };
