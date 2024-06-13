@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormLabel, Input, Radio, RadioGroup, Select, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Radio, RadioGroup, Select, VStack } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation'
 import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
@@ -29,6 +29,13 @@ export const AdvancedSearch = () => {
         
           router.push(`/suchen${queryString ? `?${queryString}` : '?titel='}`);
     }
+
+    const handleClearSearch = () => {
+        setTitel('');
+        setArt('');
+        setRating('');
+        setLieferbar(false);
+    };
 
   return (
     <Box maxW='400px' p='10px' m={5} borderWidth='1px' borderRadius='lg' display='wrap' alignItems='baseline'>
@@ -83,9 +90,14 @@ export const AdvancedSearch = () => {
                   Nur lieferbare Bücher anzeigen
                 </FormLabel>
             </FormControl>
-            <Button colorScheme='teal' leftIcon={<FiSearch />} onClick={handleSearch}>
-                Suchen
-            </Button>
+            <HStack>
+                <Button colorScheme='teal' leftIcon={<FiSearch />} onClick={handleSearch}>
+                    Suchen
+                </Button>
+                <Button colorScheme='gray' onClick={handleClearSearch}>
+                    Suche leeren
+                </Button>
+            </HStack>
         </VStack>
     </Box>
   )
