@@ -76,6 +76,7 @@ export const BookCard = ({ buch, schlagwortMap }: {buch: Buch, schlagwortMap: Ma
             rounded='full'
             m={1}
             cursor='pointer'
+            _hover={{ bg: `${schlagwortMap?.get(schlagwort) || 'teal'}`, filter: 'brightness(1.3)' }}
             onClick={() => handleSchlagwortClick(schlagwort)}
           >
             {schlagwort}
