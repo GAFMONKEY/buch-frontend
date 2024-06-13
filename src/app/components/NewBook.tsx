@@ -57,7 +57,7 @@ export default function NewBook() {
     if (!untertitel) {
       newErrors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
-    const preisPattern = /^\d+\.\d{2}$/;
+    const preisPattern = /^\d+(\.\d{2})?$/;
     if (!preis) {
       newErrors.preis = 'Preis ist erforderlich!';
     } else if (parseFloat(preis) <= 0) {
