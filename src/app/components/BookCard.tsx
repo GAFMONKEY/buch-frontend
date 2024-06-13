@@ -4,6 +4,7 @@ import { Badge, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, H
 import { FaEye, FaStar } from 'react-icons/fa6';
 import extractId from '../lib/extractId';
 import { useRouter } from 'next/navigation';
+import { schlagwortColorMap } from '../lib/generateColors';
 
 export const StarRating = ({ rating }: { rating: number }) => {
   const stars = Array(5).fill(0);
@@ -38,7 +39,7 @@ export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
   );
 };
 
-export const BookCard = ({ buch }: {buch: Buch}) => {
+export const BookCard = ({ buch, schlagwortMap }: {buch: Buch, schlagwortMap: Map<string, string> | undefined}) => {
   const router = useRouter();
   return(
     <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
@@ -65,7 +66,7 @@ export const BookCard = ({ buch }: {buch: Buch}) => {
             key={index}
             fontSize='sm'
             fontWeight='500'
-            colorScheme='teal'
+            bg={schlagwortMap?.get(schlagwort) || 'teal'}
             px={3}
             rounded='full'
             m={1}
