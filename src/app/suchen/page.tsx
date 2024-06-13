@@ -6,11 +6,13 @@ import { AdvancedSearch } from '../components/AdvancedSearch';
 import { BookCard } from '../components/BookCard';
 import { getBooks } from '../lib/getBuecher';
 import { useSearchParams } from 'next/navigation';
+import { schlagwortColorMap } from '../lib/generateColors';
 
 export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>();
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const [schlagwortMap, setSchlagwortMap] = useState<Map<string, string> | undefined>(undefined);
 
   useEffect(() => {
     console.log('searchParams:', searchParams);
@@ -20,7 +22,6 @@ export default function Suchen() {
       const searchBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();
         const response: Buch[] | number = await getBooks(query);
-
         if(typeof response === 'number') {
           if (response === 404) {
             setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
@@ -30,6 +31,8 @@ export default function Suchen() {
           setBuecher([]);
         } else {
           setAlertMessage(null);
+          const colorMap: Map<string, string> = schlagwortColorMap(response);
+          setSchlagwortMap(colorMap);
           setBuecher(response);
         }
       };
@@ -52,7 +55,7 @@ export default function Suchen() {
       <SimpleGrid spacing={10} p={4} templateColumns='repeat(auto-fill, minmax(250px, 1fr))'>
         {buecher && buecher.length > 0 &&
           buecher.map(buch => (
-            <BookCard buch={buch} key={buch.isbn}/>
+            <BookCard buch={buch} key={buch.isbn} schlagwortMap={schlagwortMap} />
           ))
         }
       </SimpleGrid>
