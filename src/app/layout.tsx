@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import { Navbar } from './components/Navbar';
 import { Providers } from './components/Providers';
+import { Box } from '@chakra-ui/react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
       <Providers>
-        <Navbar />
-        {children}
+        <Box as="header" position="fixed" width="100%" zIndex="1000">
+          <Navbar />
+        </Box>
+        <Box mt="40px">
+          {children}
+        </Box>
       </Providers>
       </body>
     </html>
