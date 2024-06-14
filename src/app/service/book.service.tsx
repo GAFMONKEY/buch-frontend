@@ -6,26 +6,29 @@ const serverUrl = 'https://localhost:3000';
 
 const handleRequestErrors = (error: any) => {
   console.log('Error!!!!!!!!!!!!!!!!!!!!!!!');
-    if (axios.isAxiosError(error)) {
-        if (error.response) {
-            // console.log(error.response.data);
-             console.log(error.response.status);
-            // console.log(error.response.headers);
-            return error.response.status;
-        } else if (error.request) {
-            console.log('Server:', error.request);
-            return 500;
-        }
-    }            
-    console.log('Error');
-    return -1;
-}
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      // console.log(error.response.data);
+      console.log(error.response.status);
+      // console.log(error.response.headers);
+      return error.response.status;
+    } else if (error.request) {
+      console.log('Server:', error.request);
+      return 500;
+    }
+  }
+  console.log('Error');
+  return -1;
+};
 
 export async function fetchBooks(searchParams: string) {
   try {
-    const response: AxiosResponse<Buecher> = await axios.get(`${serverUrl}/?${searchParams}`, {
-      httpsAgent, 
-    });
+    const response: AxiosResponse<Buecher> = await axios.get(
+      `${serverUrl}/?${searchParams}`,
+      {
+        httpsAgent,
+      },
+    );
     console.log(response.status);
     return response.data._embedded?.buecher ?? [];
   } catch (error) {
@@ -35,13 +38,17 @@ export async function fetchBooks(searchParams: string) {
 
 export async function postBuch(objektDaten: object, tokenDatei: string) {
   try {
-    const response: AxiosResponse<Buecher> = await axios.post(`${serverUrl}/rest`, objektDaten, {
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${tokenDatei}`,
-      }, 
-      httpsAgent,
-    });
+    const response: AxiosResponse<Buecher> = await axios.post(
+      `${serverUrl}/rest`,
+      objektDaten,
+      {
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${tokenDatei}`,
+        },
+        httpsAgent,
+      },
+    );
     console.log(response.status);
     const status = response.status;
     const selfLink = response.headers['location'];
@@ -52,16 +59,25 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
   }
 }
 
-export async function putBuch(objektDaten: object, tokenDatei: string, id: string, eTag: string) {
+export async function putBuch(
+  objektDaten: object,
+  tokenDatei: string,
+  id: string,
+  eTag: string,
+) {
   try {
-    const response: AxiosResponse<Buecher> = await axios.put(`${serverUrl}/rest/${id}`, objektDaten, {
-      headers: {
-        ContentType: 'application/json',
-        Authorization: `Bearer ${tokenDatei}`,
-        'If-Match': eTag
+    const response: AxiosResponse<Buecher> = await axios.put(
+      `${serverUrl}/rest/${id}`,
+      objektDaten,
+      {
+        headers: {
+          ContentType: 'application/json',
+          Authorization: `Bearer ${tokenDatei}`,
+          'If-Match': eTag,
+        },
+        httpsAgent,
       },
-      httpsAgent,
-    });
+    );
     console.log(response.status);
     const status = response.status;
     return { status };

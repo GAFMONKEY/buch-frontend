@@ -1,23 +1,42 @@
 'use client';
 import React, { useState } from 'react';
-import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import {
+  Input,
+  Checkbox,
+  Button,
+  Box,
+  Stack,
+  Select,
+  Flex,
+  Text,
+} from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import router from 'next/router';
 import { putBuch } from '../service/book.service';
 
-export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: string }) => {
+export const ChangeBook = ({
+  book,
+  id,
+  eTag,
+}: {
+  book: Buch;
+  id: string;
+  eTag: string;
+}) => {
   const [isbn, changeIsbn] = useState(book.isbn);
   const [titel, changeTitel] = useState(book.titel.titel);
-  const [untertitel, changeUntertitel] = useState(book.titel.untertitel??'');
+  const [untertitel, changeUntertitel] = useState(book.titel.untertitel ?? '');
   const [buchArt, changeBuchArt] = useState(book.art);
   const [preis, changePreis] = useState(book.preis.toFixed(2));
   const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(4));
   const [datum, changeDatum] = useState<Date>(new Date(book.datum));
   const [rating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);
-  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
+  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(
+    book.schlagwoerter,
+  );
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
   const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
@@ -31,14 +50,14 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-  
+
     const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein' ;
+      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
     }
     if (!titel || typeof titel !== 'string') {
       errors.titel = 'Der Titel muss ein String sein';
-    }    
+    }
     if (!untertitel || typeof untertitel !== 'string') {
       errors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
@@ -53,21 +72,23 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
     const rabattFloat = parseFloat(rabatt);
     if (!rabatt) {
       errors.rabatt = 'Rabatt ist erforderlich!';
-    } else if (isNaN(rabattFloat) || rabattFloat < 0 || rabattFloat > 1) { // Adding robust Rabatt validation
+    } else if (isNaN(rabattFloat) || rabattFloat < 0 || rabattFloat > 1) {
+      // Adding robust Rabatt validation
       errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen!';
     }
     if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
       errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
-    const homepagePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    const homepagePattern =
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage || typeof homepage !== 'string') {
       errors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
       errors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
     }
-    
+
     setErrors(errors);
-  
+
     if (Object.keys(errors).length === 0) {
       // Nur wenn keine Validierungsfehler vorhanden sind, die Daten senden
       const formData = {
@@ -82,13 +103,13 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
         schlagwoerter,
         lieferbar,
       };
-  
+
       const getAccessToken = (): string | null => {
         return localStorage.getItem('access_token');
       };
-      const token = getAccessToken()??'';
-      if(token == '' || !token) {
-        router.push('/login')
+      const token = getAccessToken() ?? '';
+      if (token == '' || !token) {
+        router.push('/login');
       }
 
       try {
@@ -108,7 +129,7 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
       alert('Bitte überprüfen Sie Ihre Eingaben!');
     }
   };
-  
+
   const handleBuchArtChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     changeBuchArt(event.target.value);
   };
@@ -119,10 +140,10 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
       stars.push(
         <StarIcon
           key={i}
-          onClick={() => setSelectedRating((i + 1))}
-          color={i < rating ? "teal.500" : "gray.300"} 
-          boxSize={"20px"}
-        />
+          onClick={() => setSelectedRating(i + 1)}
+          color={i < rating ? 'teal.500' : 'gray.300'}
+          boxSize={'20px'}
+        />,
       );
     }
     return stars;
@@ -235,7 +256,7 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
           onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
         />
       </Box>
-      <Box      display="flex" alignItems="center" mt={2}>
+      <Box display="flex" alignItems="center" mt={2}>
         <Checkbox
           mt={2}
           isChecked={lieferbar}
@@ -243,7 +264,12 @@ export const ChangeBook = ({ book, id, eTag } : { book: Buch, id: string, eTag: 
         >
           Lieferbar
         </Checkbox>
-        <Button type="submit" className="submit-button" ml={670} minWidth="auto"> 
+        <Button
+          type="submit"
+          className="submit-button"
+          ml={670}
+          minWidth="auto"
+        >
           Änderungen übernehmen
         </Button>
       </Box>

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Alert, AlertIcon, Box, SimpleGrid } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,9 @@ export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>();
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const [schlagwortMap, setSchlagwortMap] = useState<Map<string, string> | undefined>(undefined);
+  const [schlagwortMap, setSchlagwortMap] = useState<
+    Map<string, string> | undefined
+  >(undefined);
 
   useEffect(() => {
     console.log('searchParams:', searchParams);
@@ -22,11 +24,13 @@ export default function Suchen() {
       const searchBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();
         const response: Buch[] | number = await getBooks(query);
-        if(typeof response === 'number') {
+        if (typeof response === 'number') {
           if (response === 404) {
             setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
           } else {
-            setAlertMessage('Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.');
+            setAlertMessage(
+              'Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.',
+            );
           }
           setBuecher([]);
         } else {
@@ -52,12 +56,20 @@ export default function Suchen() {
           </Alert>
         )}
       </Box>
-      <SimpleGrid spacing={10} p={4} templateColumns='repeat(auto-fill, minmax(250px, 1fr))'>
-        {buecher && buecher.length > 0 &&
-          buecher.map(buch => (
-            <BookCard buch={buch} key={buch.isbn} schlagwortMap={schlagwortMap} />
-          ))
-        }
+      <SimpleGrid
+        spacing={10}
+        p={4}
+        templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+      >
+        {buecher &&
+          buecher.length > 0 &&
+          buecher.map((buch) => (
+            <BookCard
+              buch={buch}
+              key={buch.isbn}
+              schlagwortMap={schlagwortMap}
+            />
+          ))}
       </SimpleGrid>
     </Box>
   );

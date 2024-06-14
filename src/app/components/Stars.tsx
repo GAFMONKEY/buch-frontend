@@ -16,7 +16,7 @@ const Stars: FC<StarProperties> = ({ value, onChange }) => {
       <Text fontSize="xl" mr={2}>
         Bewertung:
       </Text>
-      {[1, 2, 3, 4, 5].map(rating => (
+      {[1, 2, 3, 4, 5].map((rating) => (
         <Text
           key={rating}
           fontSize="xl"

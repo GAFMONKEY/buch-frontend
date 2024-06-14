@@ -7,8 +7,8 @@ import { Suspense } from 'react';
 export const fetchBookDetails = async (id: string) => {
   try {
     const response = await axios.get(`https://localhost:3000/rest/${id}`, {
-        httpsAgent,
-      });
+      httpsAgent,
+    });
     return response.data;
   } catch (error) {
     console.error('Failed to fetch book details:', error);
@@ -16,7 +16,7 @@ export const fetchBookDetails = async (id: string) => {
   }
 };
 
-const BookPage = async ({ params } : { params: any }) => {
+const BookPage = async ({ params }: { params: any }) => {
   const { id } = params;
   const book = await fetchBookDetails(id);
 
@@ -25,7 +25,13 @@ const BookPage = async ({ params } : { params: any }) => {
   }
 
   return (
-    <Suspense fallback={<Center><Spinner size="xl" /></Center>}>
+    <Suspense
+      fallback={
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      }
+    >
       <BookDetails initialBook={book} id={id} />
     </Suspense>
   );

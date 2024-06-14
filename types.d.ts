@@ -9,34 +9,35 @@ type Buch = {
     homepage: string;
     schlagwoerter: string[];
     titel: {
-      titel: string;
-      untertitel: string;
+        titel: string;
+        untertitel: string;
     };
     _links: {
-      self: {
-          href: string;      
-      };
+        self: {
+            href: string;
+        };
     };
 };
 
 type BookErrors = {
-  isbn: string;
-  titel: string;
-  untertitel: string;
-  preis: string;
-  rabatt: string;
-  homepage: string;
-  rating: string;
-}
+    isbn: string;
+    titel: string;
+    untertitel: string;
+    preis: string;
+    rabatt: string;
+    homepage: string;
+    rating: string;
+};
 
 type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
 
 type Buecher = {
-  _embedded: {
-    buecher: Buch[];
-  }
-}
+    _embedded: {
+        buecher: Buch[];
+    };
+};
 
 type BuchResponse = {
-  body: Buch, eTag: string
+    body: Buch;
+    eTag: string;
 };

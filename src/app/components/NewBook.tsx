@@ -1,9 +1,18 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Input, Checkbox, Button, Box, Stack, Select, Flex, Text } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import {
+  Input,
+  Checkbox,
+  Button,
+  Box,
+  Stack,
+  Select,
+  Flex,
+  Text,
+} from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { postBuch } from '../service/book.service';
 import { useRouter } from 'next/navigation';
 import extractId from '../lib/extractId';
@@ -18,7 +27,8 @@ export default function NewBook() {
   const [datum, setDatum] = useState(new Date());
   const [rating, setSelectedRating] = useState(4);
   const [homepage, setHomepage] = useState('www.beispielverlag.de');
-  const [schlagwoerter, setSchlagwoerter] = useState<string>('Fiktion, Abenteuer');
+  const [schlagwoerter, setSchlagwoerter] =
+    useState<string>('Fiktion, Abenteuer');
   const [lieferbar, setLieferbar] = useState(true);
   const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
@@ -33,9 +43,9 @@ export default function NewBook() {
   const router = useRouter();
 
   const hasErrors = (errors: BookErrors): boolean => {
-    return Object.values(errors).some(error => error !== '');
+    return Object.values(errors).some((error) => error !== '');
   };
-  
+
   const validateForm = (): BookErrors => {
     const newErrors: BookErrors = {
       isbn: '',
@@ -69,12 +79,15 @@ export default function NewBook() {
     if (!rabatt) {
       newErrors.rabatt = 'Rabatt ist erforderlich!';
     } else if (!rabattPattern.test(rabatt)) {
-      newErrors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
+      newErrors.rabatt =
+        'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
     }
     if (rating < 0 || rating > 5 || !Number.isInteger(rating)) {
-      newErrors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
+      newErrors.rating =
+        'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
-    const homepagePattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    const homepagePattern =
+      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage || typeof homepage !== 'string') {
       newErrors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
@@ -89,7 +102,7 @@ export default function NewBook() {
     event.preventDefault();
     const newErrors = validateForm();
     setErrors(newErrors);
-      
+
     if (!hasErrors(errors)) {
       const formData = {
         isbn,
@@ -103,9 +116,9 @@ export default function NewBook() {
         schlagwoerter: schlagwoerter.split(',').map((s) => s.trim()),
         lieferbar,
       };
-  
-      const token = localStorage.getItem('access_token')??'';
-      if(token === '' || !token) {
+
+      const token = localStorage.getItem('access_token') ?? '';
+      if (token === '' || !token) {
         router.push('/login');
       }
 
@@ -124,17 +137,16 @@ export default function NewBook() {
     }
   };
 
-
   const displayStars = () => {
     let stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
         <StarIcon
           key={i}
-          onClick={() => setSelectedRating((i + 1))}
-          color={i < rating ? "teal.500" : "gray.300"} 
-          boxSize={"20px"}
-        />
+          onClick={() => setSelectedRating(i + 1)}
+          color={i < rating ? 'teal.500' : 'gray.300'}
+          boxSize={'20px'}
+        />,
       );
     }
     return stars;
@@ -145,8 +157,8 @@ export default function NewBook() {
   CustomInput.displayName = 'CustomInput';
 
   return (
-    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'} >
-      <Box > 
+    <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+      <Box>
         <label htmlFor="isbn">ISBN:</label>
         <Input
           id="isbn"
@@ -236,7 +248,7 @@ export default function NewBook() {
           value={homepage}
           onChange={(e) => setHomepage(e.target.value)}
         />
-         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
+        {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
         <label htmlFor="schlagwoerter">Schlagwörter:</label>
@@ -248,17 +260,23 @@ export default function NewBook() {
         />
       </Box>
       <Box display="flex" alignItems="center" mt={2}>
-      <Checkbox
-        mt={2}
-        isChecked={lieferbar}
-        onChange={(e) => setLieferbar(e.target.checked)}
-      >
-        Lieferbar
-      </Checkbox>
-      <Button type="submit" ml={600} minWidth="auto" className="submit-button" isLoading={loading} >
-        Neues Buch erstellen
-      </Button>
+        <Checkbox
+          mt={2}
+          isChecked={lieferbar}
+          onChange={(e) => setLieferbar(e.target.checked)}
+        >
+          Lieferbar
+        </Checkbox>
+        <Button
+          type="submit"
+          ml={600}
+          minWidth="auto"
+          className="submit-button"
+          isLoading={loading}
+        >
+          Neues Buch erstellen
+        </Button>
       </Box>
-    </Box> 
+    </Box>
   );
-};
+}

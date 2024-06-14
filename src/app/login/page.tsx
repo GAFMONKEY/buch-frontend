@@ -2,7 +2,17 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Button, FormControl, FormLabel, Input, Text, Spinner, InputRightElement, InputGroup } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+  Spinner,
+  InputRightElement,
+  InputGroup,
+} from '@chakra-ui/react';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
@@ -40,42 +50,53 @@ const LoginPage = () => {
 
   return (
     <Box maxW="550px" p={5}>
-    <Text fontSize="2xl" mb={5}>Login</Text>
-    <Box as='form' onSubmit={handleLogin}>
+      <Text fontSize="2xl" mb={5}>
+        Login
+      </Text>
+      <Box as="form" onSubmit={handleLogin}>
         <FormControl id="username" mb={4}>
           <FormLabel>Username:</FormLabel>
-          <Input 
-            variant='filled'
+          <Input
+            variant="filled"
             backgroundColor={'white'}
             border="1px solid"
             borderColor="black"
             _focus={{ borderColor: 'teal.500', borderWidth: '2px' }}
-            type="text" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} />
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </FormControl>
         <FormControl id="password" mb={4}>
           <FormLabel>Password:</FormLabel>
-          <InputGroup size='md'>
+          <InputGroup size="md">
             <Input
-              variant='filled'
+              variant="filled"
               backgroundColor={'white'}
-              border='1px solid'
-              borderColor='black'
+              border="1px solid"
+              borderColor="black"
               _focus={{ borderColor: 'teal.500', borderWidth: '2px' }}
               type={showPassword ? 'text' : 'password'}
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} />
-            <InputRightElement width='6rem'>
-              <Button h="2rem" size="sm" width='90px' onClick={handleTogglePasswordVisibility}>
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <InputRightElement width="6rem">
+              <Button
+                h="2rem"
+                size="sm"
+                width="90px"
+                onClick={handleTogglePasswordVisibility}
+              >
                 {showPassword ? 'Verstecken' : 'Anzeigen'}
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <Button isLoading={loading} colorScheme="teal" type="submit" mb={4}>Login</Button>
-    </Box>
-    {error && <Text color="red.500">{error}</Text>}
+        <Button isLoading={loading} colorScheme="teal" type="submit" mb={4}>
+          Login
+        </Button>
+      </Box>
+      {error && <Text color="red.500">{error}</Text>}
     </Box>
   );
 };
