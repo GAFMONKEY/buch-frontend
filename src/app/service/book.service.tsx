@@ -2,44 +2,44 @@
 import axios, { AxiosResponse } from 'axios';
 import { httpsAgent } from '../lib/httpsAgent';
 
-const serverUrl = 'https://localhost:3000';
+const baseURL = 'https://localhost:3000/rest';
 
 const handleRequestErrors = (error: any) => {
-  console.log('Error!!!!!!!!!!!!!!!!!!!!!!!');
   if (axios.isAxiosError(error)) {
     if (error.response) {
-      // console.log(error.response.data);
+      console.log(error.response.data);
       console.log(error.response.status);
-      // console.log(error.response.headers);
+      console.log(error.response.headers);
       return error.response.status;
     } else if (error.request) {
       console.log('Server:', error.request);
       return 500;
     }
   }
-  console.log('Error');
+  console.log('Error:', error);
   return -1;
 };
 
-export async function fetchBooks(searchParams: string) {
+export const getBooks = async (
+  searchParams: string,
+): Promise<Buch[] | number> => {
   try {
     const response: AxiosResponse<Buecher> = await axios.get(
-      `${serverUrl}/?${searchParams}`,
-      {
-        httpsAgent,
-      },
+      `${baseURL}/?${searchParams}`,
+      { httpsAgent },
     );
-    console.log(response.status);
     return response.data._embedded?.buecher ?? [];
   } catch (error) {
-    return handleRequestErrors(error);
+    const status = handleRequestErrors(error);
+    return status;
   }
-}
+};
+
 
 export async function postBuch(objektDaten: object, tokenDatei: string) {
   try {
     const response: AxiosResponse<Buecher> = await axios.post(
-      `${serverUrl}/rest`,
+      `${baseURL}`,
       objektDaten,
       {
         headers: {
@@ -67,7 +67,7 @@ export async function putBuch(
 ) {
   try {
     const response: AxiosResponse<Buecher> = await axios.put(
-      `${serverUrl}/rest/${id}`,
+      `${baseURL}/${id}`,
       objektDaten,
       {
         headers: {
@@ -88,7 +88,7 @@ export async function putBuch(
 }
 
 export const fetchBookDetails = async (id: string) => {
-  const response = await axios.get(`https://localhost:3000/rest/${id}`, {
+  const response = await axios.get(`${baseURL}/${id}`, {
     httpsAgent,
   });
   if (response.status != 200) {

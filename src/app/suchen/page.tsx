@@ -4,7 +4,7 @@ import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text } from '@chakra
 import { useCallback, useEffect, useState } from 'react';
 import { AdvancedSearch } from '../components/AdvancedSearch';
 import { BookCard } from '../components/BookCard';
-import { getBooks } from '../lib/getBuecher';
+import { getBooks } from '../service/book.service';
 import { useSearchParams } from 'next/navigation';
 import { schlagwortColorMap } from '../lib/generateColors';
 
