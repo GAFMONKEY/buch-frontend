@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, AlertIcon, Box, SimpleGrid } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { AdvancedSearch } from '../components/AdvancedSearch';
 import { BookCard } from '../components/BookCard';
@@ -11,6 +11,7 @@ import { schlagwortColorMap } from '../lib/generateColors';
 export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>();
   const [filteredBuecher, setFilteredBuecher] = useState<Buch[]>([]);
+  const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const [schlagwortMap, setSchlagwortMap] = useState<
@@ -19,6 +20,7 @@ export default function Suchen() {
 
   const filterBooksBySchlagwort = useCallback(
     (schlagwort: string) => {
+      setCurrentFilter(schlagwort.toUpperCase());
       const filtered = buecher?.filter(buch =>
         buch.schlagwoerter.includes(schlagwort)
       );
@@ -27,11 +29,17 @@ export default function Suchen() {
     [buecher]
   );
 
+  const clearFilter = () => {
+    setCurrentFilter(null);
+    setFilteredBuecher(buecher ? buecher : []);
+  };
+
   useEffect(() => {
     console.log('searchParams:', searchParams);
 
     // Don't call API when navigating to the page
     if (searchParams.toString().length > 0) {
+      clearFilter();
       const searchBooks = async () => {
         const query = new URLSearchParams(searchParams as any).toString();
         const response: Buch[] | number = await getBooks(query);
@@ -44,6 +52,7 @@ export default function Suchen() {
             );
           }
           setBuecher([]);
+          setFilteredBuecher([]);
         } else {
           setAlertMessage(null);
           const colorMap: Map<string, string> = schlagwortColorMap(response);
@@ -60,6 +69,14 @@ export default function Suchen() {
   return (
     <Box p={4}>
       <AdvancedSearch />
+      {currentFilter && (
+        <HStack mb={4}>
+          <Text as="i">Aktueller Filter: <strong>{currentFilter}</strong>.</Text>
+          <Button onClick={clearFilter} colorScheme="teal" variant="ghost">
+            Filter entfernen
+          </Button>
+        </HStack>
+      )}
       <Box width="fit-content" mb={4}>
         {alertMessage && (
           <Alert status="warning">
