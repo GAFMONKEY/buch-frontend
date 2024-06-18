@@ -1,7 +1,7 @@
 'use client';
 
 import { Alert, AlertIcon, Box, SimpleGrid } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AdvancedSearch } from '../components/AdvancedSearch';
 import { BookCard } from '../components/BookCard';
 import { getBooks } from '../lib/getBuecher';
@@ -10,11 +10,22 @@ import { schlagwortColorMap } from '../lib/generateColors';
 
 export default function Suchen() {
   const [buecher, setBuecher] = useState<Buch[]>();
+  const [filteredBuecher, setFilteredBuecher] = useState<Buch[]>([]);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const [schlagwortMap, setSchlagwortMap] = useState<
     Map<string, string> | undefined
   >(undefined);
+
+  const filterBooksBySchlagwort = useCallback(
+    (schlagwort: string) => {
+      const filtered = buecher?.filter(buch =>
+        buch.schlagwoerter.includes(schlagwort)
+      );
+      setFilteredBuecher(filtered ? filtered : []);
+    },
+    [buecher]
+  );
 
   useEffect(() => {
     console.log('searchParams:', searchParams);
@@ -38,6 +49,7 @@ export default function Suchen() {
           const colorMap: Map<string, string> = schlagwortColorMap(response);
           setSchlagwortMap(colorMap);
           setBuecher(response);
+          setFilteredBuecher(response);
         }
       };
 
@@ -61,13 +73,14 @@ export default function Suchen() {
         p={4}
         templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
       >
-        {buecher &&
-          buecher.length > 0 &&
-          buecher.map((buch) => (
+        {filteredBuecher &&
+          filteredBuecher.length > 0 &&
+          filteredBuecher.map((buch) => (
             <BookCard
               buch={buch}
               key={buch.isbn}
               schlagwortMap={schlagwortMap}
+              onSchlagwortClick={filterBooksBySchlagwort}
             />
           ))}
       </SimpleGrid>

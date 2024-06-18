@@ -56,14 +56,16 @@ export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
 export const BookCard = ({
   buch,
   schlagwortMap,
+  onSchlagwortClick,
 }: {
   buch: Buch;
   schlagwortMap: Map<string, string> | undefined;
+  onSchlagwortClick: (schlagwort: string) => void;
 }) => {
   const router = useRouter();
 
   const handleSchlagwortClick = (schlagwort: string) => {
-    router.push(`/suchen?${schlagwort.toLowerCase()}=true`);
+    onSchlagwortClick(schlagwort);
   };
 
   return (
