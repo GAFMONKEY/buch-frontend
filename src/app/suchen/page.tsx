@@ -29,41 +29,43 @@ export default function Suchen() {
     [buecher]
   );
 
-  const clearFilter = () => {
+  const clearFilter = useCallback(() => {
     setCurrentFilter(null);
     setFilteredBuecher(buecher ? buecher : []);
-  };
+  }, [buecher]);
 
   useEffect(() => {
     console.log('searchParams:', searchParams);
 
-    // Don't call API when navigating to the page
     if (searchParams.toString().length > 0) {
       clearFilter();
-      const searchBooks = async () => {
-        const query = new URLSearchParams(searchParams as any).toString();
-        const response: Buch[] | number = await getBooks(query);
-        if (typeof response === 'number') {
-          if (response === 404) {
-            setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
-          } else {
-            setAlertMessage(
-              'Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.',
-            );
-          }
-          setBuecher([]);
-          setFilteredBuecher([]);
-        } else {
-          setAlertMessage(null);
-          const colorMap: Map<string, string> = schlagwortColorMap(response);
-          setSchlagwortMap(colorMap);
-          setBuecher(response);
-          setFilteredBuecher(response);
-        }
-      };
-
-      searchBooks();
     }
+  }, [searchParams, clearFilter]);
+
+  useEffect(() => {
+    const searchBooks = async () => {
+      const query = new URLSearchParams(searchParams as any).toString();
+      const response: Buch[] | number = await getBooks(query);
+      if (typeof response === 'number') {
+        if (response === 404) {
+          setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
+        } else {
+          setAlertMessage(
+            'Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.',
+          );
+        }
+        setBuecher([]);
+        setFilteredBuecher([]);
+      } else {
+        setAlertMessage(null);
+        const colorMap: Map<string, string> = schlagwortColorMap(response);
+        setSchlagwortMap(colorMap);
+        setBuecher(response);
+        setFilteredBuecher(response);
+      }
+    };
+
+    searchBooks();
   }, [searchParams]);
 
   return (
