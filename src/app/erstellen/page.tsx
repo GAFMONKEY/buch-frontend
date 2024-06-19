@@ -1,6 +1,6 @@
 'use client';
 import { Box, Flex, useToast } from '@chakra-ui/react';
-import HorizontalBar from '../../../components/HorizontalBar';
+import HorizontalBar from '../components/HorizontalBar';
 import NewBook from '../components/NewBook';
 
 export default function Create() {

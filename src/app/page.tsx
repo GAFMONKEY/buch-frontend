@@ -1,6 +1,6 @@
 import { Box, Container, Text } from '@chakra-ui/react';
 import Image from 'next/image';
-import HorizontalBar from '../../components/HorizontalBar';
+import HorizontalBar from './components/HorizontalBar';
 import { Providers } from './components/Providers';
 
 export default function Home() {
