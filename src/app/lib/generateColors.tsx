@@ -1,30 +1,25 @@
-function generateColors(numColors: any) {
-  const colors = [];
-  for (let i = 0; i < numColors; i++) {
-    const hue = ((i * 360) / numColors) % 360;
-    colors.push(`hsl(${hue}, 100%, 75%)`);
-  }
-  return colors;
-}
+import colorsData from './colors.json';
+
+const preGeneratedColors: string[] = colorsData.colors;
 
 export function schlagwortColorMap(bücher: Buch[]) {
   const schlagwortSet = new Set<string>();
-  bücher.forEach((buch) => {
-    buch.schlagwoerter.forEach((schlagwort) => {
-      schlagwortSet.add(schlagwort);
-    });
-  });
 
-  const colors = generateColors(schlagwortSet.size);
+  bücher.forEach(buch => {
+    if (buch.schlagwoerter) {
+      buch.schlagwoerter.forEach(schlagwort => {
+        schlagwortSet.add(schlagwort);
+      });
+    }
+  });
 
   const colorMap = new Map<string, string>();
-
   let index = 0;
-  schlagwortSet.forEach((schlagwort) => {
-    colorMap.set(schlagwort, colors[index]);
-    index++;
+
+  schlagwortSet.forEach(schlagwort => {
+    // Verwenden der vorab geladenen Farben
+    colorMap.set(schlagwort, preGeneratedColors[index++]);
   });
+
   return colorMap;
 }
-
-// schlagwoerter => Map<schlagwort, color>
