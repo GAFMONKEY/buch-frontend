@@ -21,7 +21,7 @@ jobs:
         run: npm i
 
       - name: Run ESLint
-        run: npm run eslint 
+        run: npm run lint 
 
       - name: Run Prettier
         run: npm run prettier 
