@@ -1,6 +1,6 @@
 'use server';
 import axios, { AxiosResponse } from 'axios';
-import { httpsAgent } from '../lib/httpsAgent';
+import { httpsAgent } from '../lib/utils/httpsAgent';
 
 const baseURL = 'https://localhost:3000/rest';
 

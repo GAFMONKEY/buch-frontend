@@ -39,7 +39,7 @@ export const AdvancedSearch = () => {
 
     console.log('Suche mit Query: ', queryString);
 
-    router.push(`/suchen${queryString ? `?${queryString}` : '?titel='}`);
+    router.push(`/search${queryString ? `?${queryString}` : '?titel='}`);
   };
 
   const handleClearSearch = () => {

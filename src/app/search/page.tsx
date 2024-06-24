@@ -2,13 +2,13 @@
 
 import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
-import { AdvancedSearch } from '../components/AdvancedSearch';
-import { BookCard } from '../components/BookCard';
+import { AdvancedSearch } from '../components/search/AdvancedSearch';
+import { BookCard } from '../components/books/BookCard';
 import { getBooks } from '../service/book.service';
 import { useSearchParams } from 'next/navigation';
-import { schlagwortColorMap } from '../lib/generateColors';
+import { schlagwortColorMap } from '../lib/utils/generateColors';
 
-export default function Suchen() {
+export default function Search() {
   const [buecher, setBuecher] = useState<Buch[]>();
   const [filteredBuecher, setFilteredBuecher] = useState<Buch[]>([]);
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);

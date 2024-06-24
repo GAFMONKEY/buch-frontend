@@ -1,4 +1,4 @@
-import colorsData from './colors.json';
+import colorsData from '../constants/colors.json'
 
 const preGeneratedColors: string[] = colorsData.colors;
 

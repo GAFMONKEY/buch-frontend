@@ -16,9 +16,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FaEye, FaStar } from 'react-icons/fa6';
-import extractId from '../lib/extractId';
+import extractId from '../../lib/utils/extractId';
 import { useRouter } from 'next/navigation';
-import { schlagwortColorMap } from '../lib/generateColors';
+import { schlagwortColorMap } from '../../lib/utils/generateColors';
 
 export const StarRating = ({ rating }: { rating: number }) => {
   const stars = Array(5).fill(0);
@@ -87,7 +87,7 @@ export const BookCard = ({
               colorScheme="teal"
               leftIcon={<FaEye />}
               onClick={() =>
-                router.push(`/suchen/${extractId(buch._links.self.href)}`)
+                router.push(`/search/${extractId(buch._links.self.href)}`)
               }
             >
               Details

@@ -8,10 +8,10 @@ import {
   Spacer,
   Box,
 } from '@chakra-ui/react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { MdLogin, MdLogout } from 'react-icons/md';
 import Link from 'next/link';
-import Searchbar from './Searchbar';
+import Searchbar from '../search/Searchbar';
 
 export const Navbar = () => {
   const loginButtonStyles = {
@@ -59,17 +59,17 @@ export const Navbar = () => {
                 Startseite
               </Button>
             </Link>
-            <Link href="/suchen?titel=">
+            <Link href="/search?titel=">
               <Button color="white" _hover={{ color: 'teal.200' }}>
                 Alle Bücher
               </Button>
             </Link>
-            <Link href="/suchen">
+            <Link href="/search">
               <Button color="white" _hover={{ color: 'teal.200' }}>
                 Erweiterte Suche
               </Button>
             </Link>
-            <Link href={isAuthenticated ? '/erstellen' : '/login'}>
+            <Link href={isAuthenticated ? '/create' : '/login'}>
               <Button
                 color={isAuthenticated ? 'white' : 'gray.400'}
                 _hover={{ color: 'teal.200' }}

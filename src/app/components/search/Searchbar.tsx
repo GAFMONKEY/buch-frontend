@@ -23,7 +23,7 @@ export default function Searchbar() {
       </FormControl>
       <Link
         href={{
-          pathname: '/suchen',
+          pathname: '/search',
           query: {
             titel: titel,
           },

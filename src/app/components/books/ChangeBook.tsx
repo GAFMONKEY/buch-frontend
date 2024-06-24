@@ -14,7 +14,7 @@ import { StarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import router from 'next/router';
-import { putBuch } from '../service/book.service';
+import { putBuch } from '../../service/book.service';
 
 export const ChangeBook = ({
   book,
@@ -117,7 +117,7 @@ export const ChangeBook = ({
         const response = await putBuch(formData, token, id, eTag);
         if (response.status === 204) {
           alert('Buch erfolgreich geändert!');
-          router.push(`/suchen/${id}`);
+          router.push(`/search/${id}`);
         } else {
           alert('Fehler beim Ändern des Buches');
         }

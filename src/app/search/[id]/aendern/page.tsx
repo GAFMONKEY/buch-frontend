@@ -1,4 +1,4 @@
-import { ChangeBook } from '@/app/components/ChangeBook';
+import { ChangeBook } from '@/app/components/books/ChangeBook';
 import { useRouter } from 'next/navigation';
 import { fetchBookDetails } from '@/app/service/book.service';
 
@@ -8,7 +8,7 @@ const Aendern = async ({ params }: { params: any }) => {
 
   const response = await fetchBookDetails(id);
   if (!response) {
-    //router.push(`/suchen/${id}`);
+    //router.push(`/search/${id}`);
     return;
   }
   const book = response.body;

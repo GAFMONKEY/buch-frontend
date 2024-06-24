@@ -14,7 +14,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import extractId from '../lib/extractId';
+import extractId from '../../lib/utils/extractId';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { StarRating } from './BookCard';
@@ -126,7 +126,7 @@ export const BookDetails = ({
             colorScheme="teal"
             marginTop={2}
             onClick={() =>
-              router.push(`/suchen/${extractId(book._links.self.href)}/aendern`)
+              router.push(`/search/${extractId(book._links.self.href)}/aendern`)
             }
           >
             Buch bearbeiten

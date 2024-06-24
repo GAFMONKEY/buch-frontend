@@ -13,9 +13,9 @@ import {
 import { StarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { postBuch } from '../service/book.service';
+import { postBuch } from '../../service/book.service';
 import { useRouter } from 'next/navigation';
-import extractId from '../lib/extractId';
+import extractId from '../../lib/utils/extractId';
 
 export default function NewBook() {
   const [isbn, setIsbn] = useState('978-3-16-148410-0');
@@ -127,7 +127,7 @@ export default function NewBook() {
         const response = await postBuch(formData, token);
         if (response.status === 201) {
           const buchId = extractId(response.selfLink);
-          router.push(`/suchen/${buchId}`);
+          router.push(`/search/${buchId}`);
         } else {
           alert('Fehler beim Erstellen des Buchs');
         }
