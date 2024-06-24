@@ -1,20 +1,7 @@
 import { Spinner, Center } from '@chakra-ui/react';
-import axios from 'axios';
-import { BookDetails } from '../../components/books/BookDetails';
-import { httpsAgent } from '@/app/lib/utils/httpsAgent';
 import { Suspense } from 'react';
-
-export const fetchBookDetails = async (id: string) => {
-  try {
-    const response = await axios.get(`https://localhost:3000/rest/${id}`, {
-      httpsAgent,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Failed to fetch book details:', error);
-    return null;
-  }
-};
+import { BookDetails } from '../../components/books/BookDetails';
+import { fetchBookDetails } from '@/app/service/book.service';
 
 const BookPage = async ({ params }: { params: any }) => {
   const { id } = params;

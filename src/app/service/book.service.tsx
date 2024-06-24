@@ -88,14 +88,13 @@ export async function putBuch(
 }
 
 export const fetchBookDetails = async (id: string) => {
-  const response = await axios.get(`${baseURL}/${id}`, {
-    httpsAgent,
-  });
-  if (response.status != 200) {
-    alert('Fehler beim Laden des Buches');
-    return;
+  try {
+    const response = await axios.get(`https://localhost:3000/rest/${id}`, {
+      httpsAgent,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch book details:', error);
+    return null;
   }
-  const eTag = response.headers['etag'];
-  const body = await response.data;
-  return { body, eTag };
 };

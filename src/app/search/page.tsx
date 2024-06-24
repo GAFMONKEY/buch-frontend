@@ -1,6 +1,7 @@
 'use client';
 
-import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { Suspense } from 'react';
+import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text, Spinner, Center } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { AdvancedSearch } from '../components/search/AdvancedSearch';
 import { BookCard } from '../components/books/BookCard';
@@ -8,15 +9,13 @@ import { getBooks } from '../service/book.service';
 import { useSearchParams } from 'next/navigation';
 import { schlagwortColorMap } from '../lib/utils/generateColors';
 
-export default function Search() {
+function SearchContent() {
   const [buecher, setBuecher] = useState<Buch[]>();
   const [filteredBuecher, setFilteredBuecher] = useState<Buch[]>([]);
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const [schlagwortMap, setSchlagwortMap] = useState<
-    Map<string, string> | undefined
-  >(undefined);
+  const [schlagwortMap, setSchlagwortMap] = useState<Map<string, string> | undefined>(undefined);
 
   const filterBooksBySchlagwort = useCallback(
     (schlagwort: string) => {
@@ -104,5 +103,19 @@ export default function Search() {
           ))}
       </SimpleGrid>
     </Box>
+  );
+}
+
+export default function Search() {
+  return (
+    <Suspense
+      fallback={
+        <Center>
+          <Spinner size="xl" />
+        </Center>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }
