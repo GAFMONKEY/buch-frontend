@@ -1,5 +1,5 @@
 name: Lint and Format
-on: push
+on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,21 +10,25 @@ jobs:
           echo "Branch ${{ github.ref }}, repository ${{ github.repository }}."
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 21
 
       - name: Install dependencies
-        run: npm i
+        run: |
+          npm i
 
       - name: Run ESLint
-        run: npm run lint 
+        run: |
+          npm run lint 
 
       - name: Run Prettier
-        run: npm run prettier 
+        run: |
+          npm run prettier 
 
       - name: Build 
-        run: npm run build
+        run: |
+          npm run build
