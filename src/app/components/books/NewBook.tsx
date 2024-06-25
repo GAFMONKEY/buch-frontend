@@ -26,7 +26,7 @@ export default function NewBook() {
   const [rabatt, setRabatt] = useState('0.010');
   const [datum, setDatum] = useState(new Date());
   const [rating, setSelectedRating] = useState(4);
-  const [homepage, setHomepage] = useState('www.beispielverlag.de');
+  const [homepage, setHomepage] = useState('https://www.beispielverlag.de');
   const [schlagwoerter, setSchlagwoerter] =
     useState<string>('Fiktion, Abenteuer');
   const [lieferbar, setLieferbar] = useState(true);
@@ -87,7 +87,7 @@ export default function NewBook() {
         'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
     const homepagePattern =
-      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+      /^(https?:\/\/)(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage || typeof homepage !== 'string') {
       newErrors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
