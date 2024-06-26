@@ -108,7 +108,7 @@ export const ChangeBook = ({
       const formData = {
         isbn,
         titel: { titel, untertitel },
-        buchArt,
+        art: buchArt,
         preis: parseFloat(preis),
         rabatt: parseFloat(rabatt),
         datum: datum.toISOString(),
