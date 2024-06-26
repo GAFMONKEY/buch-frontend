@@ -80,12 +80,12 @@ export const ChangeBook = ({
         } else if (!preisPattern.test(preis)) {
             newErrors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
         }
-        const rabattPattern = /^(0(\.\d{1,4})?|1(\.0{1,4})?)$/;
+        const rabattPattern = /^(0(\.\d{1,3})?|1(\.0{1,3})?)$/;
         if (!rabatt) {
             newErrors.rabatt = 'Rabatt ist erforderlich!';
         } else if (!rabattPattern.test(rabatt)) {
             newErrors.rabatt =
-                'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
+                'Rabatt muss zwischen 0 und 1 liegen und darf maximal 3 Nachkommastellen haben!';
         }
         if (rating < 0 || rating > 5 || !Number.isInteger(rating)) {
             newErrors.rating =
