@@ -1,8 +1,25 @@
 'use server';
 import axios, { AxiosResponse } from 'axios';
 import { httpsAgent } from '../lib/utils/httpsAgent';
+import { AxiosError } from 'axios';
 
 const baseURL = 'https://localhost:3000/rest';
+
+const handleRequestErrors = (error: any) => {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+      return error.response.status;
+    } else if (error.request) {
+      console.log('Server:', error.request);
+      return 500;
+    }
+  }
+  console.log('Error:', error);
+  return -1;
+};
 
 export const getBooks = async (
   searchParams: string,
@@ -14,8 +31,8 @@ export const getBooks = async (
     );
     return response.data._embedded?.buecher ?? [];
   } catch (error) {
-    console.error('Error fetching books:', error);
-    return -1;
+    const status = handleRequestErrors(error);
+    return status;
   }
 };
 
@@ -38,8 +55,8 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
     const selfLink = response.headers['location'];
     return { status, selfLink };
   } catch (error) {
-    console.error('Error posting book:', error);
-    return { status: -1 };
+    const status = handleRequestErrors(error);
+    return { status };
   }
 }
 
@@ -56,14 +73,39 @@ export async function putBuch(objektDaten: object, tokenDatei: string, id: strin
     console.log('PUT Response:', response);
     return { status: response.status };
   } catch (error) {
-    console.error('Error putting book:', error);
-    return { status: -1 };
+    if (isPreconditionFailedError(error)) {
+      try {
+        const currentBook = await fetchBookDetailsWithETag(id); // Aktuelle Buchdetails und ETAG abrufen
+        const eTag = currentBook.eTag;
+
+        const retryResponse = await axios.put(`${baseURL}/${id}`, objektDaten, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenDatei}`,
+            'If-Match': eTag,
+          },
+          httpsAgent,
+        });
+        console.log('Retry PUT Response:', retryResponse);
+        return { status: retryResponse.status };
+      } catch (err) {
+        console.error('Fehler beim erneuten PUT-Anfrage:', err);
+        throw err;
+      }
+    } else {
+      console.error('Fehler beim PUT-Anfrage:', error);
+      throw error;
+    }
   }
+}
+
+function isPreconditionFailedError(error: AxiosError) {
+  return error.response?.status === 412;
 }
 
 export const fetchBookDetails = async (id: string) => {
   try {
-    const response = await axios.get(`${baseURL}/${id}`, {
+    const response = await axios.get(`https://localhost:3000/rest/${id}`, {
       httpsAgent,
     });
     return response.data;

@@ -118,7 +118,7 @@ export const ChangeBook = ({
       };
       const token = getAccessToken() ?? '';
       if (token == '' || !token) {
-        window.location.href = '/login';
+        window.location.href = '/login'; // Redirect to login page
         return;
       }
 
@@ -126,7 +126,7 @@ export const ChangeBook = ({
         const response = await putBuch(formData, token, id, eTag);
         if (response.status === 204) {
           alert('Buch erfolgreich geändert!');
-          window.location.href = `/search/${id}`;
+          window.location.href = `/search/${id}`; // Redirect to search page
         }
       } catch (error) {
         console.error('Fehler beim Ändern des Buches:', error);
