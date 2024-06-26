@@ -128,6 +128,7 @@ export default function CreateBook() {
                 const response = await postBuch(formData, token);
                 if (response.status === 201) {
                     const buchId = extractId(response.selfLink);
+                    alert('Buch erfolgreich erstellt!');
                     router.push(`/search/${buchId}`);
                 } else {
                     alert('Fehler beim Erstellen des Buchs');

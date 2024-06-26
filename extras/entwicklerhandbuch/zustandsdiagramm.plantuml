@@ -22,7 +22,7 @@ state "/create" as create {
     Anlegeformular --> Anlegeergebnis
     Anlegeergebnis --> AnlegeFehler: Fehlerhafte Daten
     Anlegeergebnis --> BackendFehlerCreate: Backend nicht erreichbar
-    Anlegeergebnis --> Erfolgsmeldung: Erfolg
+    Anlegeergebnis --> BookDetails: Buch erfolgreich erstellt! 
 }
 
 state "/change" as change {
@@ -33,7 +33,7 @@ state "/change" as change {
     Änderungsformular --> ÄnderungsErgebnis
     ÄnderungsErgebnis --> ÄnderungsFehler: Fehlerhafte Daten
     ÄnderungsErgebnis --> BackendFehlerChange: Backend nicht erreichbar
-    ÄnderungsErgebnis --> Erfolgsmeldung: Erfolg
+    ÄnderungsErgebnis --> BookDetails: Buch erfolgreich geändert!
 }
 
 state "/search" as search {
@@ -47,8 +47,7 @@ state "/search" as search {
     Suchergebnis --> GefundeneBuecher: Mindestens ein Buch gefunden
 }
 
-state "/success" as success {
-    Erfolgsmeldung: Erfolgsmeldungstext
+state "/BookDetails" as success {
 }
 
 Index --> auth: Button "Login"
@@ -57,6 +56,4 @@ Index --> create: Menüpunkt "Anlegen" (authorisiert)
 Index --> change: Menüpunkt "Ändern" (authorisiert)
 Index --> search: Menüpunkt "Suche"
 
-create --> success : Erfolgreich angelegt
-change --> success : Erfolgreich geändert
 @enduml
