@@ -59,7 +59,7 @@ export const Navbar = () => {
                 Startseite
               </Button>
             </Link>
-            <Link href="/search?titel=">
+            <Link href="/search?source=all-books">
               <Button color="white" _hover={{ color: 'teal.200' }}>
                 Alle Bücher
               </Button>

@@ -16,6 +16,7 @@ function SearchContent() {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const [schlagwortMap, setSchlagwortMap] = useState<Map<string, string> | undefined>(undefined);
+  const sourceAllBooks = searchParams.get('source') === 'all-books';
 
   const filterBooksBySchlagwort = useCallback(
     (schlagwort: string) => {
@@ -42,34 +43,42 @@ function SearchContent() {
   }, [searchParams, clearFilter]);
 
   useEffect(() => {
-    const searchBooks = async () => {
-      const query = new URLSearchParams(searchParams as any).toString();
-      const response: Buch[] | number = await getBooks(query);
-      if (typeof response === 'number') {
-        if (response === 404) {
-          setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
-        } else {
-          setAlertMessage(
-            'Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.',
-          );
-        }
-        setBuecher([]);
-        setFilteredBuecher([]);
-      } else {
-        setAlertMessage(null);
-        const colorMap: Map<string, string> = schlagwortColorMap(response);
-        setSchlagwortMap(colorMap);
-        setBuecher(response);
-        setFilteredBuecher(response);
-      }
-    };
+    // Don't call API when navigating to the page via 'Erweiterte Suche' button
+    if (searchParams.toString().length > 0) {
+      const searchBooks = async () => {
+        const query = sourceAllBooks ? 'titel=' : new URLSearchParams(searchParams as any).toString();
+        //const query = new URLSearchParams(searchParams as any).toString();
 
-    searchBooks();
-  }, [searchParams]);
+        const response: Buch[] | number = await getBooks(query);
+        if (typeof response === 'number') {
+          if (response === 404) {
+            setAlertMessage('Keine Bücher mit diesen Suchkriterien gefunden.');
+          } else {
+            setAlertMessage(
+              'Der Server ist aktuell nicht erreichbar. Bitte versuchen Sie es später erneut.',
+            );
+          }
+          setBuecher([]);
+          setFilteredBuecher([]);
+        } else {
+          setAlertMessage(null);
+          const colorMap: Map<string, string> = schlagwortColorMap(response);
+          setSchlagwortMap(colorMap);
+          setBuecher(response);
+          setFilteredBuecher(response);
+        }
+      };
+
+      searchBooks();
+    }
+  }, [searchParams, sourceAllBooks]);
+  //}, [searchParams]);
+
 
   return (
     <Box p={4}>
-      <AdvancedSearch />
+      {!sourceAllBooks && <AdvancedSearch />}
+      {/* <AdvancedSearch />   */}
       {currentFilter && (
         <HStack mb={4}>
           <Text as="i">Aktueller Filter: <strong>{currentFilter}</strong>.</Text>
