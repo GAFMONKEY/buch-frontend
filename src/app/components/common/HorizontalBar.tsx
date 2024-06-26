@@ -19,6 +19,7 @@ const HorizontalBar = ({ title, subtitle }: BarProperties) => {
                     size='3xl'
                     fontWeight='bold'
                     color='black'
+                    mt={1}
                 >
                     {title}
                 </Heading>
