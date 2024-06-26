@@ -1,11 +1,12 @@
 name: Lint and Format
-on: [ push ]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Initialize
-        run: echo "The job was automatically triggered by a ${{ github.event_name }} event." |
+        run:
+          echo "The job was automatically triggered by a ${{ github.event_name }} event." |
           echo "OS ${{ runner.os }}" |
           echo "Branch ${{ github.ref }}, repository ${{ github.repository }}."
 
@@ -23,12 +24,12 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npm run lint 
+          npm run lint
 
       - name: Run Prettier
         run: |
-          npm run prettier 
+          npm run prettier
 
-      - name: Build 
+      - name: Build
         run: |
           npm run build

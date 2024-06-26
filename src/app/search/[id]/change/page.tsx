@@ -1,12 +1,12 @@
 import { fetchBookDetails } from '@/app/service/book.service';
 import { ChangeBook } from '@/app/components/books/ChangeBook';
-interface AendernPageProps {
+interface ChangePageProps {
   params: {
     id: string;
   };
 }
 
-const Aendern = async ({ params }: AendernPageProps) => {
+const Change = async ({ params }: ChangePageProps) => {
   const { id } = params;
 
   const response = await fetchBookDetails(id);
@@ -18,7 +18,7 @@ const Aendern = async ({ params }: AendernPageProps) => {
       },
     };
   }
-  
+
   const book = response;
   const eTag = response.eTag ?? '';
 
@@ -29,4 +29,4 @@ const Aendern = async ({ params }: AendernPageProps) => {
   );
 };
 
-export default Aendern;
+export default Change;

@@ -34,7 +34,9 @@ export const ChangeBook = ({
   const [datum, changeDatum] = useState<Date>(new Date(book.datum));
   const [rating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);
-  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
+  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(
+    book.schlagwoerter,
+  );
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
   const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
@@ -79,12 +81,15 @@ export const ChangeBook = ({
     if (!rabatt) {
       newErrors.rabatt = 'Rabatt ist erforderlich!';
     } else if (!rabattPattern.test(rabatt)) {
-      newErrors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
+      newErrors.rabatt =
+        'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
     }
     if (rating < 0 || rating > 5 || !Number.isInteger(rating)) {
-      newErrors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
+      newErrors.rating =
+        'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
-    const homepagePattern = /^(https?:\/\/)(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    const homepagePattern =
+      /^(https?:\/\/)(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage || typeof homepage !== 'string') {
       newErrors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
@@ -154,7 +159,7 @@ export const ChangeBook = ({
     }
     return stars;
   };
-  
+
   const CustomInput = React.forwardRef(({ value, onClick }: any, ref: any) => (
     <Input onClick={onClick} ref={ref} value={value} />
   ));

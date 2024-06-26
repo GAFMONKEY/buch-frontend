@@ -12,11 +12,10 @@ export default function Home() {
           subtitle="Entdecken Sie die Welt der Bücher"
         />
         <Text textAlign={'justify'}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, sit
-          delectus! Sunt repudiandae iure et voluptatum voluptatibus facere
-          error aliquid porro maxime corrupti, ducimus eos quo, veritatis
-          voluptate laborum neque sed omnis hic quas consequatur, placeat minima
-          aperiam voluptas excepturi.
+          In unserer Bibliothek finden Sie alles von zeitlosen Klassikern bis
+          hin zu aktuellen Bestsellern. Egal, ob Sie auf der Suche nach
+          Entspannung, Unterhaltung oder neuen Erkenntnissen sind, wir haben das
+          passende Buch für Sie.
         </Text>
         <Box display={{ base: 'none', md: 'block' }} mt="20px">
           <Image

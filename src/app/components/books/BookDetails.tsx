@@ -124,7 +124,7 @@ export const BookDetails = ({
             colorScheme="teal"
             marginTop={2}
             onClick={() =>
-              router.push(`/search/${extractId(book._links.self.href)}/aendern`)
+              router.push(`/search/${extractId(book._links.self.href)}/change`)
             }
           >
             Buch bearbeiten
