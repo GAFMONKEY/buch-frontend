@@ -266,8 +266,12 @@ export const ChangeBook = ({
         <Input
           id="schlagwoerter"
           placeholder="Schlagwörter"
-          value={schlagwoerter.join(', ')}
-          onChange={(e) => setSchlagwoerter(e.target.value.split(','))}
+          value={schlagwoerter.join(',')}
+          onChange={(e) =>
+            setSchlagwoerter(
+              e.target.value.split(',').map((word) => word.trim()),
+            )
+          }
         />
       </Box>
       <Stack direction="row" spacing={4} align="center">
