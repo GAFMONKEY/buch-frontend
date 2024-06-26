@@ -31,7 +31,6 @@ export const BookDetails = ({
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  // Example of client-side fetching if needed (e.g., for refreshing data)
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
@@ -45,7 +44,6 @@ export const BookDetails = ({
         setLoading(false);
       }
     };
-    // Uncomment if you want to refetch on client side for any reason
     fetchBookDetails();
   }, [id]);
 

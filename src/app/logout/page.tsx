@@ -10,13 +10,8 @@ const LogoutPage = () => {
   const { setIsAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Remove the access token
     localStorage.removeItem('access_token');
-
-    // Update the authentication context
     setIsAuthenticated(false);
-
-    // Redirect to the homepage
     router.replace('/');
   }, [router, setIsAuthenticated]);
 

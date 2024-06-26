@@ -90,7 +90,6 @@ export const ChangeBook = ({
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // Nur wenn keine Validierungsfehler vorhanden sind, die Daten senden
       const formData = {
         isbn,
         titel: { titel, untertitel },
@@ -113,7 +112,6 @@ export const ChangeBook = ({
       }
 
       try {
-        // Hier wird die putBuch-Funktion aufgerufen
         const response = await putBuch(formData, token, id, eTag);
         if (response.status === 204) {
           alert('Buch erfolgreich geändert!');

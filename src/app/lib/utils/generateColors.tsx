@@ -17,7 +17,6 @@ export function schlagwortColorMap(bücher: Buch[]) {
   let index = 0;
 
   schlagwortSet.forEach(schlagwort => {
-    // Verwenden der vorab geladenen Farben
     colorMap.set(schlagwort, preGeneratedColors[index++]);
   });
 

@@ -43,11 +43,9 @@ function SearchContent() {
   }, [searchParams, clearFilter]);
 
   useEffect(() => {
-    // Don't call API when navigating to the page via 'Erweiterte Suche' button
     if (searchParams.toString().length > 0) {
       const searchBooks = async () => {
         const query = sourceAllBooks ? 'titel=' : new URLSearchParams(searchParams as any).toString();
-        //const query = new URLSearchParams(searchParams as any).toString();
 
         const response: Buch[] | number = await getBooks(query);
         if (typeof response === 'number') {
@@ -72,9 +70,8 @@ function SearchContent() {
       searchBooks();
     }
   }, [searchParams, sourceAllBooks]);
-  //}, [searchParams]);
 
-
+  
   return (
     <Box p={4}>
       {!sourceAllBooks && <AdvancedSearch />}
