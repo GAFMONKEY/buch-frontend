@@ -28,7 +28,7 @@ export default function CreateBook() {
   const [rating, setSelectedRating] = useState(4);
   const [homepage, setHomepage] = useState('https://www.beispielverlag.de');
   const [schlagwoerter, setSchlagwoerter] =
-    useState<string>('Fiktion, Abenteuer');
+    useState<string>('FIKTION, ABENTEUER');
   const [lieferbar, setLieferbar] = useState(true);
   const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
@@ -123,7 +123,6 @@ export default function CreateBook() {
       }
 
       try {
-        // Hier wird die postBuch-Funktion aufgerufen
         const response = await postBuch(formData, token);
         if (response.status === 201) {
           const buchId = extractId(response.selfLink);
@@ -256,11 +255,12 @@ export default function CreateBook() {
           id="schlagwoerter"
           placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
           value={schlagwoerter}
-          onChange={(e) => setSchlagwoerter(e.target.value)}
+          onChange={(e) => setSchlagwoerter(e.target.value.toUpperCase())}
         />
       </Box>
       <Box display="flex" alignItems="center" mt={2}>
         <Checkbox
+          colorScheme="teal"
           mt={2}
           isChecked={lieferbar}
           onChange={(e) => setLieferbar(e.target.checked)}
@@ -269,6 +269,7 @@ export default function CreateBook() {
         </Checkbox>
         <Button
           type="submit"
+          colorScheme="teal"
           ml={600}
           minWidth="auto"
           className="submit-button"

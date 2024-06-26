@@ -255,6 +255,7 @@ export const ChangeBook = ({
       </Box>
       <Box>
         <Checkbox
+          colorScheme="teal"
           isChecked={lieferbar}
           onChange={(e) => changeLieferbar(e.target.checked)}
         >
