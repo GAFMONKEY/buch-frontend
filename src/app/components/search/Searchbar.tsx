@@ -12,10 +12,10 @@ export default function Searchbar() {
         <HStack>
             <FormControl>
                 <Input
-                    variant="filled"
+                    variant='filled'
                     backgroundColor={'white'}
-                    placeholder="Nach Titel suchen..."
-                    focusBorderColor="teal.300"
+                    placeholder='Nach Titel suchen...'
+                    focusBorderColor='teal.300'
                     _focus={{ bg: 'white' }}
                     value={titel}
                     onChange={(e) => setTitel(e.target.value)}
@@ -30,11 +30,11 @@ export default function Searchbar() {
                 }}
             >
                 <IconButton
-                    type="submit"
+                    type='submit'
                     backgroundColor={'teal.200'}
-                    aria-label="Titelsuche"
+                    aria-label='Titelsuche'
                     icon={<FiSearch />}
-                    fontSize="24px"
+                    fontSize='24px'
                 ></IconButton>
             </Link>
         </HStack>

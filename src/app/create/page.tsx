@@ -7,10 +7,10 @@ export default function Create() {
     return (
         <Box>
             <HorizontalBar
-                title="Anlegen"
-                subtitle="Starte dein neues Kapitel"
+                title='Anlegen'
+                subtitle='Starte dein neues Kapitel'
             />
-            <Flex direction="column" align="center" p={4}>
+            <Flex direction='column' align='center' p={4}>
                 <CreateBook />
             </Flex>
         </Box>

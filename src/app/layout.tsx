@@ -18,18 +18,18 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang='en'>
             <body className={`${inter.className} antialiased`}>
                 <Providers>
                     <Box
-                        as="header"
-                        position="fixed"
-                        width="100%"
-                        zIndex="1000"
+                        as='header'
+                        position='fixed'
+                        width='100%'
+                        zIndex='1000'
                     >
                         <Navbar />
                     </Box>
-                    <Box mt="60px">{children}</Box>
+                    <Box mt='60px'>{children}</Box>
                 </Providers>
             </body>
         </html>

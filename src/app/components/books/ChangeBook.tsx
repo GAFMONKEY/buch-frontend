@@ -174,100 +174,100 @@ export const ChangeBook = ({
     CustomInput.displayName = 'CustomInput';
 
     return (
-        <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+        <Box as='form' onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
             <Box>
-                <label htmlFor="isbn">ISBN:</label>
+                <label htmlFor='isbn'>ISBN:</label>
                 <Input
-                    id="isbn"
-                    placeholder="z.B. 978-3-897-22583-1"
+                    id='isbn'
+                    placeholder='z.B. 978-3-897-22583-1'
                     value={isbn}
                     onChange={(e) => changeIsbn(e.target.value)}
                 />
-                {errors.isbn && <Text color="red.500">{errors.isbn}</Text>}
+                {errors.isbn && <Text color='red.500'>{errors.isbn}</Text>}
             </Box>
             <Box>
-                <label htmlFor="titel">Titel:</label>
+                <label htmlFor='titel'>Titel:</label>
                 <Input
-                    id="titel"
-                    placeholder="z.B. Alpha"
+                    id='titel'
+                    placeholder='z.B. Alpha'
                     value={titel}
                     onChange={(e) => changeTitel(e.target.value)}
                 />
-                {errors.titel && <Text color="red.500">{errors.titel}</Text>}
+                {errors.titel && <Text color='red.500'>{errors.titel}</Text>}
             </Box>
             <Box>
-                <label htmlFor="untertitel">Untertitel:</label>
+                <label htmlFor='untertitel'>Untertitel:</label>
                 <Input
-                    id="untertitel"
-                    placeholder="z.B. alpha"
+                    id='untertitel'
+                    placeholder='z.B. alpha'
                     value={untertitel}
                     onChange={(e) => changeUntertitel(e.target.value)}
                 />
                 {errors.untertitel && (
-                    <Text color="red.500">{errors.untertitel}</Text>
+                    <Text color='red.500'>{errors.untertitel}</Text>
                 )}
             </Box>
             <Box>
-                <label htmlFor="buchArt">Art:</label>
+                <label htmlFor='buchArt'>Art:</label>
                 <Select
-                    id="buchArt"
-                    placeholder="Wählen Sie die Art des Buches"
+                    id='buchArt'
+                    placeholder='Wählen Sie die Art des Buches'
                     value={buchArt}
                     onChange={handleBuchArtChange}
                 >
-                    <option value="DRUCKAUSGABE">Druckausgabe</option>
-                    <option value="KINDLE">Kindle</option>
+                    <option value='DRUCKAUSGABE'>Druckausgabe</option>
+                    <option value='KINDLE'>Kindle</option>
                 </Select>
             </Box>
             <Box>
-                <label htmlFor="preis">Preis:</label>
+                <label htmlFor='preis'>Preis:</label>
                 <Input
-                    id="preis"
-                    placeholder="z.B. 1.00"
+                    id='preis'
+                    placeholder='z.B. 1.00'
                     value={preis}
                     onChange={(e) => changePreis(e.target.value)}
                 />
-                {errors.preis && <Text color="red.500">{errors.preis}</Text>}
+                {errors.preis && <Text color='red.500'>{errors.preis}</Text>}
             </Box>
             <Box>
-                <label htmlFor="rabatt">Rabatt(%):</label>
+                <label htmlFor='rabatt'>Rabatt(%):</label>
                 <Input
-                    id="rabatt"
-                    placeholder="z.B. 0.1"
+                    id='rabatt'
+                    placeholder='z.B. 0.1'
                     value={rabatt}
                     onChange={(e) => changeRabatt(e.target.value)}
                 />
-                {errors.rabatt && <Text color="red.500">{errors.rabatt}</Text>}
+                {errors.rabatt && <Text color='red.500'>{errors.rabatt}</Text>}
             </Box>
             <Box>
-                <label htmlFor="datum">Datum:</label>
+                <label htmlFor='datum'>Datum:</label>
                 <DatePicker
                     selected={datum}
                     onChange={(date: Date) => changeDatum(date)}
-                    dateFormat="dd.MM.yyyy"
+                    dateFormat='dd.MM.yyyy'
                     customInput={<CustomInput />}
                 />
             </Box>
             <Box>
-                <label htmlFor="rating">Rating:</label>
+                <label htmlFor='rating'>Rating:</label>
                 <Flex>{displayStars()}</Flex>
-                {errors.rating && <Text color="red.500">{errors.rating}</Text>}
+                {errors.rating && <Text color='red.500'>{errors.rating}</Text>}
             </Box>
             <Box>
-                <label htmlFor="homepage">Homepage:</label>
+                <label htmlFor='homepage'>Homepage:</label>
                 <Input
-                    id="homepage"
-                    placeholder="z.B. https://www.test.de/"
+                    id='homepage'
+                    placeholder='z.B. https://www.test.de/'
                     value={homepage}
                     onChange={(e) => changeHomepage(e.target.value)}
                 />
                 {errors.homepage && (
-                    <Text color="red.500">{errors.homepage}</Text>
+                    <Text color='red.500'>{errors.homepage}</Text>
                 )}
             </Box>
             <Box>
                 <Checkbox
-                    colorScheme="teal"
+                    colorScheme='teal'
                     isChecked={lieferbar}
                     onChange={(e) => changeLieferbar(e.target.checked)}
                 >
@@ -275,10 +275,10 @@ export const ChangeBook = ({
                 </Checkbox>
             </Box>
             <Box>
-                <label htmlFor="schlagwoerter">Schlagwörter:</label>
+                <label htmlFor='schlagwoerter'>Schlagwörter:</label>
                 <Input
-                    id="schlagwoerter"
-                    placeholder="Schlagwörter"
+                    id='schlagwoerter'
+                    placeholder='Schlagwörter'
                     value={schlagwoerter.join(',')}
                     onChange={(e) =>
                         setSchlagwoerter(
@@ -289,12 +289,12 @@ export const ChangeBook = ({
                     }
                 />
             </Box>
-            <Stack direction="row" spacing={4} align="center">
-                <Button type="submit" colorScheme="teal" size="md">
+            <Stack direction='row' spacing={4} align='center'>
+                <Button type='submit' colorScheme='teal' size='md'>
                     Buch ändern
                 </Button>
-                <Link href="/search">
-                    <Button colorScheme="red" size="md">
+                <Link href='/search'>
+                    <Button colorScheme='red' size='md'>
                         Abbrechen
                     </Button>
                 </Link>

@@ -52,16 +52,16 @@ export const BookDetails = ({
     return (
         <Box
             p={5}
-            shadow="md"
-            borderWidth="1px"
-            borderRadius="lg"
-            bg="white"
-            maxW="4xl"
-            mx="auto"
+            shadow='md'
+            borderWidth='1px'
+            borderRadius='lg'
+            bg='white'
+            maxW='4xl'
+            mx='auto'
         >
-            <Flex direction={{ base: 'column', md: 'row' }} align="center">
+            <Flex direction={{ base: 'column', md: 'row' }} align='center'>
                 <Box
-                    flex="1"
+                    flex='1'
                     mb={{ base: 4, md: 0 }}
                     maxW={{ base: '100%', md: '300px' }}
                 >
@@ -71,65 +71,65 @@ export const BookDetails = ({
                         }
                         alt={book.titel.titel}
                         boxSize={{ base: '100%', md: '300px' }}
-                        objectFit="contain"
-                        borderRadius="md"
-                        mx="auto"
+                        objectFit='contain'
+                        borderRadius='md'
+                        mx='auto'
                     />
                 </Box>
                 <Spacer />
-                <Box flex="2" pl={{ base: 0, md: 5 }}>
-                    <Heading fontSize="2xl" mb={2} color="teal.600">
+                <Box flex='2' pl={{ base: 0, md: 5 }}>
+                    <Heading fontSize='2xl' mb={2} color='teal.600'>
                         {book.titel.titel}{' '}
                         {book.titel.untertitel == null || undefined
                             ? `- ${book.titel.untertitel}`
                             : ''}
                     </Heading>
                     <Box>
-                        <Text fontWeight="bold">ISBN:</Text>{' '}
+                        <Text fontWeight='bold'>ISBN:</Text>{' '}
                         <Text>{book.isbn}</Text>
-                        <Text fontWeight="bold">Rating:</Text>{' '}
+                        <Text fontWeight='bold'>Rating:</Text>{' '}
                         <Text>
                             <StarRating rating={book.rating} />
                         </Text>
-                        <Text fontWeight="bold" paddingTop={2}>
+                        <Text fontWeight='bold' paddingTop={2}>
                             Art:
                         </Text>{' '}
                         <Text>{book.art}</Text>
-                        <Text fontWeight="bold">Preis:</Text>
+                        <Text fontWeight='bold'>Preis:</Text>
                         <Text>
-                            <Text as="s" mr={2} color="grey">
+                            <Text as='s' mr={2} color='grey'>
                                 {book.preis.toFixed(2)}€
                             </Text>
-                            <Text as="span" color="red.500">
+                            <Text as='span' color='red.500'>
                                 {(book.preis * (1 - book.rabatt)).toFixed(2)}€
                             </Text>
                         </Text>
-                        <Text fontWeight="bold">Rabatt:</Text>
+                        <Text fontWeight='bold'>Rabatt:</Text>
                         <Text>{(book.rabatt * 100).toFixed(2)}%</Text>
-                        <Text fontWeight="bold">Lieferbar:</Text>
+                        <Text fontWeight='bold'>Lieferbar:</Text>
                         <Text>{book.lieferbar ? 'Ja' : 'Nein'}</Text>
-                        <Text fontWeight="bold">Datum:</Text>
+                        <Text fontWeight='bold'>Datum:</Text>
                         <Text>{new Date(book.datum).toLocaleDateString()}</Text>
                     </Box>
-                    <Link href={book.homepage} color="teal.500" isExternal>
+                    <Link href={book.homepage} color='teal.500' isExternal>
                         <Button
-                            colorScheme="teal"
-                            variant="outline"
-                            size="sm"
+                            colorScheme='teal'
+                            variant='outline'
+                            size='sm'
                             mt={2}
                         >
                             Homepage
                         </Button>
                     </Link>
-                    <Stack direction="row" mt={4} wrap="wrap" spacing={2}>
+                    <Stack direction='row' mt={4} wrap='wrap' spacing={2}>
                         {book.schlagwoerter.map((schlagwort) => (
-                            <Tag key={schlagwort} colorScheme="teal" size="lg">
+                            <Tag key={schlagwort} colorScheme='teal' size='lg'>
                                 {schlagwort}
                             </Tag>
                         ))}
                     </Stack>
                     <Button
-                        colorScheme="teal"
+                        colorScheme='teal'
                         marginTop={2}
                         onClick={() =>
                             router.push(

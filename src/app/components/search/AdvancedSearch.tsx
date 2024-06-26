@@ -51,80 +51,80 @@ export const AdvancedSearch = () => {
 
     return (
         <Box
-            maxW="400px"
-            p="10px"
+            maxW='400px'
+            p='10px'
             m={5}
-            borderWidth="1px"
-            borderRadius="lg"
-            display="wrap"
-            alignItems="baseline"
+            borderWidth='1px'
+            borderRadius='lg'
+            display='wrap'
+            alignItems='baseline'
         >
             <VStack>
-                <FormControl display="flex" alignItems="center">
-                    <FormLabel mb="0">Titel:</FormLabel>
+                <FormControl display='flex' alignItems='center'>
+                    <FormLabel mb='0'>Titel:</FormLabel>
                     <Input
-                        variant="flushed"
+                        variant='flushed'
                         backgroundColor={'white'}
-                        type="text"
-                        name="Titel"
-                        placeholder="Nach Titel suchen..."
-                        focusBorderColor="teal.300"
+                        type='text'
+                        name='Titel'
+                        placeholder='Nach Titel suchen...'
+                        focusBorderColor='teal.300'
                         value={titel}
                         onChange={(e) => setTitel(e.target.value)}
                     />
                 </FormControl>
                 <FormControl>
                     <RadioGroup
-                        name="BuchArt"
-                        colorScheme="teal"
+                        name='BuchArt'
+                        colorScheme='teal'
                         value={art}
                         onChange={(value) => setArt(value)}
                     >
-                        <Radio value="DRUCKAUSGABE" ml="10px">
+                        <Radio value='DRUCKAUSGABE' ml='10px'>
                             Druckausgabe
                         </Radio>
-                        <Radio value="KINDLE" ml="10px">
+                        <Radio value='KINDLE' ml='10px'>
                             Kindle
                         </Radio>
-                        <Radio value="" ml="10px">
+                        <Radio value='' ml='10px'>
                             keine Angabe
                         </Radio>
                     </RadioGroup>
                 </FormControl>
                 <FormControl>
                     <Select
-                        placeholder="Bewertung"
+                        placeholder='Bewertung'
                         value={rating}
                         onChange={(e) => setRating(e.target.value)}
                     >
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4</option>
+                        <option value='5'>5</option>
                     </Select>
                 </FormControl>
-                <FormControl display="flex" alignItems="center">
+                <FormControl display='flex' alignItems='center'>
                     <Checkbox
-                        name="lieferbar"
-                        size="lg"
-                        colorScheme="teal"
+                        name='lieferbar'
+                        size='lg'
+                        colorScheme='teal'
                         isChecked={lieferbar}
                         onChange={(e) => setLieferbar(e.target.checked)}
                     />
-                    <FormLabel mb="0" ml="10px">
+                    <FormLabel mb='0' ml='10px'>
                         Nur lieferbare Bücher anzeigen
                     </FormLabel>
                 </FormControl>
                 <HStack>
                     <Button
-                        colorScheme="teal"
+                        colorScheme='teal'
                         leftIcon={<FiSearch />}
                         onClick={handleSearch}
                     >
                         Suchen
                     </Button>
-                    <Button colorScheme="gray" onClick={handleClearSearch}>
+                    <Button colorScheme='gray' onClick={handleClearSearch}>
                         Suche leeren
                     </Button>
                 </HStack>

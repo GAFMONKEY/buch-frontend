@@ -49,32 +49,32 @@ const LoginPage = () => {
     const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
 
     return (
-        <Box maxW="550px" p={5}>
-            <Text fontSize="2xl" mb={5}>
+        <Box maxW='550px' p={5}>
+            <Text fontSize='2xl' mb={5}>
                 Login
             </Text>
-            <Box as="form" onSubmit={handleLogin}>
-                <FormControl id="username" mb={4}>
+            <Box as='form' onSubmit={handleLogin}>
+                <FormControl id='username' mb={4}>
                     <FormLabel>Username:</FormLabel>
                     <Input
-                        variant="filled"
+                        variant='filled'
                         backgroundColor={'white'}
-                        border="1px solid"
-                        borderColor="black"
+                        border='1px solid'
+                        borderColor='black'
                         _focus={{ borderColor: 'teal.500', borderWidth: '2px' }}
-                        type="text"
+                        type='text'
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </FormControl>
-                <FormControl id="password" mb={4}>
+                <FormControl id='password' mb={4}>
                     <FormLabel>Password:</FormLabel>
-                    <InputGroup size="md">
+                    <InputGroup size='md'>
                         <Input
-                            variant="filled"
+                            variant='filled'
                             backgroundColor={'white'}
-                            border="1px solid"
-                            borderColor="black"
+                            border='1px solid'
+                            borderColor='black'
                             _focus={{
                                 borderColor: 'teal.500',
                                 borderWidth: '2px',
@@ -83,11 +83,11 @@ const LoginPage = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <InputRightElement width="6rem">
+                        <InputRightElement width='6rem'>
                             <Button
-                                h="2rem"
-                                size="sm"
-                                width="90px"
+                                h='2rem'
+                                size='sm'
+                                width='90px'
                                 onClick={handleTogglePasswordVisibility}
                             >
                                 {showPassword ? 'Verstecken' : 'Anzeigen'}
@@ -97,14 +97,14 @@ const LoginPage = () => {
                 </FormControl>
                 <Button
                     isLoading={loading}
-                    colorScheme="teal"
-                    type="submit"
+                    colorScheme='teal'
+                    type='submit'
                     mb={4}
                 >
                     Login
                 </Button>
             </Box>
-            {error && <Text color="red.500">{error}</Text>}
+            {error && <Text color='red.500'>{error}</Text>}
         </Box>
     );
 };

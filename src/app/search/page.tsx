@@ -94,21 +94,21 @@ function SearchContent() {
             {/* <AdvancedSearch />   */}
             {currentFilter && (
                 <HStack mb={4}>
-                    <Text as="i">
+                    <Text as='i'>
                         Aktueller Filter: <strong>{currentFilter}</strong>.
                     </Text>
                     <Button
                         onClick={clearFilter}
-                        colorScheme="teal"
-                        variant="ghost"
+                        colorScheme='teal'
+                        variant='ghost'
                     >
                         Filter entfernen
                     </Button>
                 </HStack>
             )}
-            <Box width="fit-content" mb={4}>
+            <Box width='fit-content' mb={4}>
                 {alertMessage && (
-                    <Alert status="warning">
+                    <Alert status='warning'>
                         <AlertIcon />
                         {alertMessage}
                     </Alert>
@@ -117,7 +117,7 @@ function SearchContent() {
             <SimpleGrid
                 spacing={10}
                 p={4}
-                templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+                templateColumns='repeat(auto-fill, minmax(250px, 1fr))'
             >
                 {filteredBuecher &&
                     filteredBuecher.length > 0 &&
@@ -139,7 +139,7 @@ export default function Search() {
         <Suspense
             fallback={
                 <Center>
-                    <Spinner size="xl" />
+                    <Spinner size='xl' />
                 </Center>
             }
         >

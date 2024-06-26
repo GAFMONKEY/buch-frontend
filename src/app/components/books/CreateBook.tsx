@@ -160,72 +160,72 @@ export default function CreateBook() {
     CustomInput.displayName = 'CustomInput';
 
     return (
-        <Box as="form" onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+        <Box as='form' onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
             <Box>
-                <label htmlFor="isbn">ISBN:</label>
+                <label htmlFor='isbn'>ISBN:</label>
                 <Input
-                    id="isbn"
-                    placeholder="z.B. 978-3-897-22583-1"
+                    id='isbn'
+                    placeholder='z.B. 978-3-897-22583-1'
                     value={isbn}
                     onChange={(e) => setIsbn(e.target.value)}
                 />
-                {errors.isbn && <Text color="red.500">{errors.isbn}</Text>}
+                {errors.isbn && <Text color='red.500'>{errors.isbn}</Text>}
             </Box>
             <Box>
-                <label htmlFor="titel">Titel:</label>
+                <label htmlFor='titel'>Titel:</label>
                 <Input
-                    id="titel"
-                    placeholder="z.B. Alpha"
+                    id='titel'
+                    placeholder='z.B. Alpha'
                     value={titel}
                     onChange={(e) => setTitel(e.target.value)}
                 />
-                {errors.titel && <Text color="red.500">{errors.titel}</Text>}
+                {errors.titel && <Text color='red.500'>{errors.titel}</Text>}
             </Box>
             <Box>
-                <label htmlFor="untertitel">Untertitel:</label>
+                <label htmlFor='untertitel'>Untertitel:</label>
                 <Input
-                    id="untertitel"
-                    placeholder="z.B. alpha"
+                    id='untertitel'
+                    placeholder='z.B. alpha'
                     value={untertitel}
                     onChange={(e) => setUntertitel(e.target.value)}
                 />
                 {errors.untertitel && (
-                    <Text color="red.500">{errors.untertitel}</Text>
+                    <Text color='red.500'>{errors.untertitel}</Text>
                 )}
             </Box>
             <Box>
-                <label htmlFor="buchArt">Buchart:</label>
+                <label htmlFor='buchArt'>Buchart:</label>
                 <Select
-                    id="buchArt"
-                    name="buchArt"
-                    placeholder="Wählen Sie die Buchart aus"
+                    id='buchArt'
+                    name='buchArt'
+                    placeholder='Wählen Sie die Buchart aus'
                     value={buchArt}
                     onChange={(e) => setBuchArt(e.target.value as BuchArt)}
                     required
                 >
-                    <option value="KINDLE">KINDLE</option>
-                    <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
+                    <option value='KINDLE'>KINDLE</option>
+                    <option value='DRUCKAUSGABE'>DRUCKAUSGABE</option>
                 </Select>
             </Box>
             <Box>
-                <label htmlFor="preis">Preis(€):</label>
+                <label htmlFor='preis'>Preis(€):</label>
                 <Input
-                    id="preis"
-                    placeholder="z.B. 11.11"
+                    id='preis'
+                    placeholder='z.B. 11.11'
                     value={preis}
                     onChange={(e) => setPreis(e.target.value)}
                 />
-                {errors.preis && <Text color="red.500">{errors.preis}</Text>}
+                {errors.preis && <Text color='red.500'>{errors.preis}</Text>}
             </Box>
             <Box>
-                <label htmlFor="rabatt">Rabatt(%):</label>
+                <label htmlFor='rabatt'>Rabatt(%):</label>
                 <Input
-                    id="rabatt"
-                    placeholder="z.B. 1.1"
+                    id='rabatt'
+                    placeholder='z.B. 1.1'
                     value={rabatt}
                     onChange={(e) => setRabatt(e.target.value)}
                 />
-                {errors.rabatt && <Text color="red.500">{errors.rabatt}</Text>}
+                {errors.rabatt && <Text color='red.500'>{errors.rabatt}</Text>}
             </Box>
             <Box mt={4} mb={4}>
                 <Text mb={2}>Datum:</Text>
@@ -233,44 +233,44 @@ export default function CreateBook() {
                     selected={datum}
                     onChange={(date: Date) => setDatum(date)}
                     customInput={<CustomInput />}
-                    popperPlacement="right"
+                    popperPlacement='right'
                 />
             </Box>
             <Box mt={2}>
-                <Flex justifyContent="flex-start">
+                <Flex justifyContent='flex-start'>
                     Bewertung:
-                    <Stack direction="row" mb={4} ml={20}>
+                    <Stack direction='row' mb={4} ml={20}>
                         {displayStars()}
                     </Stack>
                 </Flex>
-                {errors.rating && <Text color="red.500">{errors.rating}</Text>}
+                {errors.rating && <Text color='red.500'>{errors.rating}</Text>}
             </Box>
             <Box>
-                <label htmlFor="homepage">Homepage:</label>
+                <label htmlFor='homepage'>Homepage:</label>
                 <Input
-                    id="homepage"
-                    placeholder="z.B. acme.at"
+                    id='homepage'
+                    placeholder='z.B. acme.at'
                     value={homepage}
                     onChange={(e) => setHomepage(e.target.value)}
                 />
                 {errors.homepage && (
-                    <Text color="red.500">{errors.homepage}</Text>
+                    <Text color='red.500'>{errors.homepage}</Text>
                 )}
             </Box>
             <Box>
-                <label htmlFor="schlagwoerter">Schlagwörter:</label>
+                <label htmlFor='schlagwoerter'>Schlagwörter:</label>
                 <Input
-                    id="schlagwoerter"
-                    placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
+                    id='schlagwoerter'
+                    placeholder='z.B. JAVASCRIPT,TYPESCRIPT'
                     value={schlagwoerter}
                     onChange={(e) =>
                         setSchlagwoerter(e.target.value.toUpperCase())
                     }
                 />
             </Box>
-            <Box display="flex" alignItems="center" mt={2}>
+            <Box display='flex' alignItems='center' mt={2}>
                 <Checkbox
-                    colorScheme="teal"
+                    colorScheme='teal'
                     mt={2}
                     isChecked={lieferbar}
                     onChange={(e) => setLieferbar(e.target.checked)}
@@ -278,11 +278,11 @@ export default function CreateBook() {
                     Lieferbar
                 </Checkbox>
                 <Button
-                    type="submit"
-                    colorScheme="teal"
+                    type='submit'
+                    colorScheme='teal'
                     ml={600}
-                    minWidth="auto"
-                    className="submit-button"
+                    minWidth='auto'
+                    className='submit-button'
                     isLoading={loading}
                 >
                     Neues Buch erstellen

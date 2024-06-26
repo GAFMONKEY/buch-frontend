@@ -29,7 +29,7 @@ const BookPage = ({ params }: { params: any }) => {
     if (loading) {
         return (
             <Center>
-                <Spinner size="xl" />
+                <Spinner size='xl' />
             </Center>
         );
     }

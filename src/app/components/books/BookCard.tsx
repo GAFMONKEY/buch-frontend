@@ -41,11 +41,11 @@ export const Lieferbar = ({ lieferbar }: { lieferbar: boolean }) => {
     return (
         <Badge
             colorScheme={lieferbar ? 'green' : 'red'}
-            variant="subtle"
-            fontSize="sm"
-            fontWeight="500"
+            variant='subtle'
+            fontSize='sm'
+            fontWeight='500'
             px={3}
-            rounded="full"
+            rounded='full'
             m={1}
         >
             {lieferbar ? 'LIEFERBAR' : 'NICHT LIEFERBAR'}
@@ -69,10 +69,10 @@ export const BookCard = ({
     };
 
     return (
-        <Card key={buch.isbn} borderTop="8px" borderColor="teal.400" bg="white">
+        <Card key={buch.isbn} borderTop='8px' borderColor='teal.400' bg='white'>
             <CardHeader>
-                <Flex direction="column" w="100%">
-                    <Flex justify="space-between" alignItems="center" w="100%">
+                <Flex direction='column' w='100%'>
+                    <Flex justify='space-between' alignItems='center' w='100%'>
                         <Text
                             color={'teal.500'}
                             textTransform={'uppercase'}
@@ -83,8 +83,8 @@ export const BookCard = ({
                             {buch.art}
                         </Text>
                         <Button
-                            variant="ghost"
-                            colorScheme="teal"
+                            variant='ghost'
+                            colorScheme='teal'
                             leftIcon={<FaEye />}
                             onClick={() =>
                                 router.push(
@@ -95,7 +95,7 @@ export const BookCard = ({
                             Details
                         </Button>
                     </Flex>
-                    <Heading size="md">{buch.titel.titel}</Heading>
+                    <Heading size='md'>{buch.titel.titel}</Heading>
                     <StarRating rating={buch.rating} />
                 </Flex>
             </CardHeader>
@@ -104,13 +104,13 @@ export const BookCard = ({
                     buch.schlagwoerter.map((schlagwort, index) => (
                         <Badge
                             key={index}
-                            fontSize="sm"
-                            fontWeight="500"
+                            fontSize='sm'
+                            fontWeight='500'
                             bg={schlagwortMap?.get(schlagwort) || 'teal'}
                             px={3}
-                            rounded="full"
+                            rounded='full'
                             m={1}
-                            cursor="pointer"
+                            cursor='pointer'
                             _hover={{
                                 bg: `${schlagwortMap?.get(schlagwort) || 'teal'}`,
                                 filter: 'brightness(1.3)',
@@ -123,12 +123,12 @@ export const BookCard = ({
             </CardBody>
             <Divider borderColor={'gray.200'} />
             <CardFooter p={2}>
-                <HStack justify="space-between" alignItems="center" w="100%">
-                    <VStack spacing="0px">
-                        <Text color="grey" fontSize="l" as="s" paddingLeft={1}>
+                <HStack justify='space-between' alignItems='center' w='100%'>
+                    <VStack spacing='0px'>
+                        <Text color='grey' fontSize='l' as='s' paddingLeft={1}>
                             {buch.preis.toFixed(2)}€
                         </Text>
-                        <Text color="red.500" fontSize="xl">
+                        <Text color='red.500' fontSize='xl'>
                             {(buch.preis * (1 - buch.rabatt)).toFixed(2)}€
                         </Text>
                     </VStack>
