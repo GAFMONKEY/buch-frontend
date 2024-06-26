@@ -3,22 +3,22 @@ import colorsData from '../constants/colors.json';
 const preGeneratedColors: string[] = colorsData.colors;
 
 export function schlagwortColorMap(bücher: Buch[]) {
-  const schlagwortSet = new Set<string>();
+    const schlagwortSet = new Set<string>();
 
-  bücher.forEach((buch) => {
-    if (buch.schlagwoerter) {
-      buch.schlagwoerter.forEach((schlagwort) => {
-        schlagwortSet.add(schlagwort);
-      });
-    }
-  });
+    bücher.forEach((buch) => {
+        if (buch.schlagwoerter) {
+            buch.schlagwoerter.forEach((schlagwort) => {
+                schlagwortSet.add(schlagwort);
+            });
+        }
+    });
 
-  const colorMap = new Map<string, string>();
-  let index = 0;
+    const colorMap = new Map<string, string>();
+    let index = 0;
 
-  schlagwortSet.forEach((schlagwort) => {
-    colorMap.set(schlagwort, preGeneratedColors[index++]);
-  });
+    schlagwortSet.forEach((schlagwort) => {
+        colorMap.set(schlagwort, preGeneratedColors[index++]);
+    });
 
-  return colorMap;
+    return colorMap;
 }
