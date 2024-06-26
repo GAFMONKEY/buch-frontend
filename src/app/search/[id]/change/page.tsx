@@ -1,5 +1,8 @@
 import { fetchBookDetails } from '@/app/service/book.service';
 import { ChangeBook } from '@/app/components/books/ChangeBook';
+import { Box, Flex, useToast } from '@chakra-ui/react';
+import HorizontalBar from '@/app/components/common/HorizontalBar'; 
+
 interface ChangePageProps {
     params: {
         id: string;
@@ -23,9 +26,13 @@ const Change = async ({ params }: ChangePageProps) => {
     const eTag = response.eTag ?? '';
 
     return (
-        <div>
+        <Box>
+            <HorizontalBar
+                title='Ändern'
+                subtitle='Aktualisiere deine Buchdaten'
+            />
             <ChangeBook book={book} id={id} eTag={eTag} />
-        </div>
+        </Box>
     );
 };
 

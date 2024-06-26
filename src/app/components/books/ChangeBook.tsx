@@ -162,7 +162,7 @@ export const ChangeBook = ({
     CustomInput.displayName = 'CustomInput';
 
     return (
-        <Box as='form' onSubmit={handleSubmit} p={4} maxWidth={'60%'}>
+        <Box as='form' onSubmit={handleSubmit} p={4} maxWidth={'60%'} margin='0 auto'>
             <Box>
                 <label htmlFor='isbn'>ISBN:</label>
                 <Input
