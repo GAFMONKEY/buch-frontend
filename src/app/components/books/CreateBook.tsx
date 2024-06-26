@@ -138,6 +138,7 @@ export default function CreateBook() {
         } else {
             alert('Bitte überprüfen Sie Ihre Eingaben!');
         }
+      setLoading(false);
     };
 
     const displayStars = () => {
