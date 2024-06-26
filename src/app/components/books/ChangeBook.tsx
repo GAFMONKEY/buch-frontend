@@ -13,8 +13,8 @@ import {
 import { StarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import router from 'next/router';
 import { putBuch } from '../../service/book.service';
+import Link from 'next/link';
 
 export const ChangeBook = ({
   book,
@@ -34,9 +34,7 @@ export const ChangeBook = ({
   const [datum, changeDatum] = useState<Date>(new Date(book.datum));
   const [rating, setSelectedRating] = useState(book.rating);
   const [homepage, changeHomepage] = useState(book.homepage);
-  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(
-    book.schlagwoerter,
-  );
+  const [schlagwoerter, setSchlagwoerter] = useState<string[]>(book.schlagwoerter);
   const [lieferbar, changeLieferbar] = useState(book.lieferbar);
   const [errors, setErrors] = useState<BookErrors>({
     isbn: '',
@@ -48,48 +46,60 @@ export const ChangeBook = ({
     rating: '',
   });
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const validateForm = (): BookErrors => {
+    const newErrors: BookErrors = {
+      isbn: '',
+      titel: '',
+      untertitel: '',
+      preis: '',
+      rabatt: '',
+      homepage: '',
+      rating: '',
+    };
 
     const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
     if (!isbn || !isbnPattern.test(isbn)) {
-      errors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
+      newErrors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
     }
-    if (!titel || typeof titel !== 'string') {
-      errors.titel = 'Der Titel muss ein String sein';
+    if (!titel) {
+      newErrors.titel = 'Der Titel muss ein String sein';
     }
-    if (!untertitel || typeof untertitel !== 'string') {
-      errors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
+    if (!untertitel) {
+      newErrors.untertitel = 'Bitte geben Sie einen gültigen Untertitel ein';
     }
-    const preisPattern = /^\d+\.\d{2}$/;
+    const preisPattern = /^\d+(\.\d{2})?$/;
     if (!preis) {
-      errors.preis = 'Preis ist erforderlich!';
+      newErrors.preis = 'Preis ist erforderlich!';
     } else if (parseFloat(preis) <= 0) {
-      errors.preis = 'Preis muss größer als 0 sein!';
+      newErrors.preis = 'Preis muss größer als 0 sein!';
     } else if (!preisPattern.test(preis)) {
-      errors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
+      newErrors.preis = 'Preis bitte mit 2 Nachkommastellen angeben!';
     }
-    const rabattFloat = parseFloat(rabatt);
+    const rabattPattern = /^(0(\.\d{1,4})?|1(\.0{1,4})?)$/;
     if (!rabatt) {
-      errors.rabatt = 'Rabatt ist erforderlich!';
-    } else if (isNaN(rabattFloat) || rabattFloat < 0 || rabattFloat > 1) {
-      // Adding robust Rabatt validation
-      errors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen!';
+      newErrors.rabatt = 'Rabatt ist erforderlich!';
+    } else if (!rabattPattern.test(rabatt)) {
+      newErrors.rabatt = 'Rabatt muss zwischen 0 und 1 liegen und darf maximal 4 Nachkommastellen haben!';
     }
-    if (!rating || rating < 0 || rating > 5 || !Number.isInteger(rating)) {
-      errors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
+    if (rating < 0 || rating > 5 || !Number.isInteger(rating)) {
+      newErrors.rating = 'Die Bewertung muss eine Ganzzahl zwischen 0 und 5 sein';
     }
-    const homepagePattern =
-      /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+    const homepagePattern = /^(https?:\/\/)(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-zA-Z0-9()]{2,}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
     if (!homepage || typeof homepage !== 'string') {
-      errors.homepage = 'Homepage ist erforderlich!';
+      newErrors.homepage = 'Homepage ist erforderlich!';
     } else if (!homepagePattern.test(homepage)) {
-      errors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
+      newErrors.homepage = 'Bitte geben Sie eine gültige Homepage-URL ein!';
     }
 
-    setErrors(errors);
+    return newErrors;
+  };
 
-    if (Object.keys(errors).length === 0) {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const newErrors = validateForm();
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).every((error) => error === '')) {
       const formData = {
         isbn,
         titel: { titel, untertitel },
@@ -108,20 +118,18 @@ export const ChangeBook = ({
       };
       const token = getAccessToken() ?? '';
       if (token == '' || !token) {
-        router.push('/login');
+        window.location.href = '/login';
+        return;
       }
 
       try {
         const response = await putBuch(formData, token, id, eTag);
         if (response.status === 204) {
           alert('Buch erfolgreich geändert!');
-          router.push(`/search/${id}`);
-        } else {
-          alert('Fehler beim Ändern des Buches');
+          window.location.href = `/search/${id}`;
         }
       } catch (error) {
-        console.error('Fehler:', error);
-        alert('Fehler beim Ändern des Buches');
+        console.error('Fehler beim Ändern des Buches:', error);
       }
     } else {
       alert('Bitte überprüfen Sie Ihre Eingaben!');
@@ -146,6 +154,7 @@ export const ChangeBook = ({
     }
     return stars;
   };
+  
   const CustomInput = React.forwardRef(({ value, onClick }: any, ref: any) => (
     <Input onClick={onClick} ref={ref} value={value} />
   ));
@@ -184,93 +193,88 @@ export const ChangeBook = ({
         {errors.untertitel && <Text color="red.500">{errors.untertitel}</Text>}
       </Box>
       <Box>
-        <label htmlFor="buchArt">Buchart:</label>
+        <label htmlFor="buchArt">Art:</label>
         <Select
           id="buchArt"
-          name="buchArt"
-          placeholder="Wählen Sie die Buchart aus"
+          placeholder="Wählen Sie die Art des Buches"
           value={buchArt}
           onChange={handleBuchArtChange}
-          required
         >
-          <option value="KINDLE">KINDLE</option>
-          <option value="DRUCKAUSGABE">DRUCKAUSGABE</option>
+          <option value="DRUCKAUSGABE">Druckausgabe</option>
+          <option value="KINDLE">Kindle</option>
         </Select>
       </Box>
       <Box>
-        <label htmlFor="preis">Preis(€):</label>
+        <label htmlFor="preis">Preis:</label>
         <Input
           id="preis"
-          placeholder="z.B. 11.11"
+          placeholder="z.B. 1.00"
           value={preis}
           onChange={(e) => changePreis(e.target.value)}
         />
         {errors.preis && <Text color="red.500">{errors.preis}</Text>}
       </Box>
       <Box>
-        <label htmlFor="rabatt">Rabatt(%):</label>
+        <label htmlFor="rabatt">Rabatt:</label>
         <Input
           id="rabatt"
-          placeholder="z.B. 1.1"
+          placeholder="z.B. 0.1"
           value={rabatt}
           onChange={(e) => changeRabatt(e.target.value)}
         />
         {errors.rabatt && <Text color="red.500">{errors.rabatt}</Text>}
       </Box>
-      <Box mt={4} mb={4}>
-        <Text mb={2}>Datum:</Text>
+      <Box>
+        <label htmlFor="datum">Datum:</label>
         <DatePicker
           selected={datum}
           onChange={(date: Date) => changeDatum(date)}
+          dateFormat="dd.MM.yyyy"
           customInput={<CustomInput />}
-          popperPlacement="right"
         />
       </Box>
-      <Box mt={2}>
-        <Flex justifyContent="flex-start">
-          Bewertung:
-          <Stack direction="row" mb={4} ml={20}>
-            {displayStars()}
-          </Stack>
-        </Flex>
+      <Box>
+        <label htmlFor="rating">Rating:</label>
+        <Flex>{displayStars()}</Flex>
         {errors.rating && <Text color="red.500">{errors.rating}</Text>}
       </Box>
       <Box>
         <label htmlFor="homepage">Homepage:</label>
         <Input
           id="homepage"
-          placeholder="z.B. acme.at"
+          placeholder="z.B. https://www.test.de/"
           value={homepage}
           onChange={(e) => changeHomepage(e.target.value)}
         />
         {errors.homepage && <Text color="red.500">{errors.homepage}</Text>}
       </Box>
       <Box>
-        <label htmlFor="schlagwoerter">Schlagwörter:</label>
-        <Input
-          id="schlagwoerter"
-          placeholder="z.B. JAVASCRIPT,TYPESCRIPT"
-          value={schlagwoerter.join(', ')}
-          onChange={(e) => setSchlagwoerter(e.target.value.split(', '))}
-        />
-      </Box>
-      <Box display="flex" alignItems="center" mt={2}>
         <Checkbox
-          mt={2}
           isChecked={lieferbar}
           onChange={(e) => changeLieferbar(e.target.checked)}
         >
           Lieferbar
         </Checkbox>
-        <Button
-          type="submit"
-          className="submit-button"
-          ml={670}
-          minWidth="auto"
-        >
-          Änderungen übernehmen
-        </Button>
       </Box>
+      <Box>
+        <label htmlFor="schlagwoerter">Schlagwörter:</label>
+        <Input
+          id="schlagwoerter"
+          placeholder="Schlagwörter"
+          value={schlagwoerter.join(', ')}
+          onChange={(e) => setSchlagwoerter(e.target.value.split(','))}
+        />
+      </Box>
+      <Stack direction="row" spacing={4} align="center">
+        <Button type="submit" colorScheme="teal" size="md">
+          Buch ändern
+        </Button>
+        <Link href="/search">
+          <Button colorScheme="red" size="md">
+            Abbrechen
+          </Button>
+        </Link>
+      </Stack>
     </Box>
   );
 };

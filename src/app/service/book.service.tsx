@@ -4,22 +4,6 @@ import { httpsAgent } from '../lib/utils/httpsAgent';
 
 const baseURL = 'https://localhost:3000/rest';
 
-const handleRequestErrors = (error: any) => {
-  if (axios.isAxiosError(error)) {
-    if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-      return error.response.status;
-    } else if (error.request) {
-      console.log('Server:', error.request);
-      return 500;
-    }
-  }
-  console.log('Error:', error);
-  return -1;
-};
-
 export const getBooks = async (
   searchParams: string,
 ): Promise<Buch[] | number> => {
@@ -30,8 +14,8 @@ export const getBooks = async (
     );
     return response.data._embedded?.buecher ?? [];
   } catch (error) {
-    const status = handleRequestErrors(error);
-    return status;
+    console.error('Error fetching books:', error);
+    return -1;
   }
 };
 
@@ -43,7 +27,7 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
       objektDaten,
       {
         headers: {
-          ContentType: 'application/json',
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${tokenDatei}`,
         },
         httpsAgent,
@@ -54,47 +38,54 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
     const selfLink = response.headers['location'];
     return { status, selfLink };
   } catch (error) {
-    const status = handleRequestErrors(error);
-    return { status };
+    console.error('Error posting book:', error);
+    return { status: -1 };
   }
 }
 
-export async function putBuch(
-  objektDaten: object,
-  tokenDatei: string,
-  id: string,
-  eTag: string,
-) {
+export async function putBuch(objektDaten: object, tokenDatei: string, id: string, eTag: string) {
   try {
-    const response: AxiosResponse<Buecher> = await axios.put(
-      `${baseURL}/${id}`,
-      objektDaten,
-      {
-        headers: {
-          ContentType: 'application/json',
-          Authorization: `Bearer ${tokenDatei}`,
-          'If-Match': eTag,
-        },
-        httpsAgent,
+    const response = await axios.put(`${baseURL}/${id}`, objektDaten, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${tokenDatei}`,
+        'If-Match': eTag,
       },
-    );
-    console.log(response.status);
-    const status = response.status;
-    return { status };
+      httpsAgent,
+    });
+    console.log('PUT Response:', response);
+    return { status: response.status };
   } catch (error) {
-    const status = handleRequestErrors(error);
-    return { status };
+    console.error('Error putting book:', error);
+    return { status: -1 };
   }
 }
 
 export const fetchBookDetails = async (id: string) => {
   try {
-    const response = await axios.get(`https://localhost:3000/rest/${id}`, {
+    const response = await axios.get(`${baseURL}/${id}`, {
       httpsAgent,
     });
     return response.data;
   } catch (error) {
     console.error('Failed to fetch book details:', error);
+    return null;
+  }
+}
+
+export const fetchBookDetailsWithETag = async (id: string) => {
+  try {
+    const response = await axios.get(`${baseURL}/${id}`, {
+      httpsAgent,
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+    const data = response.data;
+    const eTag = response.headers['etag'];
+    return { ...data, eTag };
+  } catch (error) {
+    console.error('Failed to fetch book details with ETag:', error);
     return null;
   }
 };

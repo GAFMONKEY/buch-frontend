@@ -1,19 +1,32 @@
-import { ChangeBook } from '@/app/components/books/ChangeBook';
-import { useRouter } from 'next/navigation';
 import { fetchBookDetails } from '@/app/service/book.service';
+import { ChangeBook } from '@/app/components/books/ChangeBook';
+interface AendernPageProps {
+  params: {
+    id: string;
+  };
+}
 
-const Aendern = async ({ params }: { params: any }) => {
-  const { id }: { id: string } = params;
-  //const router = useRouter();
+const Aendern = async ({ params }: AendernPageProps) => {
+  const { id } = params;
 
   const response = await fetchBookDetails(id);
   if (!response) {
-    //router.push(`/search/${id}`);
-    return;
+    return {
+      redirect: {
+        destination: `/search/${id}`,
+        permanent: false,
+      },
+    };
   }
-  const book = response.body;
+  
+  const book = response;
   const eTag = response.eTag ?? '';
 
-  return <ChangeBook book={book} id={id} eTag={eTag} />;
+  return (
+    <div>
+      <ChangeBook book={book} id={id} eTag={eTag} />
+    </div>
+  );
 };
+
 export default Aendern;
