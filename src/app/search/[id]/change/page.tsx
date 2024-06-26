@@ -1,7 +1,7 @@
 import { fetchBookDetails } from '@/app/service/book.service';
 import { ChangeBook } from '@/app/components/books/ChangeBook';
 import { Box, Flex, useToast } from '@chakra-ui/react';
-import HorizontalBar from '@/app/components/common/HorizontalBar'; 
+import HorizontalBar from '@/app/components/common/HorizontalBar';
 
 interface ChangePageProps {
     params: {
