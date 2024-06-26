@@ -290,6 +290,7 @@ export const ChangeBook = ({
                 spacing={4}
                 align='center'
                 justify='space-between'
+                mt={2}
             >
                 <Link href='/search'>
                     <Button colorScheme='red' size='md'>
