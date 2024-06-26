@@ -289,15 +289,20 @@ export const ChangeBook = ({
                     }
                 />
             </Box>
-            <Stack direction='row' spacing={4} align='center'>
-                <Button type='submit' colorScheme='teal' size='md'>
-                    Buch ändern
-                </Button>
+            <Stack
+                direction='row'
+                spacing={4}
+                align='center'
+                justify='space-between'
+            >
                 <Link href='/search'>
                     <Button colorScheme='red' size='md'>
                         Abbrechen
                     </Button>
                 </Link>
+                <Button type='submit' colorScheme='teal' size='md'>
+                    Buch ändern
+                </Button>
             </Stack>
         </Box>
     );
