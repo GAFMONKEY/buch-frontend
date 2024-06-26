@@ -16,14 +16,13 @@ const HorizontalBar = ({ title, subtitle }: BarProperties) => {
             >
                 <Heading
                     as='h1'
-                    size='4xl'
+                    size='3xl'
                     fontWeight='bold'
                     color='black'
-                    mb='4'
                 >
                     {title}
                 </Heading>
-                <Text fontSize='2xl' color='black' mt='2'>
+                <Text fontSize='2xl' color='black'>
                     {subtitle}
                 </Text>
             </Flex>
