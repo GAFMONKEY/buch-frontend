@@ -24,7 +24,7 @@ export default function RootLayout({
           <Box as="header" position="fixed" width="100%" zIndex="1000">
             <Navbar />
           </Box>
-          <Box mt="40px">{children}</Box>
+          <Box mt="60px">{children}</Box>
         </Providers>
       </body>
     </html>
