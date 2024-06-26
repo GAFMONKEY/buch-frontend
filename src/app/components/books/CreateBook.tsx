@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Input,
     Checkbox,
@@ -170,6 +170,7 @@ export default function CreateBook() {
                 <Input
                     id='isbn'
                     placeholder='z.B. 978-3-897-22583-1'
+                    focusBorderColor='teal.300'
                     value={isbn}
                     onChange={(e) => setIsbn(e.target.value)}
                 />
@@ -180,6 +181,7 @@ export default function CreateBook() {
                 <Input
                     id='titel'
                     placeholder='z.B. Alpha'
+                    focusBorderColor='teal.300'
                     value={titel}
                     onChange={(e) => setTitel(e.target.value)}
                 />
@@ -190,6 +192,7 @@ export default function CreateBook() {
                 <Input
                     id='untertitel'
                     placeholder='z.B. alpha'
+                    focusBorderColor='teal.300'
                     value={untertitel}
                     onChange={(e) => setUntertitel(e.target.value)}
                 />
@@ -203,6 +206,7 @@ export default function CreateBook() {
                     id='buchArt'
                     name='buchArt'
                     placeholder='Wählen Sie die Buchart aus'
+                    focusBorderColor='teal.300'
                     value={buchArt}
                     onChange={(e) => setBuchArt(e.target.value as BuchArt)}
                     required
@@ -216,6 +220,7 @@ export default function CreateBook() {
                 <Input
                     id='preis'
                     placeholder='z.B. 11.11'
+                    focusBorderColor='teal.300'
                     value={preis}
                     onChange={(e) => setPreis(e.target.value)}
                 />
@@ -226,6 +231,7 @@ export default function CreateBook() {
                 <Input
                     id='rabatt'
                     placeholder='z.B. 1.1'
+                    focusBorderColor='teal.300'
                     value={rabatt}
                     onChange={(e) => setRabatt(e.target.value)}
                 />
@@ -254,6 +260,7 @@ export default function CreateBook() {
                 <Input
                     id='homepage'
                     placeholder='z.B. acme.at'
+                    focusBorderColor='teal.300'
                     value={homepage}
                     onChange={(e) => setHomepage(e.target.value)}
                 />
@@ -266,6 +273,7 @@ export default function CreateBook() {
                 <Input
                     id='schlagwoerter'
                     placeholder='z.B. JAVASCRIPT,TYPESCRIPT'
+                    focusBorderColor='teal.300'
                     value={schlagwoerter}
                     onChange={(e) =>
                         setSchlagwoerter(e.target.value.toUpperCase())
