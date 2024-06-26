@@ -270,7 +270,9 @@ export const ChangeBook = ({
           value={schlagwoerter.join(',')}
           onChange={(e) =>
             setSchlagwoerter(
-              e.target.value.split(',').map((word) => word.trim().toUpperCase()),
+              e.target.value
+                .split(',')
+                .map((word) => word.trim().toUpperCase()),
             )
           }
         />
