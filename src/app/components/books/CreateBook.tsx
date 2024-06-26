@@ -105,7 +105,7 @@ export default function CreateBook() {
         const newErrors = validateForm();
         setErrors(newErrors);
 
-        if (!hasErrors(errors)) {
+        if (!hasErrors(newErrors)) {
             const formData = {
                 isbn,
                 titel: { titel, untertitel },
@@ -135,6 +135,8 @@ export default function CreateBook() {
             } catch (error) {
                 console.error('Fehler:', error);
             }
+        } else {
+            alert('Bitte überprüfen Sie Ihre Eingaben!');
         }
     };
 
