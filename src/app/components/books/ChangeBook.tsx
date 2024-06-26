@@ -220,7 +220,7 @@ export const ChangeBook = ({
         {errors.preis && <Text color="red.500">{errors.preis}</Text>}
       </Box>
       <Box>
-        <label htmlFor="rabatt">Rabatt:</label>
+        <label htmlFor="rabatt">Rabatt(%):</label>
         <Input
           id="rabatt"
           placeholder="z.B. 0.1"
