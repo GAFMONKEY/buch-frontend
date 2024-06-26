@@ -26,10 +26,6 @@ export const ChangeBook = ({
     eTag: string;
 }) => {
     const [isbn, changeIsbn] = useState(book.isbn);
-    const [titel, changeTitel] = useState(book.titel.titel);
-    const [untertitel, changeUntertitel] = useState(
-        book.titel.untertitel ?? '',
-    );
     const [buchArt, changeBuchArt] = useState(book.art);
     const [preis, changePreis] = useState(book.preis.toFixed(2));
     const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(3));
@@ -64,13 +60,6 @@ export const ChangeBook = ({
         const isbnPattern = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
         if (!isbn || !isbnPattern.test(isbn)) {
             newErrors.isbn = 'Bitte geben Sie eine gültige ISBN ein';
-        }
-        if (!titel) {
-            newErrors.titel = 'Der Titel muss ein String sein';
-        }
-        if (!untertitel) {
-            newErrors.untertitel =
-                'Bitte geben Sie einen gültigen Untertitel ein';
         }
         const preisPattern = /^\d+(\.\d{2})?$/;
         if (!preis) {
@@ -111,7 +100,6 @@ export const ChangeBook = ({
         if (Object.values(newErrors).every((error) => error === '')) {
             const formData = {
                 isbn,
-                titel: { titel, untertitel },
                 art: buchArt,
                 preis: parseFloat(preis),
                 rabatt: parseFloat(rabatt),
@@ -180,6 +168,7 @@ export const ChangeBook = ({
                 <Input
                     id='isbn'
                     placeholder='z.B. 978-3-897-22583-1'
+                    focusBorderColor='teal.300'
                     value={isbn}
                     onChange={(e) => changeIsbn(e.target.value)}
                 />
@@ -190,28 +179,31 @@ export const ChangeBook = ({
                 <Input
                     id='titel'
                     placeholder='z.B. Alpha'
-                    value={titel}
-                    onChange={(e) => changeTitel(e.target.value)}
+                    focusBorderColor='teal.300'
+                    value={book.titel.titel}
+                    backgroundColor='gray.200'
+                    cursor='not-allowed'
+                    isReadOnly
                 />
-                {errors.titel && <Text color='red.500'>{errors.titel}</Text>}
             </Box>
             <Box>
                 <label htmlFor='untertitel'>Untertitel:</label>
                 <Input
                     id='untertitel'
                     placeholder='z.B. alpha'
-                    value={untertitel}
-                    onChange={(e) => changeUntertitel(e.target.value)}
+                    focusBorderColor='teal.300'
+                    value={book.titel.untertitel}
+                    backgroundColor='gray.200'
+                    cursor='not-allowed'
+                    isReadOnly
                 />
-                {errors.untertitel && (
-                    <Text color='red.500'>{errors.untertitel}</Text>
-                )}
             </Box>
             <Box>
                 <label htmlFor='buchArt'>Art:</label>
                 <Select
                     id='buchArt'
                     placeholder='Wählen Sie die Art des Buches'
+                    focusBorderColor='teal.300'
                     value={buchArt}
                     onChange={handleBuchArtChange}
                 >
@@ -224,6 +216,7 @@ export const ChangeBook = ({
                 <Input
                     id='preis'
                     placeholder='z.B. 1.00'
+                    focusBorderColor='teal.300'
                     value={preis}
                     onChange={(e) => changePreis(e.target.value)}
                 />
@@ -234,6 +227,7 @@ export const ChangeBook = ({
                 <Input
                     id='rabatt'
                     placeholder='z.B. 0.1'
+                    focusBorderColor='teal.300'
                     value={rabatt}
                     onChange={(e) => changeRabatt(e.target.value)}
                 />
@@ -258,6 +252,7 @@ export const ChangeBook = ({
                 <Input
                     id='homepage'
                     placeholder='z.B. https://www.test.de/'
+                    focusBorderColor='teal.300'
                     value={homepage}
                     onChange={(e) => changeHomepage(e.target.value)}
                 />
@@ -279,6 +274,7 @@ export const ChangeBook = ({
                 <Input
                     id='schlagwoerter'
                     placeholder='Schlagwörter'
+                    focusBorderColor='teal.300'
                     value={schlagwoerter.join(',')}
                     onChange={(e) =>
                         setSchlagwoerter(

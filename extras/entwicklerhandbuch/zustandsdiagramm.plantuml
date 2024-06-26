@@ -1,0 +1,62 @@
+@startuml zustandsdiagramm
+[*] --> Index
+Index: Token vorhanden
+
+state "/login" as auth {
+    Anmeldeformular: Benutzername
+    Anmeldeformular: Passwort
+    state Anmeldergebnis <<choice>>
+
+    [*] --> Anmeldeformular
+    Anmeldeformular --> Anmeldergebnis
+    Anmeldergebnis --> AnmeldeFehler: Fehlerhafte Daten
+    Anmeldergebnis --> BackendFehlerAuth: Backend nicht erreichbar
+    Anmeldergebnis --> Index: Erfolg (authorisiert)
+}
+
+state "/create" as create {
+    Anlegeformular: Formulardaten
+    state Anlegeergebnis <<choice>>
+
+    [*] --> Anlegeformular
+    Anlegeformular --> Anlegeergebnis
+    Anlegeergebnis --> AnlegeFehler: Fehlerhafte Daten
+    Anlegeergebnis --> BackendFehlerCreate: Backend nicht erreichbar
+    Anlegeergebnis --> Erfolgsmeldung: Erfolg
+}
+
+state "/change" as change {
+    Änderungsformular: Formulardaten
+    state ÄnderungsErgebnis <<choice>>
+
+    [*] --> Änderungsformular
+    Änderungsformular --> ÄnderungsErgebnis
+    ÄnderungsErgebnis --> ÄnderungsFehler: Fehlerhafte Daten
+    ÄnderungsErgebnis --> BackendFehlerChange: Backend nicht erreichbar
+    ÄnderungsErgebnis --> Erfolgsmeldung: Erfolg
+}
+
+state "/search" as search {
+    Suchformular: Suchkriterien
+    state Suchergebnis <<choice>>
+
+    [*] --> Suchformular
+    Suchformular --> Suchergebnis
+    Suchergebnis --> KeineBuecher: Keine Bücher gefunden
+    Suchergebnis --> BackendFehlerSearch: Backend nicht erreichbar
+    Suchergebnis --> GefundeneBuecher: Mindestens ein Buch gefunden
+}
+
+state "/success" as success {
+    Erfolgsmeldung: Erfolgsmeldungstext
+}
+
+Index --> auth: Button "Login"
+Index --> Index: Button "Logout" (authorisiert)
+Index --> create: Menüpunkt "Anlegen" (authorisiert)
+Index --> change: Menüpunkt "Ändern" (authorisiert)
+Index --> search: Menüpunkt "Suche"
+
+create --> success : Erfolgreich angelegt
+change --> success : Erfolgreich geändert
+@enduml
