@@ -1,5 +1,4 @@
 'use client';
-
 import { Suspense } from 'react';
 import {
     Alert,
@@ -91,7 +90,6 @@ function SearchContent() {
     return (
         <Box p={4}>
             {!sourceAllBooks && <AdvancedSearch />}
-            {/* <AdvancedSearch />   */}
             {currentFilter && (
                 <HStack mb={4}>
                     <Text as='i'>
