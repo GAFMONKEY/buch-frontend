@@ -32,7 +32,7 @@ export const ChangeBook = ({
     );
     const [buchArt, changeBuchArt] = useState(book.art);
     const [preis, changePreis] = useState(book.preis.toFixed(2));
-    const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(4));
+    const [rabatt, changeRabatt] = useState(book.rabatt.toFixed(3));
     const [datum, changeDatum] = useState<Date>(new Date(book.datum));
     const [rating, setSelectedRating] = useState(book.rating);
     const [homepage, changeHomepage] = useState(book.homepage);
