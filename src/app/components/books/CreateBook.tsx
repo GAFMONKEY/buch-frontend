@@ -17,7 +17,7 @@ import { postBuch } from '../../service/book.service';
 import { useRouter } from 'next/navigation';
 import extractId from '../../lib/utils/extractId';
 
-export default function NewBook() {
+export default function CreateBook() {
   const [isbn, setIsbn] = useState('978-3-16-148410-0');
   const [titel, setTitel] = useState('Beispielbuch');
   const [untertitel, setUntertitel] = useState('Eine Beispielgeschichte');

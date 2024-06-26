@@ -1,7 +1,17 @@
 'use client';
 
 import { Suspense } from 'react';
-import { Alert, AlertIcon, Box, Button, HStack, SimpleGrid, Text, Spinner, Center } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  HStack,
+  SimpleGrid,
+  Text,
+  Spinner,
+  Center,
+} from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { AdvancedSearch } from '../components/search/AdvancedSearch';
 import { BookCard } from '../components/books/BookCard';
@@ -15,18 +25,20 @@ function SearchContent() {
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const [schlagwortMap, setSchlagwortMap] = useState<Map<string, string> | undefined>(undefined);
+  const [schlagwortMap, setSchlagwortMap] = useState<
+    Map<string, string> | undefined
+  >(undefined);
   const sourceAllBooks = searchParams.get('source') === 'all-books';
 
   const filterBooksBySchlagwort = useCallback(
     (schlagwort: string) => {
       setCurrentFilter(schlagwort.toUpperCase());
-      const filtered = buecher?.filter(buch =>
-        buch.schlagwoerter.includes(schlagwort)
+      const filtered = buecher?.filter((buch) =>
+        buch.schlagwoerter.includes(schlagwort),
       );
       setFilteredBuecher(filtered ? filtered : []);
     },
-    [buecher]
+    [buecher],
   );
 
   const clearFilter = useCallback(() => {
@@ -45,7 +57,9 @@ function SearchContent() {
   useEffect(() => {
     if (searchParams.toString().length > 0) {
       const searchBooks = async () => {
-        const query = sourceAllBooks ? 'titel=' : new URLSearchParams(searchParams as any).toString();
+        const query = sourceAllBooks
+          ? 'titel='
+          : new URLSearchParams(searchParams as any).toString();
 
         const response: Buch[] | number = await getBooks(query);
         if (typeof response === 'number') {
@@ -71,14 +85,15 @@ function SearchContent() {
     }
   }, [searchParams, sourceAllBooks]);
 
-  
   return (
     <Box p={4}>
       {!sourceAllBooks && <AdvancedSearch />}
       {/* <AdvancedSearch />   */}
       {currentFilter && (
         <HStack mb={4}>
-          <Text as="i">Aktueller Filter: <strong>{currentFilter}</strong>.</Text>
+          <Text as="i">
+            Aktueller Filter: <strong>{currentFilter}</strong>.
+          </Text>
           <Button onClick={clearFilter} colorScheme="teal" variant="ghost">
             Filter entfernen
           </Button>

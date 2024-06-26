@@ -5,22 +5,6 @@ import { AxiosError } from 'axios';
 
 const baseURL = 'https://localhost:3000/rest';
 
-const handleRequestErrors = (error: any) => {
-  if (axios.isAxiosError(error)) {
-    if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-      return error.response.status;
-    } else if (error.request) {
-      console.log('Server:', error.request);
-      return 500;
-    }
-  }
-  console.log('Error:', error);
-  return -1;
-};
-
 export const getBooks = async (
   searchParams: string,
 ): Promise<Buch[] | number> => {
@@ -35,7 +19,6 @@ export const getBooks = async (
     return status;
   }
 };
-
 
 export async function postBuch(objektDaten: object, tokenDatei: string) {
   try {
@@ -60,12 +43,17 @@ export async function postBuch(objektDaten: object, tokenDatei: string) {
   }
 }
 
-export async function putBuch(objektDaten: object, tokenDatei: string, id: string, eTag: string) {
+export async function putBuch(
+  objektDaten: object,
+  tokenDatei: string,
+  id: string,
+  eTag: string,
+) {
   try {
     const response = await axios.put(`${baseURL}/${id}`, objektDaten, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${tokenDatei}`,
+        Authorization: `Bearer ${tokenDatei}`,
         'If-Match': eTag,
       },
       httpsAgent,
@@ -75,13 +63,13 @@ export async function putBuch(objektDaten: object, tokenDatei: string, id: strin
   } catch (error) {
     if (isPreconditionFailedError(error)) {
       try {
-        const currentBook = await fetchBookDetailsWithETag(id); // Aktuelle Buchdetails und ETAG abrufen
+        const currentBook = await fetchBookDetailsWithETag(id);
         const eTag = currentBook.eTag;
 
         const retryResponse = await axios.put(`${baseURL}/${id}`, objektDaten, {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${tokenDatei}`,
+            Authorization: `Bearer ${tokenDatei}`,
             'If-Match': eTag,
           },
           httpsAgent,
@@ -99,10 +87,6 @@ export async function putBuch(objektDaten: object, tokenDatei: string, id: strin
   }
 }
 
-function isPreconditionFailedError(error: AxiosError) {
-  return error.response?.status === 412;
-}
-
 export const fetchBookDetails = async (id: string) => {
   try {
     const response = await axios.get(`https://localhost:3000/rest/${id}`, {
@@ -113,14 +97,14 @@ export const fetchBookDetails = async (id: string) => {
     console.error('Failed to fetch book details:', error);
     return null;
   }
-}
+};
 
 export const fetchBookDetailsWithETag = async (id: string) => {
   try {
     const response = await axios.get(`${baseURL}/${id}`, {
       httpsAgent,
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
     const data = response.data;
@@ -130,4 +114,24 @@ export const fetchBookDetailsWithETag = async (id: string) => {
     console.error('Failed to fetch book details with ETag:', error);
     return null;
   }
+};
+
+function isPreconditionFailedError(error: any): error is AxiosError {
+  return error.response?.status === 412;
+}
+
+const handleRequestErrors = (error: any) => {
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+      return error.response.status;
+    } else if (error.request) {
+      console.log('Server:', error.request);
+      return 500;
+    }
+  }
+  console.log('Error:', error);
+  return -1;
 };
